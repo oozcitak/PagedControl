@@ -5,19 +5,19 @@ using System.Windows.Forms;
 
 namespace Manina.Windows.Forms
 {
-    public partial class PagedControl<T>
+    public partial class PagedControl
     {
-        public class PageCollection : IList<T>, ICollection, IList, IEnumerable 
+        public class PageCollection : IList<Page>, ICollection, IList, IEnumerable 
         {
             #region Member Variables
-            private PagedControl<T> owner;
+            private PagedControl owner;
             private ControlCollection controls;
             #endregion
 
             #region Properties
-            public T this[int index]
+            public Page this[int index]
             {
-                get => (T)controls[index + owner.FirstPageIndex];
+                get => (Page)controls[index + owner.FirstPageIndex];
                 set
                 {
                     Insert(index + owner.FirstPageIndex, value);
@@ -29,7 +29,7 @@ namespace Manina.Windows.Forms
             #endregion
 
             #region Constructor
-            public PageCollection(PagedControl<T> control)
+            public PageCollection(PagedControl control)
             {
                 owner = control;
                 controls = control.Controls;
@@ -37,7 +37,7 @@ namespace Manina.Windows.Forms
             #endregion
 
             #region Public Methods
-            public void Add(T item)
+            public void Add(Page item)
             {
                 controls.Add(item);
                 if (Count == 1) owner.SelectedIndex = 0;
@@ -58,29 +58,29 @@ namespace Manina.Windows.Forms
                 owner.OnUpdateUIControls(new EventArgs());
             }
 
-            public bool Contains(T item)
+            public bool Contains(Page item)
             {
                 return controls.Contains(item);
             }
 
-            public void CopyTo(T[] array, int arrayIndex)
+            public void CopyTo(Page[] array, int arrayIndex)
             {
                 for (int i = arrayIndex; i < array.Length; i++)
-                    array[i] = (T)controls[i - arrayIndex + owner.FirstPageIndex];
+                    array[i] = (Page)controls[i - arrayIndex + owner.FirstPageIndex];
             }
 
-            public IEnumerator<T> GetEnumerator()
+            public IEnumerator<Page> GetEnumerator()
             {
                 for (int i = owner.FirstPageIndex; i < owner.FirstPageIndex + owner.PageCount; i++)
-                    yield return (T)controls[i];
+                    yield return (Page)controls[i];
             }
 
-            public int IndexOf(T item)
+            public int IndexOf(Page item)
             {
                 return controls.IndexOf(item) - owner.FirstPageIndex;
             }
 
-            public void Insert(int index, T item)
+            public void Insert(int index, Page item)
             {
                 index += owner.FirstPageIndex;
                 List<Control> removed = new List<Control>();
@@ -100,7 +100,7 @@ namespace Manina.Windows.Forms
                 owner.UpdatePages();
             }
 
-            public bool Remove(T item)
+            public bool Remove(Page item)
             {
                 bool exists = controls.Contains(item);
 
@@ -145,32 +145,32 @@ namespace Manina.Windows.Forms
 
             bool IList.IsFixedSize => false;
 
-            object IList.this[int index] { get => this[index]; set => this[index] = (T)value; }
+            object IList.this[int index] { get => this[index]; set => this[index] = (Page)value; }
 
             int IList.Add(object value)
             {
-                Add((T)value);
+                Add((Page)value);
                 return Count - 1;
             }
 
             bool IList.Contains(object value)
             {
-                return Contains((T)value);
+                return Contains((Page)value);
             }
 
             int IList.IndexOf(object value)
             {
-                return IndexOf((T)value);
+                return IndexOf((Page)value);
             }
 
             void IList.Insert(int index, object value)
             {
-                Insert(index, (T)value);
+                Insert(index, (Page)value);
             }
 
             void IList.Remove(object value)
             {
-                Remove((T)value);
+                Remove((Page)value);
             }
             #endregion
         }

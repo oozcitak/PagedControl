@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -9,7 +10,7 @@ namespace Manina.Windows.Forms
     [Docking(DockingBehavior.Ask)]
     [DefaultEvent("PageChanged")]
     [DefaultProperty("SelectedPage")]
-    public partial class PagedControl<T> : Control where T : Page
+    public partial class PagedControl : Control
     {
         #region Events
         /// <summary>
@@ -20,13 +21,13 @@ namespace Manina.Windows.Forms
             /// <summary>
             /// The page causing the event.
             /// </summary>
-            public T Page { get; private set; }
+            public Page Page { get; private set; }
             /// <summary>
             /// The index of the page causing the event.
             /// </summary>
             public int PageIndex { get; private set; }
 
-            public PageEventArgs(T page, int index)
+            public PageEventArgs(Page page, int index)
             {
                 Page = page;
                 PageIndex = index;
@@ -41,11 +42,11 @@ namespace Manina.Windows.Forms
             /// <summary>
             /// Current page.
             /// </summary>
-            public T CurrentPage { get; private set; }
+            public Page CurrentPage { get; private set; }
             /// <summary>
             /// The page that will become the current page after the event.
             /// </summary>
-            public T NewPage { get; set; }
+            public Page NewPage { get; set; }
             /// <summary>
             /// The index of the current page.
             /// </summary>
@@ -55,7 +56,7 @@ namespace Manina.Windows.Forms
             /// </summary>
             public int NewPageIndex { get; private set; }
 
-            public PageChangingEventArgs(T currentPage, int currentPageIndex, T newPage, int newPageIndex) : base(false)
+            public PageChangingEventArgs(Page currentPage, int currentPageIndex, Page newPage, int newPageIndex) : base(false)
             {
                 CurrentPage = currentPage;
                 CurrentPageIndex = currentPageIndex;
@@ -72,11 +73,11 @@ namespace Manina.Windows.Forms
             /// <summary>
             /// The page that was the current page before the event.
             /// </summary>
-            public T OldPage { get; private set; }
+            public Page OldPage { get; private set; }
             /// <summary>
             /// Current page.
             /// </summary>
-            public T CurrentPage { get; private set; }
+            public Page CurrentPage { get; private set; }
             /// <summary>
             /// The index of the old page.
             /// </summary>
@@ -86,7 +87,7 @@ namespace Manina.Windows.Forms
             /// </summary>
             public int CurrentPageIndex { get; private set; }
 
-            public PageChangedEventArgs(T oldPage, int oldPageIndex, T currentPage, int currentPageIndex)
+            public PageChangedEventArgs(Page oldPage, int oldPageIndex, Page currentPage, int currentPageIndex)
             {
                 OldPage = oldPage;
                 OldPageIndex = oldPageIndex;
@@ -103,13 +104,13 @@ namespace Manina.Windows.Forms
             /// <summary>
             /// The page causing the event.
             /// </summary>
-            public T Page { get; private set; }
+            public Page Page { get; private set; }
             /// <summary>
             /// The index of the page causing the event.
             /// </summary>
             public int PageIndex { get; private set; }
 
-            public PageValidatingEventArgs(T page, int index)
+            public PageValidatingEventArgs(Page page, int index)
             {
                 Page = page;
                 PageIndex = index;
@@ -126,7 +127,7 @@ namespace Manina.Windows.Forms
             /// </summary>
             public Graphics Graphics { get; private set; }
 
-            public PagePaintEventArgs(Graphics graphics, T page, int index) : base(page, index)
+            public PagePaintEventArgs(Graphics graphics, Page page, int index) : base(page, index)
             {
                 Graphics = graphics;
             }
@@ -201,9 +202,15 @@ namespace Manina.Windows.Forms
         public event EventHandler UpdateUIControls;
         #endregion
 
+        #region Constants
+        private const int WS_EX_TRANSPARENT = 0x00000020;
+        #endregion
+
         #region Member Variables
         private int selectedIndex;
-        private T lastSelectedPage;
+        private Page lastSelectedPage;
+        private BorderStyle borderStyle;
+        private Color backColor;
         private bool creatingUIControls;
         private int uiControlCount;
         #endregion
@@ -224,7 +231,7 @@ namespace Manina.Windows.Forms
         [Editor(typeof(PagedControlEditor), typeof(System.Drawing.Design.UITypeEditor))]
         [Category("Behavior"), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Description("Gets or sets the current page.")]
-        public virtual T SelectedPage
+        public virtual Page SelectedPage
         {
             get
             {
@@ -307,21 +314,63 @@ namespace Manina.Windows.Forms
         public bool OwnerDraw { get; set; }
 
         /// <summary>
+        /// Gets the rectangle that represents the client area of the control.
+        /// </summary>
+        [Browsable(false)]
+        public new Rectangle ClientRectangle
+        {
+            get
+            {
+                var rect = base.ClientRectangle;
+                if (BorderStyle != BorderStyle.None)
+                    rect.Inflate(-1, -1);
+                return rect;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the background color of the control.
+        /// </summary>
+        [Category("Appearance"), DefaultValue(typeof(Color), "Transparent")]
+        [Description("Gets or sets the background color of the control.")]
+        public override Color BackColor { get => backColor; set { backColor = value; Invalidate(); } }
+
+        /// <summary>
+        /// Gets or sets the border style of the control.
+        /// </summary>
+        [Category("Appearance"), DefaultValue(BorderStyle.FixedSingle)]
+        [Description("Gets or sets the border style of the control.")]
+        public BorderStyle BorderStyle { get => borderStyle; set { borderStyle = value; Invalidate(); } }
+
+        /// <summary>
         /// Gets the size of the control when it is initially created.
         /// </summary>
         protected override Size DefaultSize => new Size(300, 200);
 
         /// <summary>
+        /// Gets the required creation parameters when the control handle is created.
+        /// </summary>
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle = cp.ExStyle | WS_EX_TRANSPARENT;
+                return cp;
+            }
+        }
+
+        /// <summary>
         /// Determines whether the control can navigate to the previous page.
         /// </summary>
         [Browsable(false)]
-        public virtual bool CanGoBack => (Pages.Count != 0) && !(ReferenceEquals(SelectedPage, Pages[0]));
+        public virtual bool CanGoBack => (Pages.Count != 0) && (SelectedIndex != -1) && !(ReferenceEquals(SelectedPage, Pages[0]));
 
         /// <summary>
         /// Determines whether the control can navigate to the next page.
         /// </summary>
         [Browsable(false)]
-        public virtual bool CanGoNext => (Pages.Count != 0) && !(ReferenceEquals(SelectedPage, Pages[Pages.Count - 1]));
+        public virtual bool CanGoNext => (Pages.Count != 0) && (SelectedIndex != -1) && !(ReferenceEquals(SelectedPage, Pages[Pages.Count - 1]));
 
         /// <summary>
         /// Gets the client rectangle where pages are located.
@@ -360,8 +409,13 @@ namespace Manina.Windows.Forms
             Pages = new PageCollection(this);
             selectedIndex = -1;
             lastSelectedPage = null;
+            borderStyle = BorderStyle.FixedSingle;
+            backColor = Color.Transparent;
 
             SetStyle(ControlStyles.ResizeRedraw, true);
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            SetStyle(ControlStyles.Opaque, true);
+            this.BackColor = Color.Transparent;
 
             CreateChildControls();
 
@@ -375,13 +429,8 @@ namespace Manina.Windows.Forms
         /// </summary>
         public void GoBack()
         {
-            if (Pages.Count == 0) return;
-            if (!CanGoBack) return;
-
-            int index = SelectedIndex;
-            if (index == -1) return;
-
-            SelectedIndex = index - 1;
+            if (CanGoBack)
+                SelectedIndex = SelectedIndex - 1;
         }
 
         /// <summary>
@@ -389,13 +438,8 @@ namespace Manina.Windows.Forms
         /// </summary>
         public void GoNext()
         {
-            if (Pages.Count == 0) return;
-            if (!CanGoNext) return;
-
-            int index = SelectedIndex;
-            if (index == -1) return;
-
-            SelectedIndex = index + 1;
+            if (CanGoNext)
+                SelectedIndex = SelectedIndex + 1;
         }
         #endregion
 
@@ -422,9 +466,9 @@ namespace Manina.Windows.Forms
 
             for (int i = 0; i < Pages.Count; i++)
             {
-                T page = Pages[i];
+                var page = Pages[i];
                 page.SetBounds(pageBounds.Left, pageBounds.Top, pageBounds.Width, pageBounds.Height, BoundsSpecified.All);
-                page.Visible = (i == selectedIndex);
+                page.Visible = (i == SelectedIndex);
             }
         }
         #endregion
@@ -433,6 +477,24 @@ namespace Manina.Windows.Forms
         protected override ControlCollection CreateControlsInstance()
         {
             return new PagedControlControlCollection(this);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            if (BackColor != Color.Transparent)
+            {
+                using (Brush brush = new SolidBrush(BackColor))
+                {
+                    e.Graphics.FillRectangle(brush, base.ClientRectangle);
+                }
+            }
+
+            if (BorderStyle == BorderStyle.FixedSingle)
+                ControlPaint.DrawBorder(e.Graphics, base.ClientRectangle, Color.Black, ButtonBorderStyle.Solid);
+            else if (BorderStyle == BorderStyle.Fixed3D)
+                ControlPaint.DrawBorder3D(e.Graphics, base.ClientRectangle, Border3DStyle.SunkenOuter);
         }
 
         protected override void OnResize(EventArgs e)
@@ -446,9 +508,9 @@ namespace Manina.Windows.Forms
         #region ControlCollection
         internal class PagedControlControlCollection : ControlCollection
         {
-            private readonly PagedControl<T> owner;
+            private readonly PagedControl owner;
 
-            public PagedControlControlCollection(PagedControl<T> ownerControl) : base(ownerControl)
+            public PagedControlControlCollection(PagedControl ownerControl) : base(ownerControl)
             {
                 owner = ownerControl;
             }
@@ -481,6 +543,8 @@ namespace Manina.Windows.Forms
                         container.Add(value);
                     }
                 }
+
+                owner.OnPageAdded(new PageEventArgs((Page)value, owner.SelectedIndex));
             }
 
             public override void Remove(Control value)
@@ -509,9 +573,31 @@ namespace Manina.Windows.Forms
                     owner.SelectedIndex = 0;
 
                 owner.UpdatePages();
+                owner.OnPageRemoved(new PageEventArgs((Page)value, -1));
             }
 
             public override Control this[int index] => base[index];
+        }
+        #endregion
+
+        #region UITypeEditor
+        internal class PagedControlEditor : ObjectSelectorEditor
+        {
+            protected override void FillTreeWithData(Selector selector, ITypeDescriptorContext context, IServiceProvider provider)
+            {
+                base.FillTreeWithData(selector, context, provider);
+
+                var control = (PagedControl)context.Instance;
+
+                foreach (var page in control.Pages)
+                {
+                    SelectorNode node = new SelectorNode(page.Name, page);
+                    selector.Nodes.Add(node);
+
+                    if (page == control.SelectedPage)
+                        selector.SelectedNode = node;
+                }
+            }
         }
         #endregion
     }

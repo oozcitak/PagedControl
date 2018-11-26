@@ -23,7 +23,7 @@ namespace Manina.Windows.Forms
         [Browsable(false)]
         public int Index => Parent.Pages.Contains(this) ? Parent.Pages.IndexOf(this) : -1;
 
-        public new PagedControl<Page> Parent => (PagedControl<Page>)base.Parent;
+        public new PagedControl Parent => (PagedControl)base.Parent;
         #endregion
 
         #region Unused Methods - Hide From User
@@ -103,12 +103,19 @@ namespace Manina.Windows.Forms
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            if (DesignMode && Visible)
+            {
+                var rect = ClientRectangle;
+                rect.Inflate(-2, -2);
+                ControlPaint.DrawBorder(e.Graphics, rect, Color.Black, ButtonBorderStyle.Dashed);
+            }
+
             if (!Parent.OwnerDraw)
             {
                 base.OnPaint(e);
             }
 
-            Parent.OnPagePaint(new PagedControl<Page>.PagePaintEventArgs(e.Graphics, this, Index));
+            Parent.OnPagePaint(new PagedControl.PagePaintEventArgs(e.Graphics, this, Index));
         }
         #endregion
 
@@ -153,7 +160,7 @@ namespace Manina.Windows.Forms
             #region Parent/Child Relation
             public override bool CanBeParentedTo(IDesigner parentDesigner)
             {
-                return (parentDesigner != null && parentDesigner.Component is PagedControl<Page>);
+                return (parentDesigner != null && parentDesigner.Component is PagedControl);
             }
             #endregion
 

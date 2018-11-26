@@ -44,7 +44,7 @@ namespace Manina.Windows.Forms
         public Size DefaultIconSize = new Size(16, 16);
 
         /// <summary>
-        /// Gets the location of the toolbar in adorner coordinates.
+        /// Gets or sets the location of the toolbar relative to the parent control.
         /// </summary>
         public Point Location { get; set; }
 

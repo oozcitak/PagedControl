@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PagedControlEditor.cs" />
     <Compile Include="Designer\BaseGlyph.cs" />
     <Compile Include="Designer\ButtonGlyph.cs" />
     <Compile Include="Designer\GlyphToolBar.cs" />
@@ -51,7 +50,9 @@
     <Compile Include="PagedControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PagedControlDesigner.cs" />
+    <Compile Include="PagedControlDesigner.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PageCollection.cs">
       <SubType>Component</SubType>
     </Compile>
