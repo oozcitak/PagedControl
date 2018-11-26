@@ -47,7 +47,7 @@ namespace Manina.Windows.Forms
             /// <summary>
             /// Gets the location of the designer toolbar relative to the parent control.
             /// </summary>
-            public virtual Point ToolbarLocation => new Point(8, Control.Height - 8 - toolbar.Bounds.Height);
+            public virtual Point ToolbarLocation => new Point(8, Control.Height + 8);
             #endregion
 
             #region Glyph Icons
