@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace Manina.Windows.Forms
 {
+    [ToolboxBitmap(typeof(PagedControl))]
     [Designer(typeof(PagedControlDesigner))]
     [Docking(DockingBehavior.Ask)]
     [DefaultEvent("PageChanged")]
