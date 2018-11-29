@@ -34,9 +34,6 @@ namespace Manina.Windows.Forms
         public override DockStyle Dock { get => DockStyle.None; set { } }
 
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new Point Location { get => new Point(0, 0); set { } }
-
-        [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override AnchorStyles Anchor { get => AnchorStyles.None; set { } }
 
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -59,6 +56,9 @@ namespace Manina.Windows.Forms
 
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new Padding Margin { get => base.Margin; set { } }
+
+        [Browsable(false), Category("Layout"), Localizable(true)]
+        public new Point Location { get => base.Location; set { } }
 
         [Browsable(false), Category("Layout"), Localizable(true)]
         public new Size Size { get => base.Size; set { } }
