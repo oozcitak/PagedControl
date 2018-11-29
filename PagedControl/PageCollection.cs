@@ -14,6 +14,7 @@ namespace Manina.Windows.Forms
             #region Member Variables
             private PagedControl owner;
             private ControlCollection controls;
+            private readonly object syncRoot = new object();
             #endregion
 
             #region Properties
@@ -28,6 +29,13 @@ namespace Manina.Windows.Forms
             }
             public int Count => owner.PageCount;
             public bool IsReadOnly => false;
+
+            public object SyncRoot => syncRoot;
+            public bool IsSynchronized => false;
+
+            public bool IsFixedSize => false;
+
+            object IList.this[int index] { get => this[index]; set => this[index] = (Page)value; }
             #endregion
 
             #region Constructor
@@ -131,46 +139,40 @@ namespace Manina.Windows.Forms
                 owner.OnUpdateUIControls(new EventArgs());
                 owner.UpdatePages();
             }
-            #endregion
 
-            #region Explicit Interface
+            public void CopyTo(Array array, int index)
+            {
+                for (int i = index; i < array.Length; i++)
+                    array.SetValue(this[i - index], i);
+            }
+
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return GetEnumerator();
             }
 
-            object ICollection.SyncRoot => throw new NotImplementedException();
-
-            bool ICollection.IsSynchronized => false;
-
-            void ICollection.CopyTo(Array array, int index) => throw new NotImplementedException();
-
-            bool IList.IsFixedSize => false;
-
-            object IList.this[int index] { get => this[index]; set => this[index] = (Page)value; }
-
-            int IList.Add(object value)
+            public int Add(object value)
             {
                 Add((Page)value);
                 return Count - 1;
             }
 
-            bool IList.Contains(object value)
+            public bool Contains(object value)
             {
                 return Contains((Page)value);
             }
 
-            int IList.IndexOf(object value)
+            public int IndexOf(object value)
             {
                 return IndexOf((Page)value);
             }
 
-            void IList.Insert(int index, object value)
+            public void Insert(int index, object value)
             {
                 Insert(index, (Page)value);
             }
 
-            void IList.Remove(object value)
+            public void Remove(object value)
             {
                 Remove((Page)value);
             }
