@@ -170,6 +170,9 @@ namespace Manina.Windows.Forms
                 Control.PageRemoved += Control_PageRemoved;
                 Control.Resize += Control_Resize;
                 Control.Move += Control_Move;
+
+                if (selectionService != null)
+                    selectionService.SelectionChanged += SelectionService_SelectionChanged;
             }
 
             public override void InitializeNewComponent(IDictionary defaultValues)
@@ -205,6 +208,9 @@ namespace Manina.Windows.Forms
 
                     if (behaviorService != null)
                         behaviorService.Adorners.Remove(toolbarAdorner);
+
+                    if (selectionService != null)
+                        selectionService.SelectionChanged -= SelectionService_SelectionChanged;
                 }
                 base.Dispose(disposing);
             }
@@ -276,6 +282,26 @@ namespace Manina.Windows.Forms
                 toolbar.AddButton(removePageButton);
 
                 toolbarAdorner.Glyphs.Add(toolbar);
+            }
+
+            /// <summary>
+            /// Updates the adorner when the selection is changed.
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            private void SelectionService_SelectionChanged(object sender, EventArgs e)
+            {
+                bool showAdorner = false;
+
+                if (selectionService != null && selectionService.PrimarySelection != null)
+                {
+                    if (selectionService.PrimarySelection == Control)
+                        showAdorner = true;
+                    else if (selectionService.PrimarySelection is Page page && page.Parent == Control)
+                        showAdorner = true;
+                }
+
+                toolbarAdorner.Enabled = showAdorner;
             }
 
             /// <summary>
