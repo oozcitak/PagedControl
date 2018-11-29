@@ -7,7 +7,7 @@ namespace Manina.Windows.Forms
 {
     public partial class PagedControl
     {
-        public class PageCollection : IList<Page>, ICollection, IList, IEnumerable 
+        public class PageCollection : IList<Page>, ICollection, ICollection<Page>, IList, IEnumerable
         {
             #region Member Variables
             private PagedControl owner;
