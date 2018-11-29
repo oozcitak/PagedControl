@@ -16,9 +16,10 @@ namespace Manina.Windows.Forms
 
         #region Properties
         /// <summary>
-        /// Gets or sets the graphics path representing the button icon.
+        /// Gets or sets the array of graphics paths representing the button icon. Each point array in the list
+        /// represents a separate closed path. The coordinates of the upper-left corner of the path should be 0, 0. 
         /// </summary>
-        public PointF[] Path { get; set; } = new PointF[0];
+        public PointF[][] Path { get; set; } = new PointF[][] { new PointF[0] };
 
         /// <summary>
         /// Gets or sets the button text.
@@ -101,13 +102,19 @@ namespace Manina.Windows.Forms
 
                 if (Path != null && Path.Length != 0)
                 {
-                    Rectangle iconBounds = GetCenteredRectangle(iconSize);
+                    foreach (var subPath in Path)
+                    {
+                        if (subPath != null && subPath.Length != 0)
+                        {
+                            Rectangle iconBounds = GetCenteredRectangle(iconSize);
 
-                    var oldTrans = pe.Graphics.Transform;
-                    pe.Graphics.TranslateTransform(iconBounds.Left, iconBounds.Top);
-                    pe.Graphics.FillPolygon(pathBrush, Path);
-                    pe.Graphics.DrawPolygon(pathPen, Path);
-                    pe.Graphics.Transform = oldTrans;
+                            var oldTrans = pe.Graphics.Transform;
+                            pe.Graphics.TranslateTransform(iconBounds.Left, iconBounds.Top);
+                            pe.Graphics.FillPolygon(pathBrush, subPath);
+                            pe.Graphics.DrawPolygon(pathPen, subPath);
+                            pe.Graphics.Transform = oldTrans;
+                        }
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(Text))

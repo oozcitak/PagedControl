@@ -11,7 +11,7 @@ namespace Manina.Windows.Forms
 {
     public partial class PagedControl
     {
-        public class PagedControlDesigner : ParentControlDesigner
+        internal class PagedControlDesigner : ParentControlDesigner
         {
             #region Member Variables
             private BehaviorService behaviorService;
@@ -23,7 +23,9 @@ namespace Manina.Windows.Forms
             private DesignerVerb navigateNextVerb;
             private DesignerVerbCollection verbs;
 
+            private bool toolbarAtBottom = true;
             private GlyphToolBar toolbar;
+            private ButtonGlyph moveToolbarButton;
             private ButtonGlyph addPageButton;
             private ButtonGlyph removePageButton;
             private ButtonGlyph navigateBackButton;
@@ -47,75 +49,107 @@ namespace Manina.Windows.Forms
             /// <summary>
             /// Gets the location of the designer toolbar relative to the parent control.
             /// </summary>
-            public virtual Point ToolbarLocation => new Point(8, Control.Height + 8);
+            public Point ToolbarLocation => new Point(8, toolbarAtBottom ? Control.Height - toolbar.Size.Height - 8 : 8);
+
+            /// <summary>
+            /// Gets the glyph toolbar of the designer.
+            /// </summary>
+            public GlyphToolBar ToolBar => toolbar;
             #endregion
 
             #region Glyph Icons
-            private static PointF[] GetLeftArrowSign(float size)
+            private static PointF[][] GetUpDownArrowSign(float size)
+            {
+                float arrowSize = size;
+                float arrowSeparator = 0.25f * size;
+
+                return new PointF[][] {
+                    new PointF[] {
+                        new PointF(size / 2f, 0),
+                        new PointF(size / 2f + arrowSize / 2f, size / 2f - arrowSeparator / 2f),
+                        new PointF(size / 2f - arrowSize / 2f, size / 2f - arrowSeparator / 2f),
+                    },
+                    new PointF[] {
+                        new PointF(size / 2f, size),
+                        new PointF(size / 2f + arrowSize / 2f, size / 2f + arrowSeparator / 2f),
+                        new PointF(size / 2f - arrowSize / 2f, size / 2f + arrowSeparator / 2f),
+                    }
+                };
+            }
+
+            private static PointF[][] GetLeftArrowSign(float size)
             {
                 float arrowHeadThickness = size;
                 float arrowTailThickness = 0.375f * size;
                 float arrowHeadLength = 0.5625f * size;
                 float arrowTailLength = size - arrowHeadLength;
 
-                return new PointF[] {
-                    new PointF(0, size / 2f),
-                    new PointF(arrowHeadLength, size / 2f - arrowHeadThickness / 2f),
-                    new PointF(arrowHeadLength, size / 2f - arrowTailThickness / 2f),
-                    new PointF(arrowHeadLength + arrowTailLength, size / 2f - arrowTailThickness / 2f),
-                    new PointF(arrowHeadLength + arrowTailLength, size / 2f + arrowTailThickness / 2f),
-                    new PointF(arrowHeadLength, size / 2f + arrowTailThickness / 2f),
-                    new PointF(arrowHeadLength, size / 2f + arrowHeadThickness / 2f),
+                return new PointF[][] {
+                    new PointF[] {
+                        new PointF(0, size / 2f),
+                        new PointF(arrowHeadLength, size / 2f - arrowHeadThickness / 2f),
+                        new PointF(arrowHeadLength, size / 2f - arrowTailThickness / 2f),
+                        new PointF(arrowHeadLength + arrowTailLength, size / 2f - arrowTailThickness / 2f),
+                        new PointF(arrowHeadLength + arrowTailLength, size / 2f + arrowTailThickness / 2f),
+                        new PointF(arrowHeadLength, size / 2f + arrowTailThickness / 2f),
+                        new PointF(arrowHeadLength, size / 2f + arrowHeadThickness / 2f),
+                    }
                 };
             }
 
-            private static PointF[] GetRightArrowSign(float size)
+            private static PointF[][] GetRightArrowSign(float size)
             {
                 float arrowHeadThickness = size;
                 float arrowTailThickness = 0.375f * size;
                 float arrowHeadLength = 0.5625f * size;
                 float arrowTailLength = size - arrowHeadLength;
 
-                return new PointF[] {
-                    new PointF(size, size / 2f),
-                    new PointF(size - arrowHeadLength, size / 2f - arrowHeadThickness / 2f),
-                    new PointF(size - arrowHeadLength, size / 2f - arrowTailThickness / 2f),
-                    new PointF(size - arrowHeadLength - arrowTailLength, size / 2f - arrowTailThickness / 2f),
-                    new PointF(size - arrowHeadLength - arrowTailLength, size / 2f + arrowTailThickness / 2f),
-                    new PointF(size - arrowHeadLength, size / 2f + arrowTailThickness / 2f),
-                    new PointF(size - arrowHeadLength, size / 2f + arrowHeadThickness / 2f),
+                return new PointF[][] {
+                    new PointF[] {
+                        new PointF(size, size / 2f),
+                        new PointF(size - arrowHeadLength, size / 2f - arrowHeadThickness / 2f),
+                        new PointF(size - arrowHeadLength, size / 2f - arrowTailThickness / 2f),
+                        new PointF(size - arrowHeadLength - arrowTailLength, size / 2f - arrowTailThickness / 2f),
+                        new PointF(size - arrowHeadLength - arrowTailLength, size / 2f + arrowTailThickness / 2f),
+                        new PointF(size - arrowHeadLength, size / 2f + arrowTailThickness / 2f),
+                        new PointF(size - arrowHeadLength, size / 2f + arrowHeadThickness / 2f),
+                    }
                 };
             }
 
-            private static PointF[] GetPlusSign(float size)
+            private static PointF[][] GetPlusSign(float size)
             {
                 float thickness = 0.375f * size;
 
-                return new PointF[] {
-                    new PointF(0, size / 2f - thickness / 2f),
-                    new PointF(size / 2f - thickness / 2f, size / 2f - thickness / 2f),
-                    new PointF(size / 2f - thickness / 2f, 0),
-                    new PointF(size / 2f + thickness / 2f, 0),
-                    new PointF(size / 2f + thickness / 2f, size / 2f - thickness / 2f),
-                    new PointF(size, size / 2f - thickness / 2f),
-                    new PointF(size, size / 2f + thickness / 2f),
-                    new PointF(size / 2f + thickness / 2f, size / 2f + thickness / 2f),
-                    new PointF(size / 2f + thickness / 2f, size),
-                    new PointF(size / 2f - thickness / 2f, size),
-                    new PointF(size / 2f - thickness / 2f, size / 2f + thickness / 2f),
-                    new PointF(0, size / 2f + thickness / 2f),
+                return new PointF[][] {
+                    new PointF[] {
+                        new PointF(0, size / 2f - thickness / 2f),
+                        new PointF(size / 2f - thickness / 2f, size / 2f - thickness / 2f),
+                        new PointF(size / 2f - thickness / 2f, 0),
+                        new PointF(size / 2f + thickness / 2f, 0),
+                        new PointF(size / 2f + thickness / 2f, size / 2f - thickness / 2f),
+                        new PointF(size, size / 2f - thickness / 2f),
+                        new PointF(size, size / 2f + thickness / 2f),
+                        new PointF(size / 2f + thickness / 2f, size / 2f + thickness / 2f),
+                        new PointF(size / 2f + thickness / 2f, size),
+                        new PointF(size / 2f - thickness / 2f, size),
+                        new PointF(size / 2f - thickness / 2f, size / 2f + thickness / 2f),
+                        new PointF(0, size / 2f + thickness / 2f),
+                    }
                 };
             }
 
-            private static PointF[] GetMinusSign(float size)
+            private static PointF[][] GetMinusSign(float size)
             {
                 float thickness = 0.375f * size;
 
-                return new PointF[] {
-                    new PointF(0, size / 2f - thickness / 2f),
-                    new PointF(size, size / 2f - thickness / 2f),
-                    new PointF(size, size / 2f + thickness / 2f),
-                    new PointF(0, size / 2f + thickness / 2f),
+                return new PointF[][] {
+                    new PointF[] {
+                        new PointF(0, size / 2f - thickness / 2f),
+                        new PointF(size, size / 2f - thickness / 2f),
+                        new PointF(size, size / 2f + thickness / 2f),
+                        new PointF(0, size / 2f + thickness / 2f),
+                    }
                 };
             }
             #endregion
@@ -203,6 +237,10 @@ namespace Manina.Windows.Forms
 
                 toolbar = new GlyphToolBar(behaviorService, this, toolbarAdorner);
 
+                moveToolbarButton = new ButtonGlyph();
+                moveToolbarButton.Path = GetUpDownArrowSign(toolbar.DefaultIconSize.Height);
+                moveToolbarButton.ToolTipText = "Move toolbar";
+
                 navigateBackButton = new ButtonGlyph();
                 navigateBackButton.Path = GetLeftArrowSign(toolbar.DefaultIconSize.Height);
                 navigateBackButton.ToolTipText = "Previous page";
@@ -222,11 +260,14 @@ namespace Manina.Windows.Forms
                 currentPageLabel = new LabelGlyph();
                 currentPageLabel.Text = string.Format("Page {0} of {1}", Control.SelectedIndex + 1, Control.Pages.Count);
 
+                moveToolbarButton.Click += MoveToolbarButton_Click;
                 navigateBackButton.Click += NavigateBackButton_Click;
                 navigateNextButton.Click += NavigateNextButton_Click;
                 addPageButton.Click += AddPageButton_Click;
                 removePageButton.Click += RemovePageButton_Click;
 
+                toolbar.AddButton(moveToolbarButton);
+                toolbar.AddButton(new SeparatorGlyph());
                 toolbar.AddButton(navigateBackButton);
                 toolbar.AddButton(currentPageLabel);
                 toolbar.AddButton(navigateNextButton);
@@ -306,6 +347,13 @@ namespace Manina.Windows.Forms
                 toolbar.UpdateLayout();
                 toolbar.Location = ToolbarLocation;
                 toolbar.Refresh();
+            }
+
+            private void MoveToolbarButton_Click(object sender, EventArgs e)
+            {
+                toolbarAtBottom = !toolbarAtBottom;
+
+                UpdateGlyphToolbar();
             }
 
             private void NavigateBackButton_Click(object sender, EventArgs e)
@@ -469,7 +517,6 @@ namespace Manina.Windows.Forms
                     pageDesigner.OnDragComplete(de);
             }
             #endregion
-
         }
     }
 }
