@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace Manina.Windows.Forms
 {
     public partial class PagedControl
     {
+        [DefaultProperty("Item")]
         public class PageCollection : IList<Page>, ICollection, ICollection<Page>, IList, IEnumerable
         {
             #region Member Variables

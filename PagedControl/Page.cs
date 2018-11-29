@@ -93,11 +93,11 @@ namespace Manina.Windows.Forms
             return new PageControlCollection(this);
         }
 
-        protected override void OnPaintBackground(PaintEventArgs pevent)
+        protected override void OnPaintBackground(PaintEventArgs e)
         {
             if (!Parent.OwnerDraw)
             {
-                base.OnPaintBackground(pevent);
+                base.OnPaintBackground(e);
             }
         }
 
@@ -141,7 +141,7 @@ namespace Manina.Windows.Forms
             {
                 if (value is Page)
                 {
-                    string className = value.GetType().Name;
+                    string className = typeof(Page).Name;
                     throw new ArgumentException(string.Format("Cannot add a {0} as a child control of another {0}.", className));
                 }
 
