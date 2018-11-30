@@ -111,7 +111,7 @@ namespace Manina.Windows.Forms
                     owner.SelectedIndex = -1;
                 else if (owner.SelectedIndex > Count - 1)
                     owner.SelectedIndex = 0;
-
+                
                 owner.OnUpdateUIControls(new EventArgs());
                 owner.UpdatePages();
 

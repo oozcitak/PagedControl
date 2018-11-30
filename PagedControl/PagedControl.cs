@@ -10,7 +10,6 @@ namespace Manina.Windows.Forms
 {
     [ToolboxBitmap(typeof(PagedControl))]
     [Designer(typeof(PagedControlDesigner))]
-    [DesignerSerializer(typeof(PagedControlSerializer), typeof(CodeDomSerializer))]
     [Docking(DockingBehavior.Ask)]
     [DefaultEvent("PageChanged")]
     [DefaultProperty("SelectedPage")]
@@ -392,7 +391,7 @@ namespace Manina.Windows.Forms
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), Bindable(false)]
         public override string Text { get => base.Text; set => base.Text = value; }
 
-        [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public new ControlCollection Controls => base.Controls;
 
 #pragma warning disable CS0067
@@ -601,47 +600,6 @@ namespace Manina.Windows.Forms
                     if (page == control.SelectedPage)
                         selector.SelectedNode = node;
                 }
-            }
-        }
-        #endregion
-
-        #region CodeDomSerializer
-        internal class PagedControlSerializer : CodeDomSerializer
-        {
-            public override object Serialize
-            (IDesignerSerializationManager manager, object value)
-            {
-                CodeDomSerializer baseSerializer = (CodeDomSerializer)manager.GetSerializer(typeof(PagedControl).BaseType, typeof(CodeDomSerializer));
-
-                object codeObject = baseSerializer.Serialize(manager, value);
-
-                if (codeObject is CodeStatementCollection)
-                {
-                    CodeStatementCollection statements = (CodeStatementCollection)codeObject;
-
-                    CodeExpression controlRefCode = base.SerializeToExpression(manager, value);
-                    if (controlRefCode != null && value is PagedControl control)
-                    {
-                        foreach (var page in control.Pages)
-                        {
-                            CodePropertyReferenceExpression pagesRefCode = new CodePropertyReferenceExpression(controlRefCode, "Pages");
-                            CodeExpression pageRefCode = base.SerializeToExpression(manager, page);
-                            CodeMethodInvokeExpression addPageCode = new CodeMethodInvokeExpression(pagesRefCode, "Add", pageRefCode);
-
-                            statements.Add(addPageCode);
-                        }
-                    }
-
-                    return codeObject;
-                }
-
-                return base.Serialize(manager, value);
-            }
-
-            public override object Deserialize(IDesignerSerializationManager manager, object codeObject)
-            {
-                CodeDomSerializer baseSerializer = (CodeDomSerializer)manager.GetSerializer(typeof(PagedControl).BaseType, typeof(CodeDomSerializer));
-                return baseSerializer.Deserialize(manager, codeObject);
             }
         }
         #endregion
