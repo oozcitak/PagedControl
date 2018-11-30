@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Manina.Windows.Forms;
 
 namespace TestApp
 {
@@ -9,6 +10,10 @@ namespace TestApp
         public TestForm()
         {
             InitializeComponent();
+
+            foreach(var page in pagedControl1.Pages )
+                page.Paint += Page_Paint;
+
             UpdatePageLabel();
         }
 
@@ -41,7 +46,7 @@ namespace TestApp
 
         private void UpdatePageLabel()
         {
-            CurrentPageLabel.Text = string.Format("Current Page: {0}, Page Count: {1}", pagedControl1.SelectedIndex, pagedControl1.Pages.Count);
+            CurrentPageLabel.Text = string.Format("Current Page: {0}, Page Count: {1}, Control Count: {2}", pagedControl1.SelectedIndex, pagedControl1.Pages.Count, pagedControl1.Controls.Count);
         }
 
         private void pagedControl1_PageChanged(object sender, Manina.Windows.Forms.PagedControl.PageChangedEventArgs e)
@@ -62,11 +67,13 @@ namespace TestApp
         private void pagedControl1_PageAdded(object sender, Manina.Windows.Forms.PagedControl.PageEventArgs e)
         {
             Log("Page Added: {0}", e.PageIndex);
+            e.Page.Paint += Page_Paint;
         }
 
         private void pagedControl1_PageRemoved(object sender, Manina.Windows.Forms.PagedControl.PageEventArgs e)
         {
             Log("Page Removed: {0}", e.PageIndex);
+            e.Page.Paint -= Page_Paint;
         }
 
         private void pagedControl1_PageShown(object sender, Manina.Windows.Forms.PagedControl.PageEventArgs e)
@@ -87,7 +94,13 @@ namespace TestApp
         private void pagedControl1_PagePaint(object sender, Manina.Windows.Forms.PagedControl.PagePaintEventArgs e)
         {
             string str = string.Format("Page: {0}, From Control: {1}", e.PageIndex, pagedControl1.Pages.Contains(e.Page) ? pagedControl1.Pages.IndexOf(e.Page) : -1);
-            e.Graphics.DrawString(str, Font, Brushes.Black, 10, 10);
+            e.Graphics.DrawString(str, Font, Brushes.Black, 10, 30);
+        }
+
+        private void Page_Paint(object sender, PaintEventArgs e)
+        {
+            string str = string.Format("Page From Control: {0}", pagedControl1.Pages.Contains((Page)sender) ? pagedControl1.Pages.IndexOf((Page)sender) : -1);
+            e.Graphics.DrawString(str, Font, Brushes.Red, 10, 10);
         }
     }
 }
