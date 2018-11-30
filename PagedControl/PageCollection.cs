@@ -58,14 +58,11 @@ namespace Manina.Windows.Forms
 
             public void Clear()
             {
-                List<Control> toRemove = new List<Control>();
-                for (int i = owner.FirstPageIndex; i < owner.FirstPageIndex + owner.PageCount; i++)
-                    toRemove.Add(controls[i]);
-                foreach (Control control in toRemove)
-                    controls.Remove(control);
-
-                owner.SelectedIndex = -1;
-                owner.OnUpdateUIControls(new EventArgs());
+                var toRemove = new List<Page>();
+                for (int i = 0; i < Count; i++)
+                    toRemove.Add(this[i]);
+                foreach (var page in toRemove)
+                    Remove(page);
             }
 
             public bool Contains(Page item)
