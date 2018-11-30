@@ -36,6 +36,8 @@
             this.EventLog = new System.Windows.Forms.ListBox();
             this.pagedControl1 = new Manina.Windows.Forms.PagedControl();
             this.page1 = new Manina.Windows.Forms.Page();
+            this.page2 = new Manina.Windows.Forms.Page();
+            this.pagedControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // PrevButton
@@ -103,6 +105,8 @@
             // 
             this.pagedControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pagedControl1.Controls.Add(this.page1);
+            this.pagedControl1.Controls.Add(this.page2);
             this.pagedControl1.Location = new System.Drawing.Point(12, 12);
             this.pagedControl1.Name = "pagedControl1";
             this.pagedControl1.Size = new System.Drawing.Size(776, 200);
@@ -115,12 +119,19 @@
             this.pagedControl1.PageValidated += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageValidated);
             this.pagedControl1.PageHidden += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageHidden);
             this.pagedControl1.PageShown += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageShown);
+            this.pagedControl1.PagePaint += new Manina.Windows.Forms.PagedControl.PagePaintEventHandler(this.pagedControl1_PagePaint);
             // 
             // page1
             // 
             this.page1.Location = new System.Drawing.Point(1, 1);
             this.page1.Name = "page1";
-            this.page1.Size = new System.Drawing.Size(0, 0);
+            this.page1.Size = new System.Drawing.Size(774, 198);
+            // 
+            // page2
+            // 
+            this.page2.Location = new System.Drawing.Point(1, 1);
+            this.page2.Name = "page2";
+            this.page2.Size = new System.Drawing.Size(774, 198);
             // 
             // TestForm
             // 
@@ -136,6 +147,7 @@
             this.Controls.Add(this.pagedControl1);
             this.Name = "TestForm";
             this.Text = "PagedControl Test Form";
+            this.pagedControl1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -144,13 +156,14 @@
         #endregion
 
         private Manina.Windows.Forms.PagedControl pagedControl1;
-        private Manina.Windows.Forms.Page page1;
         private System.Windows.Forms.Button PrevButton;
         private System.Windows.Forms.Button NextButton;
         private System.Windows.Forms.Label CurrentPageLabel;
         private System.Windows.Forms.Button AddButton;
         private System.Windows.Forms.Button RemoveButton;
         private System.Windows.Forms.ListBox EventLog;
+        private Manina.Windows.Forms.Page page1;
+        private Manina.Windows.Forms.Page page2;
     }
 }
 
