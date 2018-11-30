@@ -27,15 +27,9 @@ namespace Manina.Windows.Forms
                     RemoveAt(index + owner.FirstPageIndex + 1);
                 }
             }
+
             public int Count => owner.PageCount;
             public bool IsReadOnly => false;
-
-            public object SyncRoot => syncRoot;
-            public bool IsSynchronized => false;
-
-            public bool IsFixedSize => false;
-
-            object IList.this[int index] { get => this[index]; set => this[index] = (Page)value; }
             #endregion
 
             #region Constructor
@@ -142,34 +136,43 @@ namespace Manina.Windows.Forms
                 for (int i = index; i < array.Length; i++)
                     array.SetValue(this[i - index], i);
             }
+            #endregion
+
+            #region Hidden Interface
+            object ICollection.SyncRoot => syncRoot;
+            bool ICollection.IsSynchronized => false;
+
+            bool IList.IsFixedSize => false;
+
+            object IList.this[int index] { get => this[index]; set => this[index] = (Page)value; }
 
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return GetEnumerator();
             }
 
-            public int Add(object value)
+            int IList.Add(object value)
             {
                 Add((Page)value);
                 return Count - 1;
             }
 
-            public bool Contains(object value)
+            bool IList.Contains(object value)
             {
                 return Contains((Page)value);
             }
 
-            public int IndexOf(object value)
+            int IList.IndexOf(object value)
             {
                 return IndexOf((Page)value);
             }
 
-            public void Insert(int index, object value)
+            void IList.Insert(int index, object value)
             {
                 Insert(index, (Page)value);
             }
 
-            public void Remove(object value)
+            void IList.Remove(object value)
             {
                 Remove((Page)value);
             }
