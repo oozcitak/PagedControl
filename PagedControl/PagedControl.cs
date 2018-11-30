@@ -1,8 +1,6 @@
 ﻿using System;
-using System.CodeDom;
 using System.ComponentModel;
 using System.ComponentModel.Design;
-using System.ComponentModel.Design.Serialization;
 using System.Drawing;
 using System.Windows.Forms;
 
