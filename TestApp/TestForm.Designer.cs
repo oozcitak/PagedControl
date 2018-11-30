@@ -89,6 +89,9 @@
             // 
             // EventLog
             // 
+            this.EventLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.EventLog.FormattingEnabled = true;
             this.EventLog.IntegralHeight = false;
             this.EventLog.Location = new System.Drawing.Point(13, 258);
@@ -98,6 +101,8 @@
             // 
             // pagedControl1
             // 
+            this.pagedControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pagedControl1.Location = new System.Drawing.Point(12, 12);
             this.pagedControl1.Name = "pagedControl1";
             this.pagedControl1.Size = new System.Drawing.Size(776, 200);

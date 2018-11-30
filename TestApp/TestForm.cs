@@ -33,7 +33,7 @@ namespace TestApp
 
         private void Log(string message, params object[] args)
         {
-            EventLog.Items.Add(string.Format(message, args));
+            EventLog.Items.Insert(0, string.Format(message, args));
 
             CurrentPageLabel.Text = string.Format("Current Page: {0}, Page Count: {1}", pagedControl1.SelectedIndex, pagedControl1.Pages.Count);
         }
