@@ -33,16 +33,17 @@
             this.CurrentPageLabel = new System.Windows.Forms.Label();
             this.AddButton = new System.Windows.Forms.Button();
             this.RemoveButton = new System.Windows.Forms.Button();
-            this.EventLog = new System.Windows.Forms.ListBox();
             this.pagedControl1 = new Manina.Windows.Forms.PagedControl();
             this.page1 = new Manina.Windows.Forms.Page();
             this.page2 = new Manina.Windows.Forms.Page();
+            this.ClearButton = new System.Windows.Forms.Button();
+            this.InsertButton = new System.Windows.Forms.Button();
             this.pagedControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // PrevButton
             // 
-            this.PrevButton.Location = new System.Drawing.Point(71, 218);
+            this.PrevButton.Location = new System.Drawing.Point(194, 415);
             this.PrevButton.Name = "PrevButton";
             this.PrevButton.Size = new System.Drawing.Size(23, 23);
             this.PrevButton.TabIndex = 1;
@@ -52,7 +53,7 @@
             // 
             // NextButton
             // 
-            this.NextButton.Location = new System.Drawing.Point(100, 218);
+            this.NextButton.Location = new System.Drawing.Point(216, 415);
             this.NextButton.Name = "NextButton";
             this.NextButton.Size = new System.Drawing.Size(23, 23);
             this.NextButton.TabIndex = 1;
@@ -63,7 +64,7 @@
             // CurrentPageLabel
             // 
             this.CurrentPageLabel.AutoSize = true;
-            this.CurrentPageLabel.Location = new System.Drawing.Point(129, 223);
+            this.CurrentPageLabel.Location = new System.Drawing.Point(245, 420);
             this.CurrentPageLabel.Name = "CurrentPageLabel";
             this.CurrentPageLabel.Size = new System.Drawing.Size(43, 13);
             this.CurrentPageLabel.TabIndex = 2;
@@ -71,7 +72,7 @@
             // 
             // AddButton
             // 
-            this.AddButton.Location = new System.Drawing.Point(13, 218);
+            this.AddButton.Location = new System.Drawing.Point(13, 415);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(23, 23);
             this.AddButton.TabIndex = 1;
@@ -81,25 +82,13 @@
             // 
             // RemoveButton
             // 
-            this.RemoveButton.Location = new System.Drawing.Point(42, 218);
+            this.RemoveButton.Location = new System.Drawing.Point(99, 415);
             this.RemoveButton.Name = "RemoveButton";
             this.RemoveButton.Size = new System.Drawing.Size(23, 23);
             this.RemoveButton.TabIndex = 1;
             this.RemoveButton.Text = "-";
             this.RemoveButton.UseVisualStyleBackColor = true;
             this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
-            // 
-            // EventLog
-            // 
-            this.EventLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.EventLog.FormattingEnabled = true;
-            this.EventLog.IntegralHeight = false;
-            this.EventLog.Location = new System.Drawing.Point(13, 258);
-            this.EventLog.Name = "EventLog";
-            this.EventLog.Size = new System.Drawing.Size(775, 180);
-            this.EventLog.TabIndex = 3;
             // 
             // pagedControl1
             // 
@@ -109,7 +98,7 @@
             this.pagedControl1.Controls.Add(this.page2);
             this.pagedControl1.Location = new System.Drawing.Point(12, 12);
             this.pagedControl1.Name = "pagedControl1";
-            this.pagedControl1.Size = new System.Drawing.Size(776, 200);
+            this.pagedControl1.Size = new System.Drawing.Size(776, 397);
             this.pagedControl1.TabIndex = 0;
             this.pagedControl1.PageAdded += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageAdded);
             this.pagedControl1.PageRemoved += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageRemoved);
@@ -125,22 +114,43 @@
             // 
             this.page1.Location = new System.Drawing.Point(1, 1);
             this.page1.Name = "page1";
-            this.page1.Size = new System.Drawing.Size(774, 198);
+            this.page1.Size = new System.Drawing.Size(774, 395);
             // 
             // page2
             // 
             this.page2.Location = new System.Drawing.Point(1, 1);
             this.page2.Name = "page2";
-            this.page2.Size = new System.Drawing.Size(774, 198);
+            this.page2.Size = new System.Drawing.Size(0, 0);
+            // 
+            // ClearButton
+            // 
+            this.ClearButton.Location = new System.Drawing.Point(121, 415);
+            this.ClearButton.Name = "ClearButton";
+            this.ClearButton.Size = new System.Drawing.Size(65, 23);
+            this.ClearButton.TabIndex = 1;
+            this.ClearButton.Text = "Clear";
+            this.ClearButton.UseVisualStyleBackColor = true;
+            this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
+            // 
+            // InsertButton
+            // 
+            this.InsertButton.Location = new System.Drawing.Point(35, 415);
+            this.InsertButton.Name = "InsertButton";
+            this.InsertButton.Size = new System.Drawing.Size(65, 23);
+            this.InsertButton.TabIndex = 1;
+            this.InsertButton.Text = "Insert @ 0";
+            this.InsertButton.UseVisualStyleBackColor = true;
+            this.InsertButton.Click += new System.EventHandler(this.InsertButton_Click);
             // 
             // TestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.EventLog);
             this.Controls.Add(this.CurrentPageLabel);
             this.Controls.Add(this.NextButton);
+            this.Controls.Add(this.InsertButton);
+            this.Controls.Add(this.ClearButton);
             this.Controls.Add(this.RemoveButton);
             this.Controls.Add(this.AddButton);
             this.Controls.Add(this.PrevButton);
@@ -161,9 +171,10 @@
         private System.Windows.Forms.Label CurrentPageLabel;
         private System.Windows.Forms.Button AddButton;
         private System.Windows.Forms.Button RemoveButton;
-        private System.Windows.Forms.ListBox EventLog;
         private Manina.Windows.Forms.Page page1;
         private Manina.Windows.Forms.Page page2;
+        private System.Windows.Forms.Button ClearButton;
+        private System.Windows.Forms.Button InsertButton;
     }
 }
 

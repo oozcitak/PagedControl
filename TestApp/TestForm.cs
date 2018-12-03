@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Manina.Windows.Forms;
 
@@ -8,42 +9,53 @@ namespace TestApp
 {
     public partial class TestForm : Form
     {
-        private List<Page> pages = new List<Page>();
-        private Timer timer = new Timer();
+        private List<Tuple<string, Color>> messages = new List<Tuple<string, Color>>();
 
         public TestForm()
         {
             InitializeComponent();
 
-            foreach (var page in pagedControl1.Pages)
-            {
-                page.Paint += Page_Paint;
-                page.Click += Page_Click;
-                pages.Add(page);
-            }
-
-            timer.Interval = 100;
-            timer.Enabled = true;
-            timer.Tick += Timer_Tick;
-
             UpdatePageLabel();
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private Page MakePage()
         {
-            foreach (var page in pages)
-                page.Invalidate();
+            int i = 1;
+            string name = "page" + i.ToString();
+            while (pagedControl1.Pages.Any(p => p.Name == name))
+            {
+                i++;
+                name = "page" + i.ToString();
+            }
+
+            Page page = new Page();
+            page.Name = name;
+            return page;
         }
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            pagedControl1.Pages.Add(new Page());
+            pagedControl1.Pages.Add(MakePage());
+            UpdatePageLabel();
+        }
+
+        private void InsertButton_Click(object sender, EventArgs e)
+        {
+            pagedControl1.Pages.Insert(0, MakePage());
+            UpdatePageLabel();
         }
 
         private void RemoveButton_Click(object sender, EventArgs e)
         {
             if (pagedControl1.SelectedPage != null)
                 pagedControl1.Pages.Remove(pagedControl1.SelectedPage);
+            UpdatePageLabel();
+        }
+
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            pagedControl1.Pages.Clear();
+            UpdatePageLabel();
         }
 
         private void PrevButton_Click(object sender, EventArgs e)
@@ -54,12 +66,19 @@ namespace TestApp
         private void NextButton_Click(object sender, EventArgs e)
         {
             pagedControl1.GoNext();
+            UpdatePageLabel();
         }
 
         private void Log(string message, params object[] args)
         {
-            EventLog.Items.Insert(0, string.Format(message, args));
+            Log(Color.Black, message, args);
+        }
+
+        private void Log(Color color, string message, params object[] args)
+        {
+            messages.Add(new Tuple<string, Color>(string.Format(message, args), color));
             UpdatePageLabel();
+            pagedControl1.Invalidate();
         }
 
         private void UpdatePageLabel()
@@ -69,67 +88,72 @@ namespace TestApp
 
         private void pagedControl1_PageChanged(object sender, PagedControl.PageChangedEventArgs e)
         {
-            Log("Page Changed: {0} -> {1}", e.OldPageIndex, e.CurrentPageIndex);
+            Log(Color.LawnGreen, "Page Changed: {0} -> {1}", e.OldPageIndex, e.CurrentPageIndex);
         }
 
         private void pagedControl1_PageChanging(object sender, PagedControl.PageChangingEventArgs e)
         {
-            Log("Page Changing: {0} -> {1}", e.CurrentPageIndex, e.NewPageIndex);
+            Log(Color.LawnGreen, "Page Changing: {0} -> {1}", e.CurrentPageIndex, e.NewPageIndex);
         }
 
         private void pagedControl1_PageHidden(object sender, PagedControl.PageEventArgs e)
         {
-            Log("Page Hidden: {0}", e.PageIndex);
-        }
-
-        private void pagedControl1_PageAdded(object sender, PagedControl.PageEventArgs e)
-        {
-            Log("Page Added: {0}", e.PageIndex);
-
-            e.Page.Paint += Page_Paint;
-            e.Page.Click += Page_Click;
-            pages.Add(e.Page);
-        }
-
-        private void pagedControl1_PageRemoved(object sender, PagedControl.PageEventArgs e)
-        {
-            Log("Page Removed: {0}", e.PageIndex);
-
-            e.Page.Paint -= Page_Paint;
-            e.Page.Click -= Page_Click;
-            pages.Remove(e.Page);
+            Log(Color.Magenta, "Page Hidden: {0}", e.PageIndex);
         }
 
         private void pagedControl1_PageShown(object sender, PagedControl.PageEventArgs e)
         {
-            Log("Page Shown: {0}", e.PageIndex);
+            Log(Color.Magenta, "Page Shown: {0}", e.PageIndex);
+        }
+
+        private void pagedControl1_PageAdded(object sender, PagedControl.PageEventArgs e)
+        {
+            Log(Color.OrangeRed, "Page Added: {0}", e.PageIndex);
+        }
+
+        private void pagedControl1_PageRemoved(object sender, PagedControl.PageEventArgs e)
+        {
+            Log(Color.OrangeRed, "Page Removed: {0}", e.PageIndex);
         }
 
         private void pagedControl1_PageValidated(object sender, PagedControl.PageEventArgs e)
         {
-            Log("Page Validated: {0}", e.PageIndex);
+            Log(Color.BlueViolet, "Page Validated: {0}", e.PageIndex);
         }
 
         private void pagedControl1_PageValidating(object sender, PagedControl.PageValidatingEventArgs e)
         {
-            Log("Page Validating: {0}", e.PageIndex);
+            Log(Color.BlueViolet, "Page Validating: {0}", e.PageIndex);
         }
 
         private void pagedControl1_PagePaint(object sender, PagedControl.PagePaintEventArgs e)
         {
-            string str = string.Format("Page: {0}, From Control: {1}", e.PageIndex, pagedControl1.Pages.Contains(e.Page) ? pagedControl1.Pages.IndexOf(e.Page) : -1);
-            e.Graphics.DrawString(str, Font, Brushes.Black, 10, 30);
-        }
+            var bounds = e.Page.DisplayRectangle;
+            bounds.Inflate(-10, -10);
+            e.Graphics.DrawRectangle(Pens.Red, bounds);
+            bounds.Inflate(-4, -4);
+            e.Graphics.Clip = new Region(bounds);
 
-        private void Page_Paint(object sender, PaintEventArgs e)
-        {
-            string str = string.Format("Page From Control: {0}", pagedControl1.Pages.Contains((Page)sender) ? pagedControl1.Pages.IndexOf((Page)sender) : -1);
-            e.Graphics.DrawString(str, Font, Brushes.Red, 10, 10);
-        }
+            var y = bounds.Top + 6;
+            var burn = 0f;
+            var burnStep = 0.9f / (bounds.Height / (e.Graphics.MeasureString("M", e.Page.Font).Height + 4));
+            for (int i = messages.Count - 1; i >= 0; i--)
+            {
+                var message = messages[i].Item1;
+                var color = messages[i].Item2;
+                var h = (int)e.Graphics.MeasureString(message, e.Page.Font).Height;
+                using (var brush = new SolidBrush(Color.FromArgb((int)(color.R + (255 - color.R) * burn), (int)(color.G + (255 - color.G) * burn), (int)(color.B + (255 - color.B) * burn))))
+                {
+                    e.Graphics.DrawString(message, e.Page.Font, brush, 20, y);
+                }
+                y += h + 4;
+                burn += burnStep;
+                if (burn > 0.9f) burn = 0.9f;
+            }
 
-        private void Page_Click(object sender, EventArgs e)
-        {
-            Log("Page Clicked: {0}", pagedControl1.Pages.Contains((Page)sender) ? pagedControl1.Pages.IndexOf((Page)sender) : -1);
+            string currentPageStr = string.Format("Selected page: {0}", (pagedControl1.SelectedPage != null) ? pagedControl1.SelectedPage.Name : "<none>");
+            var size = e.Graphics.MeasureString(currentPageStr, e.Page.Font);
+            e.Graphics.DrawString(currentPageStr, e.Page.Font, Brushes.Red, bounds.Right - 6 - size.Width, bounds.Top + 6);
         }
     }
 }
