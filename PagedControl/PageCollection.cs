@@ -9,11 +9,11 @@ namespace Manina.Windows.Forms
     public partial class PagedControl
     {
         [DefaultProperty("Item")]
-        public class PageCollection : IList<Page>, ICollection, ICollection<Page>, IList, IEnumerable
+        public class PageCollection : IList<Page>
         {
             #region Member Variables
             private PagedControl owner;
-            private ControlCollection controls;
+            private PagedControlControlCollection controls;
             private readonly object syncRoot = new object();
             #endregion
 
@@ -36,7 +36,7 @@ namespace Manina.Windows.Forms
             public PageCollection(PagedControl control)
             {
                 owner = control;
-                controls = control.Controls;
+                controls = (PagedControlControlCollection)control.Controls;
             }
             #endregion
 
@@ -44,19 +44,27 @@ namespace Manina.Windows.Forms
             public void Add(Page item)
             {
                 controls.Add(item);
-                if (Count == 1) owner.SelectedIndex = 0;
-
-                owner.OnUpdateUIControls(new EventArgs());
-                owner.UpdatePages();
             }
 
             public void Clear()
             {
+                controls.RaisePageEvents = false;
+
                 var toRemove = new List<Page>();
                 for (int i = 0; i < Count; i++)
                     toRemove.Add(this[i]);
                 foreach (var page in toRemove)
+                {
                     Remove(page);
+                    owner.OnPageRemoved(new PageEventArgs(page, -1));
+                }
+
+                owner.SelectedIndex = -1;
+
+                owner.OnUpdateUIControls(new EventArgs());
+                owner.UpdatePages();
+
+                controls.RaisePageEvents = true;
             }
 
             public bool Contains(Page item)
@@ -83,9 +91,10 @@ namespace Manina.Windows.Forms
 
             public void Insert(int index, Page item)
             {
-                index += owner.FirstPageIndex;
+                controls.RaisePageEvents = false;
+
                 List<Control> removed = new List<Control>();
-                for (int i = controls.Count - 1; i >= index; i--)
+                for (int i = controls.Count - 1; i >= index + owner.FirstPageIndex; i--)
                 {
                     removed.Add(controls[i]);
                     controls.RemoveAt(i);
@@ -95,40 +104,27 @@ namespace Manina.Windows.Forms
                 {
                     controls.Add(removed[i]);
                 }
+
+                owner.OnPageAdded(new PageEventArgs(item, index));
+
                 if (Count == 1) owner.SelectedIndex = 0;
 
                 owner.OnUpdateUIControls(new EventArgs());
                 owner.UpdatePages();
+
+                controls.RaisePageEvents = true;
             }
 
             public bool Remove(Page item)
             {
                 bool exists = controls.Contains(item);
-
                 controls.Remove(item);
-
-                if (Count == 0)
-                    owner.SelectedIndex = -1;
-                else if (owner.SelectedIndex > Count - 1)
-                    owner.SelectedIndex = 0;
-                
-                owner.OnUpdateUIControls(new EventArgs());
-                owner.UpdatePages();
-
                 return exists;
             }
 
             public void RemoveAt(int index)
             {
-                controls.RemoveAt(index + owner.FirstPageIndex);
-
-                if (Count == 0)
-                    owner.SelectedIndex = -1;
-                else if (owner.SelectedIndex > Count - 1)
-                    owner.SelectedIndex = 0;
-
-                owner.OnUpdateUIControls(new EventArgs());
-                owner.UpdatePages();
+                controls.Remove(this[index]);
             }
 
             public void CopyTo(Array array, int index)
@@ -136,45 +132,10 @@ namespace Manina.Windows.Forms
                 for (int i = index; i < array.Length; i++)
                     array.SetValue(this[i - index], i);
             }
-            #endregion
-
-            #region Hidden Interface
-            object ICollection.SyncRoot => syncRoot;
-            bool ICollection.IsSynchronized => false;
-
-            bool IList.IsFixedSize => false;
-
-            object IList.this[int index] { get => this[index]; set => this[index] = (Page)value; }
 
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return GetEnumerator();
-            }
-
-            int IList.Add(object value)
-            {
-                Add((Page)value);
-                return Count - 1;
-            }
-
-            bool IList.Contains(object value)
-            {
-                return Contains((Page)value);
-            }
-
-            int IList.IndexOf(object value)
-            {
-                return IndexOf((Page)value);
-            }
-
-            void IList.Insert(int index, object value)
-            {
-                Insert(index, (Page)value);
-            }
-
-            void IList.Remove(object value)
-            {
-                Remove((Page)value);
             }
             #endregion
         }

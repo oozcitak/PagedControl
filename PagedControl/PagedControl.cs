@@ -245,10 +245,16 @@ namespace Manina.Windows.Forms
                 int oldSelectedIndex = selectedIndex;
                 int newSelectedIndex = (newPage == null ? -1 : Pages.IndexOf(newPage));
 
+                if (oldPage != null && !Pages.Contains(oldPage))
+                {
+                    oldPage = null;
+                    oldSelectedIndex = -1;
+                }
+
                 if (newPage != null && !Pages.Contains(newPage))
                     throw new ArgumentException("Page is not found in the page collection.");
 
-                if (oldPage == value)
+                if (oldPage != null && newPage != null && oldPage == value)
                     return;
 
                 if (oldPage != null && oldPage.CausesValidation)
@@ -266,9 +272,6 @@ namespace Manina.Windows.Forms
                     OnCurrentPageChanging(pce);
                     if (pce.Cancel) return;
                 }
-
-                if (oldPage != null) oldPage.Visible = false;
-                if (newPage != null) newPage.Visible = true;
 
                 lastSelectedPage = newPage;
                 selectedIndex = newSelectedIndex;
@@ -525,8 +528,12 @@ namespace Manina.Windows.Forms
         {
             private readonly PagedControl owner;
 
+            public bool RaisePageEvents { get; set; }
+
             public PagedControlControlCollection(PagedControl ownerControl) : base(ownerControl)
             {
+                RaisePageEvents = true;
+
                 owner = ownerControl;
             }
 
@@ -544,9 +551,6 @@ namespace Manina.Windows.Forms
                 }
 
                 base.Add(page);
-                if (owner.PageCount == 1) owner.SelectedIndex = 0;
-
-                owner.UpdatePages();
 
                 // site the page
                 ISite site = owner.Site;
@@ -559,16 +563,19 @@ namespace Manina.Windows.Forms
                     }
                 }
 
-                owner.OnPageAdded(new PageEventArgs(page, owner.SelectedIndex));
+                if (RaisePageEvents)
+                {
+                    owner.OnPageAdded(new PageEventArgs(page, owner.Pages.Count - 1));
+
+                    if (owner.PageCount == 1) owner.SelectedIndex = 0;
+
+                    owner.OnUpdateUIControls(new EventArgs());
+                    owner.UpdatePages();
+                }
             }
 
             public override void Remove(Control value)
             {
-                if (!base.Contains(value))
-                {
-                    throw new ArgumentException("Control not found in collection.", "value");
-                }
-
                 if (owner.creatingUIControls)
                 {
                     base.Remove(value);
@@ -580,15 +587,21 @@ namespace Manina.Windows.Forms
                     throw new ArgumentException("Only a Page can be hosted in a PagedControl.");
                 }
 
+                page.Visible = false;
                 base.Remove(page);
 
-                if (owner.PageCount == 0)
-                    owner.SelectedIndex = -1;
-                else if (owner.SelectedIndex > owner.PageCount - 1)
-                    owner.SelectedIndex = 0;
+                if (RaisePageEvents)
+                {
+                    owner.OnPageRemoved(new PageEventArgs(page, -1));
 
-                owner.UpdatePages();
-                owner.OnPageRemoved(new PageEventArgs(page, -1));
+                    if (owner.PageCount == 0)
+                        owner.SelectedIndex = -1;
+                    else if (owner.SelectedIndex > owner.PageCount - 1)
+                        owner.SelectedIndex = 0;
+
+                    owner.OnUpdateUIControls(new EventArgs());
+                    owner.UpdatePages();
+                }
             }
 
             public override Control this[int index] => base[index];
@@ -615,5 +628,6 @@ namespace Manina.Windows.Forms
             }
         }
         #endregion
+
     }
 }
