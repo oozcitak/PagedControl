@@ -463,13 +463,28 @@ namespace Manina.Windows.Forms
 
         internal void UpdatePages()
         {
-            var pageBounds = DisplayRectangle;
-
             for (int i = 0; i < Pages.Count; i++)
             {
                 var page = Pages[i];
-                page.SetBounds(pageBounds.Left, pageBounds.Top, pageBounds.Width, pageBounds.Height, BoundsSpecified.All);
-                page.Visible = (i == SelectedIndex);
+
+                if (i == SelectedIndex)
+                {
+                    // suspend the layout while resizing the page
+                    // otherwise the layout will be calculated twice
+                    // resulting in incorrect child control sizes.
+                    page.SuspendLayout();
+
+                    page.Bounds = DisplayRectangle;
+                    page.Invalidate();
+
+                    page.ResumeLayout(false);
+
+                    page.Visible = true;
+                }
+                else
+                {
+                    page.Visible = false;
+                }
             }
         }
         #endregion
@@ -501,7 +516,6 @@ namespace Manina.Windows.Forms
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-            
             UpdatePages();
         }
         #endregion
