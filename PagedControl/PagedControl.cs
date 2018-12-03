@@ -501,7 +501,7 @@ namespace Manina.Windows.Forms
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-
+            
             UpdatePages();
         }
         #endregion
@@ -524,28 +524,28 @@ namespace Manina.Windows.Forms
                     return;
                 }
 
-                if (!(value is Page))
+                if (!(value is Page page))
                 {
                     throw new ArgumentException("Only a Page can be hosted in a PagedControl.");
                 }
 
-                base.Add(value);
+                base.Add(page);
                 if (owner.PageCount == 1) owner.SelectedIndex = 0;
 
                 owner.UpdatePages();
 
                 // site the page
                 ISite site = owner.Site;
-                if (site != null && value.Site == null)
+                if (site != null && page.Site == null)
                 {
                     IContainer container = site.Container;
                     if (container != null)
                     {
-                        container.Add(value);
+                        container.Add(page);
                     }
                 }
 
-                owner.OnPageAdded(new PageEventArgs((Page)value, owner.SelectedIndex));
+                owner.OnPageAdded(new PageEventArgs(page, owner.SelectedIndex));
             }
 
             public override void Remove(Control value)
@@ -561,12 +561,12 @@ namespace Manina.Windows.Forms
                     return;
                 }
 
-                if (!(value is Page))
+                if (!(value is Page page))
                 {
                     throw new ArgumentException("Only a Page can be hosted in a PagedControl.");
                 }
 
-                base.Remove(value);
+                base.Remove(page);
 
                 if (owner.PageCount == 0)
                     owner.SelectedIndex = -1;
@@ -574,7 +574,7 @@ namespace Manina.Windows.Forms
                     owner.SelectedIndex = 0;
 
                 owner.UpdatePages();
-                owner.OnPageRemoved(new PageEventArgs((Page)value, -1));
+                owner.OnPageRemoved(new PageEventArgs(page, -1));
             }
 
             public override Control this[int index] => base[index];
