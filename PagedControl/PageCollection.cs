@@ -91,6 +91,8 @@ namespace Manina.Windows.Forms
 
             public void Insert(int index, Page item)
             {
+                bool insertBeforeSelected = (index <= owner.SelectedIndex);
+
                 controls.RaisePageEvents = false;
 
                 List<Control> removed = new List<Control>();
@@ -107,7 +109,10 @@ namespace Manina.Windows.Forms
 
                 owner.OnPageAdded(new PageEventArgs(item, index));
 
-                if (Count == 1) owner.SelectedIndex = 0;
+                if (Count == 1)
+                    owner.SelectedIndex = 0;
+                else if (insertBeforeSelected)
+                    owner.selectedIndex = owner.selectedIndex + 1;
 
                 owner.OnUpdateUIControls(new EventArgs());
                 owner.UpdatePages();
