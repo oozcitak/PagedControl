@@ -513,7 +513,7 @@ namespace Manina.Windows.Forms
 
                 if (!(value is Page page))
                 {
-                    throw new ArgumentException(string.Format("Only a Page can be added to a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).FullName, value.GetType().FullName));
+                    throw new ArgumentException(string.Format("Only a Page can be added to a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
                 }
 
                 base.Add(page);
@@ -550,7 +550,7 @@ namespace Manina.Windows.Forms
 
                 if (!(value is Page page))
                 {
-                    throw new ArgumentException(string.Format("Only a Page can be removed from a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).FullName, value.GetType().FullName));
+                    throw new ArgumentException(string.Format("Only a Page can be removed from a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
                 }
 
                 page.Visible = false;
