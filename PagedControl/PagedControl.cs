@@ -203,15 +203,10 @@ namespace Manina.Windows.Forms
         public event EventHandler UpdateUIControls;
         #endregion
 
-        #region Constants
-        private const int WS_EX_TRANSPARENT = 0x00000020;
-        #endregion
-
         #region Member Variables
         private int selectedIndex;
         private Page lastSelectedPage;
         private BorderStyle borderStyle;
-        private Color backColor;
         private bool creatingUIControls;
         private int uiControlCount;
         #endregion
@@ -333,13 +328,6 @@ namespace Manina.Windows.Forms
         }
 
         /// <summary>
-        /// Gets or sets the background color of the control.
-        /// </summary>
-        [Category("Appearance"), DefaultValue(typeof(Color), "Transparent")]
-        [Description("Gets or sets the background color of the control.")]
-        public override Color BackColor { get => backColor; set { backColor = value; Invalidate(); } }
-
-        /// <summary>
         /// Gets or sets the border style of the control.
         /// </summary>
         [Category("Appearance"), DefaultValue(BorderStyle.FixedSingle)]
@@ -350,19 +338,6 @@ namespace Manina.Windows.Forms
         /// Gets the size of the control when it is initially created.
         /// </summary>
         protected override Size DefaultSize => new Size(300, 200);
-
-        /// <summary>
-        /// Gets the required creation parameters when the control handle is created.
-        /// </summary>
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle = cp.ExStyle | WS_EX_TRANSPARENT;
-                return cp;
-            }
-        }
 
         /// <summary>
         /// Determines whether the control can navigate to the previous page.
@@ -414,12 +389,9 @@ namespace Manina.Windows.Forms
             selectedIndex = -1;
             lastSelectedPage = null;
             borderStyle = BorderStyle.FixedSingle;
-            backColor = Color.Transparent;
 
             SetStyle(ControlStyles.ResizeRedraw, true);
-            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             SetStyle(ControlStyles.Opaque, true);
-            this.BackColor = Color.Transparent;
 
             CreateChildControls();
 
@@ -500,20 +472,14 @@ namespace Manina.Windows.Forms
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);
-
-            if (BackColor != Color.Transparent)
-            {
-                using (Brush brush = new SolidBrush(BackColor))
-                {
-                    e.Graphics.FillRectangle(brush, base.ClientRectangle);
-                }
-            }
+            e.Graphics.Clear(BackColor);
 
             if (BorderStyle == BorderStyle.FixedSingle)
                 ControlPaint.DrawBorder(e.Graphics, base.ClientRectangle, Color.Black, ButtonBorderStyle.Solid);
             else if (BorderStyle == BorderStyle.Fixed3D)
                 ControlPaint.DrawBorder3D(e.Graphics, base.ClientRectangle, Border3DStyle.SunkenOuter);
+
+            base.OnPaint(e);
         }
 
         protected override void OnResize(EventArgs e)

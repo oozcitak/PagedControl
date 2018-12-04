@@ -33,11 +33,11 @@
             this.CurrentPageLabel = new System.Windows.Forms.Label();
             this.AddButton = new System.Windows.Forms.Button();
             this.RemoveButton = new System.Windows.Forms.Button();
+            this.ClearButton = new System.Windows.Forms.Button();
+            this.InsertButton = new System.Windows.Forms.Button();
             this.pagedControl1 = new Manina.Windows.Forms.PagedControl();
             this.page1 = new Manina.Windows.Forms.Page();
             this.page2 = new Manina.Windows.Forms.Page();
-            this.ClearButton = new System.Windows.Forms.Button();
-            this.InsertButton = new System.Windows.Forms.Button();
             this.pagedControl1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,39 +95,6 @@
             this.RemoveButton.UseVisualStyleBackColor = true;
             this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
             // 
-            // pagedControl1
-            // 
-            this.pagedControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pagedControl1.Controls.Add(this.page1);
-            this.pagedControl1.Controls.Add(this.page2);
-            this.pagedControl1.Location = new System.Drawing.Point(12, 12);
-            this.pagedControl1.Name = "pagedControl1";
-            this.pagedControl1.Size = new System.Drawing.Size(776, 397);
-            this.pagedControl1.TabIndex = 0;
-            this.pagedControl1.PageAdded += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageAdded);
-            this.pagedControl1.PageRemoved += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageRemoved);
-            this.pagedControl1.PageChanging += new Manina.Windows.Forms.PagedControl.PageChangingEventHandler(this.pagedControl1_PageChanging);
-            this.pagedControl1.PageChanged += new Manina.Windows.Forms.PagedControl.PageChangedEventHandler(this.pagedControl1_PageChanged);
-            this.pagedControl1.PageValidating += new Manina.Windows.Forms.PagedControl.PageValidatingEventHandler(this.pagedControl1_PageValidating);
-            this.pagedControl1.PageValidated += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageValidated);
-            this.pagedControl1.PageHidden += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageHidden);
-            this.pagedControl1.PageShown += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageShown);
-            this.pagedControl1.PagePaint += new Manina.Windows.Forms.PagedControl.PagePaintEventHandler(this.pagedControl1_PagePaint);
-            // 
-            // page1
-            // 
-            this.page1.Location = new System.Drawing.Point(1, 1);
-            this.page1.Name = "page1";
-            this.page1.Size = new System.Drawing.Size(774, 395);
-            // 
-            // page2
-            // 
-            this.page2.Location = new System.Drawing.Point(1, 1);
-            this.page2.Name = "page2";
-            this.page2.Size = new System.Drawing.Size(0, 0);
-            // 
             // ClearButton
             // 
             this.ClearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -149,6 +116,40 @@
             this.InsertButton.Text = "Insert @ 0";
             this.InsertButton.UseVisualStyleBackColor = true;
             this.InsertButton.Click += new System.EventHandler(this.InsertButton_Click);
+            // 
+            // pagedControl1
+            // 
+            this.pagedControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pagedControl1.Controls.Add(this.page1);
+            this.pagedControl1.Controls.Add(this.page2);
+            this.pagedControl1.Location = new System.Drawing.Point(12, 12);
+            this.pagedControl1.Name = "pagedControl1";
+            this.pagedControl1.Size = new System.Drawing.Size(776, 397);
+            this.pagedControl1.TabIndex = 0;
+            this.pagedControl1.PageAdded += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageAdded);
+            this.pagedControl1.PageRemoved += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageRemoved);
+            this.pagedControl1.PageChanging += new Manina.Windows.Forms.PagedControl.PageChangingEventHandler(this.pagedControl1_PageChanging);
+            this.pagedControl1.PageChanged += new Manina.Windows.Forms.PagedControl.PageChangedEventHandler(this.pagedControl1_PageChanged);
+            this.pagedControl1.PageValidating += new Manina.Windows.Forms.PagedControl.PageValidatingEventHandler(this.pagedControl1_PageValidating);
+            this.pagedControl1.PageValidated += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageValidated);
+            this.pagedControl1.PageHidden += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageHidden);
+            this.pagedControl1.PageShown += new Manina.Windows.Forms.PagedControl.PageEventHandler(this.pagedControl1_PageShown);
+            this.pagedControl1.PagePaint += new Manina.Windows.Forms.PagedControl.PagePaintEventHandler(this.pagedControl1_PagePaint);
+            this.pagedControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.pagedControl1_Paint);
+            // 
+            // page1
+            // 
+            this.page1.Location = new System.Drawing.Point(1, 1);
+            this.page1.Name = "page1";
+            this.page1.Size = new System.Drawing.Size(774, 395);
+            // 
+            // page2
+            // 
+            this.page2.Location = new System.Drawing.Point(1, 1);
+            this.page2.Name = "page2";
+            this.page2.Size = new System.Drawing.Size(0, 0);
             // 
             // TestForm
             // 

@@ -83,7 +83,7 @@ namespace TestApp
 
         private void UpdatePageLabel()
         {
-            CurrentPageLabel.Text = string.Format("Current Page: {0}, Page Count: {1}", pagedControl1.SelectedIndex, pagedControl1.Pages.Count);
+            CurrentPageLabel.Text = string.Format("Page {0} of {1}", pagedControl1.SelectedIndex + 1, pagedControl1.Pages.Count);
         }
 
         private void pagedControl1_PageChanged(object sender, PagedControl.PageChangedEventArgs e)
@@ -126,34 +126,44 @@ namespace TestApp
             Log(Color.BlueViolet, "Page Validating: {0}", e.PageIndex);
         }
 
-        private void pagedControl1_PagePaint(object sender, PagedControl.PagePaintEventArgs e)
+        private void PaintInfo(Graphics g, Rectangle bounds, Color backColor)
         {
-            var bounds = e.Page.DisplayRectangle;
-            bounds.Inflate(-10, -10);
-            e.Graphics.DrawRectangle(Pens.Red, bounds);
             bounds.Inflate(-4, -4);
-            e.Graphics.Clip = new Region(bounds);
+            g.Clip = new Region(bounds);
 
             var y = bounds.Top + 6;
             var burn = 0f;
-            var burnStep = 0.9f / (bounds.Height / (e.Graphics.MeasureString("M", e.Page.Font).Height + 4));
+            var burnStep = 0.9f / (bounds.Height / (g.MeasureString("M", Font).Height + 4));
             for (int i = messages.Count - 1; i >= 0; i--)
             {
                 var message = messages[i].Item1;
                 var color = messages[i].Item2;
-                var h = (int)e.Graphics.MeasureString(message, e.Page.Font).Height;
+                var h = (int)g.MeasureString(message, Font).Height;
                 using (var brush = new SolidBrush(Color.FromArgb((int)(color.R + (255 - color.R) * burn), (int)(color.G + (255 - color.G) * burn), (int)(color.B + (255 - color.B) * burn))))
                 {
-                    e.Graphics.DrawString(message, e.Page.Font, brush, 20, y);
+                    g.DrawString(message, Font, brush, 20, y);
                 }
                 y += h + 4;
                 burn += burnStep;
                 if (burn > 0.9f) burn = 0.9f;
             }
 
-            string currentPageStr = string.Format("Selected page: {0}", (pagedControl1.SelectedPage != null) ? pagedControl1.SelectedPage.Name : "<none>");
-            var size = e.Graphics.MeasureString(currentPageStr, e.Page.Font);
-            e.Graphics.DrawString(currentPageStr, e.Page.Font, Brushes.Red, bounds.Right - 6 - size.Width, bounds.Top + 6);
+            string currentPageStr = string.Format("Selected Page: {0}", (pagedControl1.SelectedPage != null) ? pagedControl1.SelectedPage.Name : "<none>");
+            string currentIndexStr = string.Format("Selected Index: {0}", pagedControl1.SelectedIndex);
+            var size1 = g.MeasureString(currentPageStr, Font);
+            var size2 = g.MeasureString(currentIndexStr, Font);
+            g.DrawString(currentPageStr, Font, Brushes.Red, bounds.Right - 6 - Math.Max(size1.Width, size2.Width), bounds.Top + 6);
+            g.DrawString(currentIndexStr, Font, Brushes.Red, bounds.Right - 6 - Math.Max(size1.Width, size2.Width), bounds.Top + 22);
+        }
+
+        private void pagedControl1_PagePaint(object sender, PagedControl.PagePaintEventArgs e)
+        {
+            PaintInfo(e.Graphics, e.Page.ClientRectangle, Color.White);
+        }
+
+        private void pagedControl1_Paint(object sender, PaintEventArgs e)
+        {
+            PaintInfo(e.Graphics, pagedControl1.DisplayRectangle, SystemColors.Control);
         }
     }
 }
