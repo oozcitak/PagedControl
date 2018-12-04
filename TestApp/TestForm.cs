@@ -83,7 +83,7 @@ namespace TestApp
 
         private void UpdatePageLabel()
         {
-            CurrentPageLabel.Text = string.Format("Current Page: {0}, Page Count: {1}, Control Count: {2}", pagedControl1.SelectedIndex, pagedControl1.Pages.Count, pagedControl1.Controls.Count);
+            CurrentPageLabel.Text = string.Format("Current Page: {0}, Page Count: {1}", pagedControl1.SelectedIndex, pagedControl1.Pages.Count);
         }
 
         private void pagedControl1_PageChanged(object sender, PagedControl.PageChangedEventArgs e)

@@ -43,6 +43,7 @@
             // 
             // PrevButton
             // 
+            this.PrevButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.PrevButton.Location = new System.Drawing.Point(194, 415);
             this.PrevButton.Name = "PrevButton";
             this.PrevButton.Size = new System.Drawing.Size(23, 23);
@@ -53,6 +54,7 @@
             // 
             // NextButton
             // 
+            this.NextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.NextButton.Location = new System.Drawing.Point(216, 415);
             this.NextButton.Name = "NextButton";
             this.NextButton.Size = new System.Drawing.Size(23, 23);
@@ -63,6 +65,7 @@
             // 
             // CurrentPageLabel
             // 
+            this.CurrentPageLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CurrentPageLabel.AutoSize = true;
             this.CurrentPageLabel.Location = new System.Drawing.Point(245, 420);
             this.CurrentPageLabel.Name = "CurrentPageLabel";
@@ -72,6 +75,7 @@
             // 
             // AddButton
             // 
+            this.AddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.AddButton.Location = new System.Drawing.Point(13, 415);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(23, 23);
@@ -82,6 +86,7 @@
             // 
             // RemoveButton
             // 
+            this.RemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.RemoveButton.Location = new System.Drawing.Point(99, 415);
             this.RemoveButton.Name = "RemoveButton";
             this.RemoveButton.Size = new System.Drawing.Size(23, 23);
@@ -92,7 +97,8 @@
             // 
             // pagedControl1
             // 
-            this.pagedControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.pagedControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pagedControl1.Controls.Add(this.page1);
             this.pagedControl1.Controls.Add(this.page2);
@@ -124,6 +130,7 @@
             // 
             // ClearButton
             // 
+            this.ClearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ClearButton.Location = new System.Drawing.Point(121, 415);
             this.ClearButton.Name = "ClearButton";
             this.ClearButton.Size = new System.Drawing.Size(65, 23);
@@ -134,6 +141,7 @@
             // 
             // InsertButton
             // 
+            this.InsertButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.InsertButton.Location = new System.Drawing.Point(35, 415);
             this.InsertButton.Name = "InsertButton";
             this.InsertButton.Size = new System.Drawing.Size(65, 23);
