@@ -23,8 +23,19 @@ namespace Manina.Windows.Forms
                 get => (Page)controls[index + owner.FirstPageIndex];
                 set
                 {
-                    Insert(index + owner.FirstPageIndex, value);
-                    RemoveAt(index + owner.FirstPageIndex + 1);
+                    controls.RaisePageEvents = false;
+
+                    controls.Add(value);
+                    controls.SetChildIndex(value, index + owner.FirstPageIndex);
+
+                    owner.OnPageAdded(new PageEventArgs(value, index));
+
+                    if (owner.PageCount == 1) owner.ChangePage(value, true);
+
+                    owner.OnUpdateUIControls(new EventArgs());
+                    owner.UpdatePages();
+
+                    controls.RaisePageEvents = true;
                 }
             }
 

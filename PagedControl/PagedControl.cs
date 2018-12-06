@@ -204,8 +204,10 @@ namespace Manina.Windows.Forms
         #endregion
 
         #region Member Variables
+        private int lastSelectedIndex;
         private int selectedIndex;
         private Page lastSelectedPage;
+        private Page selectedPage;
         private BorderStyle borderStyle;
         private bool creatingUIControls;
         private int uiControlCount;
@@ -229,63 +231,8 @@ namespace Manina.Windows.Forms
         [Description("Gets or sets the current page.")]
         public virtual Page SelectedPage
         {
-            get
-            {
-                return (selectedIndex == -1 ? null : Pages[selectedIndex]);
-            }
-            set
-            {
-                var oldPage = lastSelectedPage;
-                var newPage = value;
-                int oldSelectedIndex = selectedIndex;
-                int newSelectedIndex = (newPage == null ? -1 : Pages.IndexOf(newPage));
-
-                if (oldPage != null && !Pages.Contains(oldPage))
-                {
-                    oldPage = null;
-                    oldSelectedIndex = -1;
-                }
-
-                if (newPage != null && !Pages.Contains(newPage))
-                    throw new ArgumentException("Page is not found in the page collection.");
-
-                if (oldPage != null && newPage != null && oldPage == value)
-                    return;
-
-                if (oldPage != null && oldPage.CausesValidation)
-                {
-                    PageValidatingEventArgs pve = new PageValidatingEventArgs(oldPage, oldSelectedIndex);
-                    OnPageValidating(pve);
-                    if (pve.Cancel) return;
-
-                    OnPageValidated(new PageEventArgs(oldPage, oldSelectedIndex));
-                }
-
-                if (oldPage != null && newPage != null)
-                {
-                    PageChangingEventArgs pce = new PageChangingEventArgs(oldPage, oldSelectedIndex, newPage, newSelectedIndex);
-                    OnCurrentPageChanging(pce);
-                    if (pce.Cancel) return;
-
-                    newPage = pce.NewPage;
-                    newSelectedIndex = (newPage == null ? -1 : Pages.IndexOf(newPage));
-                }
-
-                lastSelectedPage = newPage;
-                selectedIndex = newSelectedIndex;
-
-                OnUpdateUIControls(new EventArgs());
-                UpdatePages();
-
-                if (oldPage != null)
-                    OnPageHidden(new PageEventArgs(oldPage, oldSelectedIndex));
-
-                if (newPage != null)
-                    OnPageShown(new PageEventArgs(newPage, newSelectedIndex));
-
-                if (oldPage != null && newPage != null)
-                    OnCurrentPageChanged(new PageChangedEventArgs(oldPage, oldSelectedIndex, newPage, newSelectedIndex));
-            }
+            get => selectedPage;
+            set => ChangePage(value, true);
         }
 
         /// <summary>
@@ -296,7 +243,7 @@ namespace Manina.Windows.Forms
         public virtual int SelectedIndex
         {
             get => selectedIndex;
-            set { SelectedPage = (value == -1 ? null : Pages[value]); }
+            set => ChangePage(value == -1 ? null : Pages[value], true);
         }
 
         /// <summary>
@@ -389,8 +336,12 @@ namespace Manina.Windows.Forms
             uiControlCount = 0;
 
             Pages = new PageCollection(this);
+
+            lastSelectedIndex = -1;
             selectedIndex = -1;
             lastSelectedPage = null;
+            selectedPage = null;
+
             borderStyle = BorderStyle.FixedSingle;
 
             SetStyle(ControlStyles.ResizeRedraw, true);
@@ -439,6 +390,9 @@ namespace Manina.Windows.Forms
             creatingUIControls = false;
         }
 
+        /// <summary>
+        /// Updates the display bounds and visibility of pages.
+        /// </summary>
         internal void UpdatePages()
         {
             for (int i = 0; i < Pages.Count; i++)
@@ -464,6 +418,56 @@ namespace Manina.Windows.Forms
                     page.Visible = false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Changes the currently selected page to the given page.
+        /// </summary>
+        /// <param name="page">The page to make current.</param>
+        /// <param name="raisePageEvents">Whether to raise page events while changing the page.</param>
+        internal void ChangePage(Page page, bool raisePageEvents)
+        {
+            int index = (page == null) ? -1 : Pages.IndexOf(page);
+
+            if (page != null && index == -1)
+                throw new ArgumentException("Page is not found in the page collection.");
+
+            if (selectedPage != null && page != null && selectedPage == page)
+                return;
+
+            if (raisePageEvents && selectedPage != null && selectedPage.CausesValidation)
+            {
+                PageValidatingEventArgs pve = new PageValidatingEventArgs(selectedPage, selectedIndex);
+                OnPageValidating(pve);
+                if (pve.Cancel) return;
+
+                OnPageValidated(new PageEventArgs(selectedPage, selectedIndex));
+            }
+
+            if (raisePageEvents)
+            {
+                PageChangingEventArgs pce = new PageChangingEventArgs(selectedPage, selectedIndex, page, index);
+                OnCurrentPageChanging(pce);
+                if (pce.Cancel) return;
+            }
+
+            lastSelectedPage = selectedPage;
+            lastSelectedIndex = selectedIndex;
+
+            selectedPage = page;
+            selectedIndex = index;
+
+            OnUpdateUIControls(new EventArgs());
+            UpdatePages();
+
+            if (raisePageEvents && lastSelectedPage != null)
+                OnPageHidden(new PageEventArgs(lastSelectedPage, lastSelectedIndex));
+
+            if (raisePageEvents && selectedPage != null)
+                OnPageShown(new PageEventArgs(selectedPage, selectedIndex));
+
+            if (raisePageEvents)
+                OnCurrentPageChanged(new PageChangedEventArgs(lastSelectedPage, lastSelectedIndex, selectedPage, selectedIndex));
         }
         #endregion
 
@@ -536,7 +540,7 @@ namespace Manina.Windows.Forms
                 {
                     owner.OnPageAdded(new PageEventArgs(page, owner.Pages.Count - 1));
 
-                    if (owner.PageCount == 1) owner.SelectedIndex = 0;
+                    if (owner.PageCount == 1) owner.ChangePage(page, true);
 
                     owner.OnUpdateUIControls(new EventArgs());
                     owner.UpdatePages();
@@ -556,17 +560,25 @@ namespace Manina.Windows.Forms
                     throw new ArgumentException(string.Format("Only a Page can be removed from a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
                 }
 
+                int index = owner.Pages.IndexOf(page);
+                if (index == -1)
+                {
+                    throw new ArgumentException("Page not found in collection.");
+                }
+
                 page.Visible = false;
                 base.Remove(page);
 
                 if (RaisePageEvents)
                 {
-                    owner.OnPageRemoved(new PageEventArgs(page, -1));
+                    owner.OnPageRemoved(new PageEventArgs(page, index));
 
                     if (owner.PageCount == 0)
-                        owner.SelectedIndex = -1;
-                    else if (owner.SelectedIndex > owner.PageCount - 1)
-                        owner.SelectedIndex = 0;
+                        owner.ChangePage(null, true);
+                    else if (ReferenceEquals(owner.SelectedPage, page))
+                        owner.ChangePage(owner.Pages[index == 0 ? 0 : index - 1], true);
+                    else if (owner.SelectedIndex < 0 || owner.SelectedIndex > owner.PageCount - 1)
+                        owner.ChangePage(owner.Pages[0], true);
 
                     owner.OnUpdateUIControls(new EventArgs());
                     owner.UpdatePages();

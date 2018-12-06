@@ -38,6 +38,7 @@
             this.pagedControl1 = new Manina.Windows.Forms.PagedControl();
             this.page1 = new Manina.Windows.Forms.Page();
             this.page2 = new Manina.Windows.Forms.Page();
+            this.ClearLogButton = new System.Windows.Forms.Button();
             this.pagedControl1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -151,6 +152,17 @@
             this.page2.Name = "page2";
             this.page2.Size = new System.Drawing.Size(0, 0);
             // 
+            // ClearLogButton
+            // 
+            this.ClearLogButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ClearLogButton.Location = new System.Drawing.Point(722, 415);
+            this.ClearLogButton.Name = "ClearLogButton";
+            this.ClearLogButton.Size = new System.Drawing.Size(65, 23);
+            this.ClearLogButton.TabIndex = 1;
+            this.ClearLogButton.Text = "Clear Log";
+            this.ClearLogButton.UseVisualStyleBackColor = true;
+            this.ClearLogButton.Click += new System.EventHandler(this.ClearLogButton_Click);
+            // 
             // TestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -159,6 +171,7 @@
             this.Controls.Add(this.CurrentPageLabel);
             this.Controls.Add(this.NextButton);
             this.Controls.Add(this.InsertButton);
+            this.Controls.Add(this.ClearLogButton);
             this.Controls.Add(this.ClearButton);
             this.Controls.Add(this.RemoveButton);
             this.Controls.Add(this.AddButton);
@@ -184,6 +197,7 @@
         private Manina.Windows.Forms.Page page2;
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.Button InsertButton;
+        private System.Windows.Forms.Button ClearLogButton;
     }
 }
 
