@@ -59,6 +59,9 @@ namespace Manina.Windows.Forms
 
             public void Clear()
             {
+                if (Count == 0)
+                    return;
+
                 controls.RaisePageEvents = false;
 
                 var toRemove = new List<Page>();
