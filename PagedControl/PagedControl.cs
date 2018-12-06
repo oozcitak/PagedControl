@@ -559,19 +559,23 @@ namespace Manina.Windows.Forms
                     throw new ArgumentException("Page not found in collection.");
                 }
 
-                page.Visible = false;
+                if (RaisePageEvents)
+                {
+                    if (owner.PageCount == 1) // removing last page
+                        owner.ChangePage(null, true);
+                    else if (ReferenceEquals(owner.SelectedPage, page)) // removing selected page
+                        owner.ChangePage(owner.Pages[index == 0 ? 1 : index - 1], true);
+                }
+
                 base.Remove(page);
+                if (owner.PageCount == 0) // removed last page
+                    owner.selectedIndex = -1;
+                else if (owner.selectedIndex > owner.Pages.Count - 1)
+                    owner.selectedIndex = owner.Pages.Count - 1;
 
                 if (RaisePageEvents)
                 {
                     owner.OnPageRemoved(new PageEventArgs(page, index));
-
-                    if (owner.PageCount == 0)
-                        owner.ChangePage(null, true);
-                    else if (ReferenceEquals(owner.SelectedPage, page))
-                        owner.ChangePage(owner.Pages[index == 0 ? 0 : index - 1], true);
-                    else if (owner.SelectedIndex < 0 || owner.SelectedIndex > owner.PageCount - 1)
-                        owner.ChangePage(owner.Pages[0], true);
 
                     owner.OnUpdateUIControls(new EventArgs());
                     owner.UpdatePages();
@@ -602,6 +606,5 @@ namespace Manina.Windows.Forms
             }
         }
         #endregion
-
     }
 }
