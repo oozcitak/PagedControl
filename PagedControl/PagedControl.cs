@@ -401,15 +401,8 @@ namespace Manina.Windows.Forms
 
                 if (i == SelectedIndex)
                 {
-                    // suspend the layout while resizing the page
-                    // otherwise the layout will be calculated twice
-                    // resulting in incorrect child control sizes.
-                    page.SuspendLayout();
-
                     page.Bounds = DisplayRectangle;
                     page.Invalidate();
-
-                    page.ResumeLayout(false);
 
                     page.Visible = true;
                 }

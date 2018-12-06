@@ -58,10 +58,10 @@ namespace Manina.Windows.Forms
         public new Padding Margin { get => base.Margin; set { } }
 
         [Browsable(false), Category("Layout"), Localizable(true)]
-        public new Point Location { get => base.Location; set { } }
+        public new Point Location { get => base.Location; set => base.Location = value; }
 
         [Browsable(false), Category("Layout"), Localizable(true)]
-        public new Size Size { get => base.Size; set { } }
+        public new Size Size { get => base.Size; set => base.Size = value; }
 
 #pragma warning disable CS0067
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
