@@ -28,7 +28,7 @@ namespace Manina.Windows.Forms
                     controls.Add(value);
                     controls.SetChildIndex(value, index + owner.FirstPageIndex);
 
-                    owner.OnPageAdded(new PageEventArgs(value, index));
+                    owner.OnPageAdded(new PageEventArgs(value));
 
                     if (owner.PageCount == 1) owner.ChangePage(value, true);
 
@@ -70,7 +70,7 @@ namespace Manina.Windows.Forms
                 foreach (var page in toRemove)
                 {
                     Remove(page);
-                    owner.OnPageRemoved(new PageEventArgs(page, -1));
+                    owner.OnPageRemoved(new PageEventArgs(page));
                 }
 
                 owner.SelectedIndex = -1;
@@ -121,7 +121,7 @@ namespace Manina.Windows.Forms
                     controls.Add(removed[i]);
                 }
 
-                owner.OnPageAdded(new PageEventArgs(item, index));
+                owner.OnPageAdded(new PageEventArgs(item));
 
                 if (Count == 1)
                     owner.SelectedIndex = 0;

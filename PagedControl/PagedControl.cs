@@ -23,15 +23,10 @@ namespace Manina.Windows.Forms
             /// The page causing the event.
             /// </summary>
             public Page Page { get; private set; }
-            /// <summary>
-            /// The index of the page causing the event.
-            /// </summary>
-            public int PageIndex { get; private set; }
 
-            public PageEventArgs(Page page, int index)
+            public PageEventArgs(Page page)
             {
                 Page = page;
-                PageIndex = index;
             }
         }
 
@@ -48,21 +43,11 @@ namespace Manina.Windows.Forms
             /// The page that will become the current page after the event.
             /// </summary>
             public Page NewPage { get; set; }
-            /// <summary>
-            /// The index of the current page.
-            /// </summary>
-            public int CurrentPageIndex { get; private set; }
-            /// <summary>
-            /// The index of the new page.
-            /// </summary>
-            public int NewPageIndex { get; private set; }
 
-            public PageChangingEventArgs(Page currentPage, int currentPageIndex, Page newPage, int newPageIndex) : base(false)
+            public PageChangingEventArgs(Page currentPage, Page newPage) : base(false)
             {
                 CurrentPage = currentPage;
-                CurrentPageIndex = currentPageIndex;
                 NewPage = newPage;
-                NewPageIndex = newPageIndex;
             }
         }
 
@@ -79,21 +64,11 @@ namespace Manina.Windows.Forms
             /// Current page.
             /// </summary>
             public Page CurrentPage { get; private set; }
-            /// <summary>
-            /// The index of the old page.
-            /// </summary>
-            public int OldPageIndex { get; private set; }
-            /// <summary>
-            /// The index of the current page.
-            /// </summary>
-            public int CurrentPageIndex { get; private set; }
 
-            public PageChangedEventArgs(Page oldPage, int oldPageIndex, Page currentPage, int currentPageIndex)
+            public PageChangedEventArgs(Page oldPage, Page currentPage)
             {
                 OldPage = oldPage;
-                OldPageIndex = oldPageIndex;
                 CurrentPage = currentPage;
-                CurrentPageIndex = currentPageIndex;
             }
         }
 
@@ -106,15 +81,10 @@ namespace Manina.Windows.Forms
             /// The page causing the event.
             /// </summary>
             public Page Page { get; private set; }
-            /// <summary>
-            /// The index of the page causing the event.
-            /// </summary>
-            public int PageIndex { get; private set; }
 
-            public PageValidatingEventArgs(Page page, int index)
+            public PageValidatingEventArgs(Page page)
             {
                 Page = page;
-                PageIndex = index;
             }
         }
 
@@ -128,7 +98,7 @@ namespace Manina.Windows.Forms
             /// </summary>
             public Graphics Graphics { get; private set; }
 
-            public PagePaintEventArgs(Graphics graphics, Page page, int index) : base(page, index)
+            public PagePaintEventArgs(Graphics graphics, Page page) : base(page)
             {
                 Graphics = graphics;
             }
@@ -204,7 +174,6 @@ namespace Manina.Windows.Forms
         #endregion
 
         #region Member Variables
-        private int lastSelectedIndex;
         private int selectedIndex;
         private Page lastSelectedPage;
         private Page selectedPage;
@@ -337,7 +306,6 @@ namespace Manina.Windows.Forms
 
             Pages = new PageCollection(this);
 
-            lastSelectedIndex = -1;
             selectedIndex = -1;
             lastSelectedPage = null;
             selectedPage = null;
@@ -430,16 +398,16 @@ namespace Manina.Windows.Forms
 
             if (raisePageEvents && selectedPage != null && selectedPage.CausesValidation)
             {
-                PageValidatingEventArgs pve = new PageValidatingEventArgs(selectedPage, selectedIndex);
+                PageValidatingEventArgs pve = new PageValidatingEventArgs(selectedPage);
                 OnPageValidating(pve);
                 if (pve.Cancel) return;
 
-                OnPageValidated(new PageEventArgs(selectedPage, selectedIndex));
+                OnPageValidated(new PageEventArgs(selectedPage));
             }
 
             if (raisePageEvents)
             {
-                PageChangingEventArgs pce = new PageChangingEventArgs(selectedPage, selectedIndex, page, index);
+                PageChangingEventArgs pce = new PageChangingEventArgs(selectedPage, page);
                 OnCurrentPageChanging(pce);
                 if (pce.Cancel) return;
 
@@ -448,8 +416,6 @@ namespace Manina.Windows.Forms
             }
 
             lastSelectedPage = selectedPage;
-            lastSelectedIndex = selectedIndex;
-
             selectedPage = page;
             selectedIndex = index;
 
@@ -457,13 +423,13 @@ namespace Manina.Windows.Forms
             UpdatePages();
 
             if (raisePageEvents && lastSelectedPage != null)
-                OnPageHidden(new PageEventArgs(lastSelectedPage, lastSelectedIndex));
+                OnPageHidden(new PageEventArgs(lastSelectedPage));
 
             if (raisePageEvents && selectedPage != null)
-                OnPageShown(new PageEventArgs(selectedPage, selectedIndex));
+                OnPageShown(new PageEventArgs(selectedPage));
 
             if (raisePageEvents)
-                OnCurrentPageChanged(new PageChangedEventArgs(lastSelectedPage, lastSelectedIndex, selectedPage, selectedIndex));
+                OnCurrentPageChanged(new PageChangedEventArgs(lastSelectedPage, selectedPage));
         }
         #endregion
 
@@ -534,7 +500,7 @@ namespace Manina.Windows.Forms
 
                 if (RaisePageEvents)
                 {
-                    owner.OnPageAdded(new PageEventArgs(page, owner.Pages.Count - 1));
+                    owner.OnPageAdded(new PageEventArgs(page));
 
                     if (owner.PageCount == 1) owner.ChangePage(page, true);
 
@@ -578,7 +544,7 @@ namespace Manina.Windows.Forms
 
                 if (RaisePageEvents)
                 {
-                    owner.OnPageRemoved(new PageEventArgs(page, index));
+                    owner.OnPageRemoved(new PageEventArgs(page));
 
                     owner.OnUpdateUIControls(new EventArgs());
                     owner.UpdatePages();

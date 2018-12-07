@@ -88,42 +88,42 @@ namespace TestApp
 
         private void pagedControl1_PageChanged(object sender, PagedControl.PageChangedEventArgs e)
         {
-            Log(Color.DarkGreen, "Page Changed: {0} -> {1}", PageName(e.OldPageIndex, e.OldPage), PageName(e.CurrentPageIndex, e.CurrentPage));
+            Log(Color.DarkGreen, "Page Changed: {0} -> {1}", PageName(e.OldPage), PageName(e.CurrentPage));
         }
 
         private void pagedControl1_PageChanging(object sender, PagedControl.PageChangingEventArgs e)
         {
-            Log(Color.DarkGreen, "Page Changing: {0} -> {1}", PageName(e.CurrentPageIndex, e.CurrentPage), PageName(e.NewPageIndex, e.NewPage));
+            Log(Color.DarkGreen, "Page Changing: {0} -> {1}", PageName(e.CurrentPage), PageName(e.NewPage));
         }
 
         private void pagedControl1_PageHidden(object sender, PagedControl.PageEventArgs e)
         {
-            Log(Color.Magenta, "Page Hidden: {0}", PageName(e.PageIndex, e.Page));
+            Log(Color.Magenta, "Page Hidden: {0}", PageName(e.Page));
         }
 
         private void pagedControl1_PageShown(object sender, PagedControl.PageEventArgs e)
         {
-            Log(Color.Magenta, "Page Shown: {0}", PageName(e.PageIndex, e.Page));
+            Log(Color.Magenta, "Page Shown: {0}", PageName(e.Page));
         }
 
         private void pagedControl1_PageAdded(object sender, PagedControl.PageEventArgs e)
         {
-            Log(Color.OrangeRed, "Page Added: {0}", PageName(e.PageIndex, e.Page));
+            Log(Color.OrangeRed, "Page Added: {0}", PageName(e.Page));
         }
 
         private void pagedControl1_PageRemoved(object sender, PagedControl.PageEventArgs e)
         {
-            Log(Color.OrangeRed, "Page Removed: {0}", PageName(e.PageIndex, e.Page));
+            Log(Color.OrangeRed, "Page Removed: {0}", PageName(e.Page));
         }
 
         private void pagedControl1_PageValidated(object sender, PagedControl.PageEventArgs e)
         {
-            Log(Color.BlueViolet, "Page Validated: {0}", PageName(e.PageIndex, e.Page));
+            Log(Color.BlueViolet, "Page Validated: {0}", PageName(e.Page));
         }
 
         private void pagedControl1_PageValidating(object sender, PagedControl.PageValidatingEventArgs e)
         {
-            Log(Color.BlueViolet, "Page Validating: {0}", PageName(e.PageIndex, e.Page));
+            Log(Color.BlueViolet, "Page Validating: {0}", PageName(e.Page));
         }
 
         private void PaintInfo(Graphics g, Rectangle bounds, Color backColor)
@@ -166,7 +166,7 @@ namespace TestApp
             PaintInfo(e.Graphics, pagedControl1.DisplayRectangle, SystemColors.Control);
         }
 
-        private string PageName(int index, Page page) => string.Format("[{0}]: {1}", index, page?.Name ?? "<none>");
+        private string PageName(Page page) => string.Format("{0}", page?.Name ?? "<none>");
 
         private void ClearLogButton_Click(object sender, EventArgs e)
         {

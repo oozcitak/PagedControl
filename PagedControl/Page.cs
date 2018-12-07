@@ -20,9 +20,6 @@ namespace Manina.Windows.Forms
         [Description("Gets or sets the background color for the control.")]
         public override Color BackColor { get => base.BackColor; set => base.BackColor = value; }
 
-        [Browsable(false)]
-        public int Index => Parent.Pages.Contains(this) ? Parent.Pages.IndexOf(this) : -1;
-
         public new PagedControl Parent => (PagedControl)base.Parent;
         #endregion
 
@@ -95,7 +92,7 @@ namespace Manina.Windows.Forms
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (!Parent.OwnerDraw)
+            if (Parent != null && !Parent.OwnerDraw)
             {
                 base.OnPaintBackground(e);
             }
@@ -110,12 +107,13 @@ namespace Manina.Windows.Forms
                 ControlPaint.DrawBorder(e.Graphics, rect, Color.Black, ButtonBorderStyle.Dashed);
             }
 
-            if (!Parent.OwnerDraw)
+            if (Parent != null && !Parent.OwnerDraw)
             {
                 base.OnPaint(e);
             }
 
-            Parent.OnPagePaint(new PagedControl.PagePaintEventArgs(e.Graphics, this, Index));
+            if (Parent != null)
+                Parent.OnPagePaint(new PagedControl.PagePaintEventArgs(e.Graphics, this));
         }
         #endregion
 
