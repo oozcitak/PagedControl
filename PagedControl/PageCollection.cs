@@ -28,14 +28,14 @@ namespace Manina.Windows.Forms
                     controls.Add(value);
                     controls.SetChildIndex(value, index + owner.FirstPageIndex);
 
-                    controls.RaisePageEvents = true;
-
                     owner.OnPageAdded(new PageEventArgs(value));
 
                     if (owner.PageCount == 1) owner.ChangePage(value, true);
 
                     owner.OnUpdateUIControls(new EventArgs());
                     owner.UpdatePages();
+
+                    controls.RaisePageEvents = true;
                 }
             }
 
@@ -73,12 +73,12 @@ namespace Manina.Windows.Forms
                     owner.OnPageRemoved(new PageEventArgs(page));
                 }
 
-                controls.RaisePageEvents = true;
-
-                owner.ChangePage(null, true);
+                owner.SelectedIndex = -1;
 
                 owner.OnUpdateUIControls(new EventArgs());
                 owner.UpdatePages();
+
+                controls.RaisePageEvents = true;
             }
 
             public bool Contains(Page item)
@@ -109,20 +109,29 @@ namespace Manina.Windows.Forms
 
                 controls.RaisePageEvents = false;
 
+                List<Control> removed = new List<Control>();
+                for (int i = controls.Count - 1; i >= index + owner.FirstPageIndex; i--)
+                {
+                    removed.Add(controls[i]);
+                    controls.RemoveAt(i);
+                }
                 controls.Add(item);
-                controls.SetChildIndex(item, index + owner.FirstPageIndex);
-
-                controls.RaisePageEvents = true;
+                for (int i = removed.Count - 1; i >= 0; i--)
+                {
+                    controls.Add(removed[i]);
+                }
 
                 owner.OnPageAdded(new PageEventArgs(item));
 
                 if (Count == 1)
-                    owner.ChangePage(item, true);
+                    owner.SelectedIndex = 0;
                 else if (insertBeforeSelected)
                     owner.selectedIndex = owner.selectedIndex + 1;
 
                 owner.OnUpdateUIControls(new EventArgs());
                 owner.UpdatePages();
+
+                controls.RaisePageEvents = true;
             }
 
             public bool Remove(Page item)
