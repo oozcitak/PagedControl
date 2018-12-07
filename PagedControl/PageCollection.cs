@@ -24,14 +24,13 @@ namespace Manina.Windows.Forms
                 {
                     controls.RaisePageEvents = false;
 
+                    controls.RemoveAt(index + owner.FirstPageIndex);
                     controls.Add(value);
                     controls.SetChildIndex(value, index + owner.FirstPageIndex);
 
                     controls.RaisePageEvents = true;
 
-                    owner.OnPageAdded(new PageEventArgs(value));
-
-                    if (owner.PageCount == 1) owner.ChangePage(value, true);
+                    if (owner.SelectedIndex == index) owner.ChangePage(value, true);
 
                     owner.OnUpdateUIControls(new EventArgs());
                     owner.UpdatePages();
