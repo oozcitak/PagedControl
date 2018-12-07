@@ -442,6 +442,9 @@ namespace Manina.Windows.Forms
                 PageChangingEventArgs pce = new PageChangingEventArgs(selectedPage, selectedIndex, page, index);
                 OnCurrentPageChanging(pce);
                 if (pce.Cancel) return;
+
+                page = pce.NewPage;
+                index = (page == null) ? -1 : Pages.IndexOf(page);
             }
 
             lastSelectedPage = selectedPage;
