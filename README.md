@@ -34,8 +34,8 @@ Following public methods are available.
 
 | Name | Description |
 |------|-------------|
-| void GoBack() | Navigates to the previous page if possible. |
-| void GoNext() | Navigates to the next page if possible. |
+| GoBack() | Navigates to the previous page if possible. |
+| GoNext() | Navigates to the next page if possible. |
 
 # Events #
 
