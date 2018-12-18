@@ -11,3 +11,5 @@ test:
   assemblies:
     only:
       - PagedControl.dll
+
+before_build: nuget restore
