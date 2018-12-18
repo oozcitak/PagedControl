@@ -201,7 +201,7 @@ namespace Manina.Windows.Forms
         public virtual Page SelectedPage
         {
             get => selectedPage;
-            set => ChangePage(value, true);
+            set => ChangePage(value);
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace Manina.Windows.Forms
         public virtual int SelectedIndex
         {
             get => selectedIndex;
-            set => ChangePage(value == -1 ? null : Pages[value], true);
+            set => ChangePage(value == -1 ? null : Pages[value]);
         }
 
         /// <summary>
@@ -385,34 +385,43 @@ namespace Manina.Windows.Forms
         /// Changes the currently selected page to the given page.
         /// </summary>
         /// <param name="page">The page to make current.</param>
-        /// <param name="raisePageEvents">Whether to raise page events while changing the page.</param>
-        internal void ChangePage(Page page, bool raisePageEvents)
+        /// <param name="allowModify">true to allow the page change to be cancelled and
+        /// modifying the new page, otherwise false.</param>
+        internal void ChangePage(Page page, bool allowModify = true)
         {
             int index = (page == null) ? -1 : Pages.IndexOf(page);
 
             if (page != null && index == -1)
                 throw new ArgumentException("Page is not found in the page collection.");
-
-            if (selectedPage != null && page != null && selectedPage == page)
+            else if (page == null && Pages.Count != 0)
+                throw new ArgumentException("Cannot set SelectedPage to null if the control has at least one page.");
+            else if (selectedPage != null && page != null && selectedPage == page)
                 return;
 
-            if (raisePageEvents && selectedPage != null && selectedPage.CausesValidation)
+            if (selectedPage != null && selectedPage.CausesValidation)
             {
                 PageValidatingEventArgs pve = new PageValidatingEventArgs(selectedPage);
                 OnPageValidating(pve);
-                if (pve.Cancel) return;
+                if (allowModify && pve.Cancel) return;
 
                 OnPageValidated(new PageEventArgs(selectedPage));
             }
 
-            if (raisePageEvents)
-            {
-                PageChangingEventArgs pce = new PageChangingEventArgs(selectedPage, page);
-                OnCurrentPageChanging(pce);
-                if (pce.Cancel) return;
+            PageChangingEventArgs pce = new PageChangingEventArgs(selectedPage, page);
+            OnCurrentPageChanging(pce);
+            // Check if the page change is cancelled by user
+            if (allowModify && pce.Cancel) return;
 
+            // Check if the current page is modified by user
+            if (allowModify)
+            {
                 page = pce.NewPage;
                 index = (page == null) ? -1 : Pages.IndexOf(page);
+
+                if (page != null && index == -1)
+                    throw new ArgumentException("Page is not found in the page collection.");
+                else if (page == null && Pages.Count != 0)
+                    throw new ArgumentException("Cannot set SelectedPage to null if the control has at least one page.");
             }
 
             lastSelectedPage = selectedPage;
@@ -422,14 +431,13 @@ namespace Manina.Windows.Forms
             OnUpdateUIControls(new EventArgs());
             UpdatePages();
 
-            if (raisePageEvents && lastSelectedPage != null)
+            if (lastSelectedPage != null)
                 OnPageHidden(new PageEventArgs(lastSelectedPage));
 
-            if (raisePageEvents && selectedPage != null)
+            if (selectedPage != null)
                 OnPageShown(new PageEventArgs(selectedPage));
 
-            if (raisePageEvents)
-                OnCurrentPageChanged(new PageChangedEventArgs(lastSelectedPage, selectedPage));
+            OnCurrentPageChanged(new PageChangedEventArgs(lastSelectedPage, selectedPage));
         }
         #endregion
 
@@ -463,91 +471,80 @@ namespace Manina.Windows.Forms
         {
             private readonly PagedControl owner;
 
-            public bool RaisePageEvents { get; set; }
+            public bool FromPageCollection { get; set; }
 
             public PagedControlControlCollection(PagedControl ownerControl) : base(ownerControl)
             {
-                RaisePageEvents = true;
+                FromPageCollection = false;
 
                 owner = ownerControl;
             }
 
             public override void Add(Control value)
             {
-                if (owner.creatingUIControls)
+                if (FromPageCollection)
                 {
                     base.Add(value);
                     return;
                 }
-
-                if (!(value is Page page))
+                else if (owner.creatingUIControls)
                 {
-                    throw new ArgumentException(string.Format("Only a Page can be added to a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
+                    base.Add(value);
+                    return;
                 }
-
-                base.Add(page);
-
-                // site the page
-                ISite site = owner.Site;
-                if (site != null && page.Site == null)
+                else
                 {
-                    IContainer container = site.Container;
-                    if (container != null)
+                    if (!(value is Page page))
                     {
-                        container.Add(page);
+                        throw new ArgumentException(string.Format("Only a Page can be added to a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
                     }
-                }
 
-                if (RaisePageEvents)
-                {
-                    owner.OnPageAdded(new PageEventArgs(page));
+                    owner.Pages.Add(page);
 
-                    if (owner.PageCount == 1) owner.ChangePage(page, true);
-
-                    owner.OnUpdateUIControls(new EventArgs());
-                    owner.UpdatePages();
+                    // site the page
+                    ISite site = owner.Site;
+                    if (site != null && page.Site == null)
+                    {
+                        IContainer container = site.Container;
+                        if (container != null)
+                        {
+                            container.Add(page);
+                        }
+                    }
                 }
             }
 
             public override void Remove(Control value)
             {
-                if (owner.creatingUIControls)
+                if (FromPageCollection)
                 {
                     base.Remove(value);
                     return;
                 }
-
-                if (!(value is Page page))
+                else if (owner.creatingUIControls)
                 {
-                    throw new ArgumentException(string.Format("Only a Page can be removed from a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
+                    base.Remove(value);
+                    return;
                 }
-
-                int index = owner.Pages.IndexOf(page);
-                if (index == -1)
+                else
                 {
-                    throw new ArgumentException("Page not found in collection.");
-                }
+                    if (!(value is Page page))
+                    {
+                        throw new ArgumentException(string.Format("Only a Page can be removed from a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
+                    }
 
-                if (RaisePageEvents)
-                {
-                    if (owner.PageCount == 1) // removing last page
-                        owner.ChangePage(null, true);
-                    else if (ReferenceEquals(owner.SelectedPage, page)) // removing selected page
-                        owner.ChangePage(owner.Pages[index == 0 ? 1 : index - 1], true);
-                }
+                    owner.Pages.Remove(page);
 
-                base.Remove(page);
-                if (owner.PageCount == 0) // removed last page
-                    owner.selectedIndex = -1;
-                else if (owner.selectedIndex > owner.Pages.Count - 1)
-                    owner.selectedIndex = owner.Pages.Count - 1;
-
-                if (RaisePageEvents)
-                {
-                    owner.OnPageRemoved(new PageEventArgs(page));
-
-                    owner.OnUpdateUIControls(new EventArgs());
-                    owner.UpdatePages();
+                    // unsite the page
+                    ISite site = owner.Site;
+                    if (site != null && page.Site == null)
+                    {
+                        IContainer container = site.Container;
+                        if (container != null)
+                        {
+                            container.Remove(page);
+                        }
+                    }
                 }
             }
 
