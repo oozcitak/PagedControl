@@ -297,7 +297,7 @@ namespace Manina.Windows.Forms
 
         #region Constructor
         /// <summary>
-        /// Initializes a new instance of the <see cref="GenericPagedControl"/> class.
+        /// Initializes a new instance of the <see cref="PagedControl"/> class.
         /// </summary>
         public PagedControl()
         {
