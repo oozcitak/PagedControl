@@ -1,0 +1,13 @@
+image: Visual Studio 2017
+
+platform: Any CPU
+configuration: Release
+
+build:
+  parallel: true
+  project: PagedControl.sln
+
+test:
+  assemblies:
+    only:
+      - PagedControl.dll
