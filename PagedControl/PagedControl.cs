@@ -361,7 +361,7 @@ namespace Manina.Windows.Forms
         /// <summary>
         /// Updates the display bounds and visibility of pages.
         /// </summary>
-        internal void UpdatePages()
+        protected void UpdatePages()
         {
             for (int i = 0; i < Pages.Count; i++)
             {
@@ -387,7 +387,7 @@ namespace Manina.Windows.Forms
         /// <param name="page">The page to make current.</param>
         /// <param name="allowModify">true to allow the page change to be cancelled and
         /// modifying the new page, otherwise false.</param>
-        internal void ChangePage(Page page, bool allowModify = true)
+        protected void ChangePage(Page page, bool allowModify = true)
         {
             int index = (page == null) ? -1 : Pages.IndexOf(page);
 
