@@ -25,9 +25,6 @@ namespace Manina.Windows.Forms
 
         #region Unused Methods - Hide From User
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public override string Text { get => base.Text; set => base.Text = value; }
-
-        [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override DockStyle Dock { get => DockStyle.None; set { } }
 
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -63,9 +60,6 @@ namespace Manina.Windows.Forms
 #pragma warning disable CS0067
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
         public new event EventHandler DockChanged;
-
-        [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
-        public new event EventHandler TextChanged;
 
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
         public new event EventHandler TabIndexChanged;
