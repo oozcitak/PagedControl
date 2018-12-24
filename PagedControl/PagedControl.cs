@@ -312,8 +312,9 @@ namespace Manina.Windows.Forms
 
             borderStyle = BorderStyle.FixedSingle;
 
-            SetStyle(ControlStyles.ResizeRedraw, true);
-            SetStyle(ControlStyles.Opaque, true);
+            DoubleBuffered = true;
+            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.UserPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
 
             CreateChildControls();
 
