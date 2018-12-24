@@ -42,15 +42,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Designer\BaseGlyph.cs" />
-    <Compile Include="Designer\ButtonGlyph.cs" />
+    <Compile Include="Designer\BaseGlyph.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Designer\ButtonGlyph.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Designer\GlyphToolBar.cs" />
-    <Compile Include="Designer\LabelGlyph.cs" />
-    <Compile Include="Designer\SeparatorGlyph.cs" />
+    <Compile Include="Designer\LabelGlyph.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Designer\SeparatorGlyph.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PagedControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PagedControlDesigner.cs">
+    <Compile Include="Designer\PagedControlDesigner.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PageCollection.cs">

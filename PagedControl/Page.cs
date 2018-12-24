@@ -143,7 +143,7 @@ namespace Manina.Windows.Forms
         #endregion
 
         #region ControlDesigner
-        internal class PageDesigner : ParentControlDesigner
+        protected internal class PageDesigner : ParentControlDesigner
         {
             #region Properties
             public override SelectionRules SelectionRules => SelectionRules.Locked;

@@ -11,26 +11,25 @@ namespace Manina.Windows.Forms
 {
     public partial class PagedControl
     {
-        internal class PagedControlDesigner : ParentControlDesigner
+        protected internal class PagedControlDesigner : ParentControlDesigner
         {
             #region Member Variables
-            private BehaviorService behaviorService;
-            private ISelectionService selectionService;
+            public ISelectionService SelectionService { get; private set; }
 
-            private DesignerVerb addPageVerb;
-            private DesignerVerb removePageVerb;
-            private DesignerVerb navigateBackVerb;
-            private DesignerVerb navigateNextVerb;
-            private DesignerVerbCollection verbs;
+            protected DesignerVerb addPageVerb;
+            protected DesignerVerb removePageVerb;
+            protected DesignerVerb navigateBackVerb;
+            protected DesignerVerb navigateNextVerb;
+            protected DesignerVerbCollection verbs;
 
-            private bool toolbarAtBottom = true;
-            private GlyphToolBar toolbar;
-            private ButtonGlyph moveToolbarButton;
-            private ButtonGlyph addPageButton;
-            private ButtonGlyph removePageButton;
-            private ButtonGlyph navigateBackButton;
-            private ButtonGlyph navigateNextButton;
-            private LabelGlyph currentPageLabel;
+            protected bool toolbarAtBottom = true;
+            protected GlyphToolBar toolbar;
+            protected ButtonGlyph moveToolbarButton;
+            protected ButtonGlyph addPageButton;
+            protected ButtonGlyph removePageButton;
+            protected ButtonGlyph navigateBackButton;
+            protected ButtonGlyph navigateNextButton;
+            protected LabelGlyph currentPageLabel;
 
             private Adorner toolbarAdorner;
             #endregion
@@ -159,8 +158,7 @@ namespace Manina.Windows.Forms
             {
                 base.Initialize(component);
 
-                behaviorService = (BehaviorService)GetService(typeof(BehaviorService));
-                selectionService = (ISelectionService)GetService(typeof(ISelectionService));
+                SelectionService = (ISelectionService)GetService(typeof(ISelectionService));
 
                 CreateVerbs();
                 CreateGlyphs();
@@ -171,8 +169,8 @@ namespace Manina.Windows.Forms
                 Control.Resize += Control_Resize;
                 Control.Move += Control_Move;
 
-                if (selectionService != null)
-                    selectionService.SelectionChanged += SelectionService_SelectionChanged;
+                if (SelectionService != null)
+                    SelectionService.SelectionChanged += SelectionService_SelectionChanged;
             }
 
             public override void InitializeNewComponent(IDictionary defaultValues)
@@ -188,7 +186,7 @@ namespace Manina.Windows.Forms
 
                 Control.SelectedIndex = 0;
 
-                UpdateGlyphToolbar();
+                UpdateGlyphsAndVerbs();
             }
 
             protected override void Dispose(bool disposing)
@@ -206,11 +204,11 @@ namespace Manina.Windows.Forms
                     addPageButton.Click -= AddPageButton_Click;
                     removePageButton.Click -= RemovePageButton_Click;
 
-                    if (behaviorService != null)
-                        behaviorService.Adorners.Remove(toolbarAdorner);
+                    if (BehaviorService != null)
+                        BehaviorService.Adorners.Remove(toolbarAdorner);
 
-                    if (selectionService != null)
-                        selectionService.SelectionChanged -= SelectionService_SelectionChanged;
+                    if (SelectionService != null)
+                        SelectionService.SelectionChanged -= SelectionService_SelectionChanged;
                 }
                 base.Dispose(disposing);
             }
@@ -239,9 +237,9 @@ namespace Manina.Windows.Forms
             private void CreateGlyphs()
             {
                 toolbarAdorner = new Adorner();
-                behaviorService.Adorners.Add(toolbarAdorner);
+                BehaviorService.Adorners.Add(toolbarAdorner);
 
-                toolbar = new GlyphToolBar(behaviorService, this, toolbarAdorner);
+                toolbar = new GlyphToolBar(BehaviorService, this, toolbarAdorner);
 
                 moveToolbarButton = new ButtonGlyph();
                 moveToolbarButton.Path = GetUpDownArrowSign(toolbar.DefaultIconSize.Height);
@@ -293,15 +291,15 @@ namespace Manina.Windows.Forms
             {
                 bool showAdorner = false;
 
-                if (selectionService != null && selectionService.PrimarySelection != null)
+                if (SelectionService != null && SelectionService.PrimarySelection != null)
                 {
-                    if (selectionService.PrimarySelection == Control)
+                    if (SelectionService.PrimarySelection == Control)
                         showAdorner = true;
-                    else if (selectionService.PrimarySelection is Page page && page.Parent == Control)
+                    else if (SelectionService.PrimarySelection is Page page && page.Parent == Control)
                         showAdorner = true;
                 }
 
-                toolbarAdorner.Enabled = showAdorner;
+                toolbarAdorner.Enabled = toolbar.Visible && showAdorner;
             }
 
             /// <summary>
@@ -309,7 +307,7 @@ namespace Manina.Windows.Forms
             /// </summary>
             private void Control_CurrentPageChanged(object sender, PageChangedEventArgs e)
             {
-                UpdateGlyphToolbar();
+                UpdateGlyphsAndVerbs();
             }
 
             /// <summary>
@@ -317,7 +315,7 @@ namespace Manina.Windows.Forms
             /// </summary>
             private void Control_PageAdded(object sender, PageEventArgs e)
             {
-                UpdateGlyphToolbar();
+                UpdateGlyphsAndVerbs();
             }
 
             /// <summary>
@@ -325,7 +323,7 @@ namespace Manina.Windows.Forms
             /// </summary>
             private void Control_PageRemoved(object sender, PageEventArgs e)
             {
-                UpdateGlyphToolbar();
+                UpdateGlyphsAndVerbs();
             }
 
             /// <summary>
@@ -333,7 +331,7 @@ namespace Manina.Windows.Forms
             /// </summary>
             private void Control_Resize(object sender, EventArgs e)
             {
-                UpdateGlyphToolbar();
+                UpdateGlyphsAndVerbs();
             }
 
             /// <summary>
@@ -341,7 +339,7 @@ namespace Manina.Windows.Forms
             /// </summary>
             private void Control_Move(object sender, EventArgs e)
             {
-                UpdateGlyphToolbar();
+                UpdateGlyphsAndVerbs();
             }
 
             /// <summary>
@@ -363,7 +361,7 @@ namespace Manina.Windows.Forms
             /// <summary>
             /// Updates the visual states of the toolbar and its glyphs.
             /// </summary>
-            private void UpdateGlyphToolbar()
+            public void UpdateGlyphsAndVerbs()
             {
                 removePageVerb.Enabled = removePageButton.Enabled = (Control.Pages.Count > 1);
                 navigateBackVerb.Enabled = navigateBackButton.Enabled = (Control.SelectedIndex > 0);
@@ -379,7 +377,7 @@ namespace Manina.Windows.Forms
             {
                 toolbarAtBottom = !toolbarAtBottom;
 
-                UpdateGlyphToolbar();
+                UpdateGlyphsAndVerbs();
             }
 
             private void NavigateBackButton_Click(object sender, EventArgs e)
@@ -417,7 +415,7 @@ namespace Manina.Windows.Forms
                     Control.Pages.Add(page);
                     Control.SelectedPage = page;
 
-                    selectionService.SetSelectedComponents(new Component[] { Control.SelectedPage });
+                    SelectionService.SetSelectedComponents(new Component[] { Control.SelectedPage });
                 }
             }
 
@@ -442,7 +440,7 @@ namespace Manina.Windows.Forms
                                 index = Control.Pages.Count - 1;
                             Control.SelectedIndex = index;
 
-                            selectionService.SetSelectedComponents(new Component[] { Control.SelectedPage });
+                            SelectionService.SetSelectedComponents(new Component[] { Control.SelectedPage });
                         }
                     }
                 }
@@ -455,7 +453,7 @@ namespace Manina.Windows.Forms
             {
                 Control.GoBack();
 
-                selectionService.SetSelectedComponents(new Component[] { Control.SelectedPage });
+                SelectionService.SetSelectedComponents(new Component[] { Control.SelectedPage });
             }
 
             /// <summary>
@@ -465,7 +463,7 @@ namespace Manina.Windows.Forms
             {
                 Control.GoNext();
 
-                selectionService.SetSelectedComponents(new Component[] { Control.SelectedPage });
+                SelectionService.SetSelectedComponents(new Component[] { Control.SelectedPage });
             }
             #endregion
 

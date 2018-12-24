@@ -4,45 +4,48 @@ using System.Windows.Forms;
 
 namespace Manina.Windows.Forms
 {
-    /// <summary>
-    /// Represent a toolbar separator on the designer.
-    /// </summary>
-    internal class SeparatorGlyph : BaseGlyph
+    public partial class PagedControl
     {
-        #region Member Variables
-        private Size lineSize;
-        #endregion
-
-        #region Properties
         /// <summary>
-        /// Gets the size of the label.
+        /// Represent a toolbar separator on the designer.
         /// </summary>
-        public override Size Size
+        protected internal class SeparatorGlyph : BaseGlyph
         {
-            get
+            #region Member Variables
+            private Size lineSize;
+            #endregion
+
+            #region Properties
+            /// <summary>
+            /// Gets the size of the label.
+            /// </summary>
+            public override Size Size
             {
-                lineSize = new Size(1, Parent.DefaultIconSize.Height);
+                get
+                {
+                    lineSize = new Size(1, Parent.DefaultIconSize.Height);
 
-                return lineSize + Padding + Padding;
+                    return lineSize + Padding + Padding;
+                }
             }
-        }
-        #endregion
+            #endregion
 
-        #region Overriden Methods
-        /// <summary>
-        /// Paints the glyph. The base class paints the background only.
-        /// </summary>
-        /// <param name="pe">Paint event arguments.</param>
-        public override void Paint(PaintEventArgs pe)
-        {
-            base.Paint(pe);
-
-            using (Pen linePen = new Pen(Parent.SeparatorColor))
+            #region Overriden Methods
+            /// <summary>
+            /// Paints the glyph. The base class paints the background only.
+            /// </summary>
+            /// <param name="pe">Paint event arguments.</param>
+            public override void Paint(PaintEventArgs pe)
             {
-                Rectangle lineBounds = GetCenteredRectangle(lineSize);
-                pe.Graphics.DrawLine(linePen, lineBounds.Left, lineBounds.Top, lineBounds.Left, lineBounds.Bottom);
+                base.Paint(pe);
+
+                using (Pen linePen = new Pen(Parent.SeparatorColor))
+                {
+                    Rectangle lineBounds = GetCenteredRectangle(lineSize);
+                    pe.Graphics.DrawLine(linePen, lineBounds.Left, lineBounds.Top, lineBounds.Left, lineBounds.Bottom);
+                }
             }
+            #endregion
         }
-        #endregion
     }
 }
