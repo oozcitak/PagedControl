@@ -251,7 +251,8 @@ namespace Manina.Windows.Forms
             /// </summary>
             public void Refresh()
             {
-                adorner.Invalidate();
+                if (Visible)
+                    adorner.Invalidate();
             }
             #endregion
 

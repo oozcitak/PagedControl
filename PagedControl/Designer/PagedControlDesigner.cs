@@ -3,19 +3,15 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing;
-using System.Windows.Forms;
-using System.Windows.Forms.Design;
 using System.Windows.Forms.Design.Behavior;
 
 namespace Manina.Windows.Forms
 {
     public partial class PagedControl
     {
-        protected internal class PagedControlDesigner : ParentControlDesigner
+        protected internal class PagedControlDesigner : PageContainerDesigner
         {
             #region Member Variables
-            public ISelectionService SelectionService { get; private set; }
-
             protected DesignerVerb addPageVerb;
             protected DesignerVerb removePageVerb;
             protected DesignerVerb navigateBackVerb;
@@ -39,11 +35,6 @@ namespace Manina.Windows.Forms
             /// Gets the list of designer verbs.
             /// </summary>
             public override DesignerVerbCollection Verbs => verbs;
-
-            /// <summary>
-            /// Gets the parent control.
-            /// </summary>
-            public new PagedControl Control => (PagedControl)base.Control;
 
             /// <summary>
             /// Gets the location of the designer toolbar relative to the parent control.
@@ -158,8 +149,6 @@ namespace Manina.Windows.Forms
             {
                 base.Initialize(component);
 
-                SelectionService = (ISelectionService)GetService(typeof(ISelectionService));
-
                 CreateVerbs();
                 CreateGlyphs();
 
@@ -176,16 +165,6 @@ namespace Manina.Windows.Forms
             public override void InitializeNewComponent(IDictionary defaultValues)
             {
                 base.InitializeNewComponent(defaultValues);
-
-                // add two default pages
-                AddPageHandler(this, EventArgs.Empty);
-                AddPageHandler(this, EventArgs.Empty);
-
-                MemberDescriptor member = TypeDescriptor.GetProperties(Component)["Controls"];
-                RaiseComponentChanging(member);
-                RaiseComponentChanged(member, null, null);
-
-                Control.SelectedIndex = 0;
 
                 UpdateGlyphsAndVerbs();
             }
@@ -245,31 +224,30 @@ namespace Manina.Windows.Forms
                 moveToolbarButton = new ButtonGlyph();
                 moveToolbarButton.Path = GetUpDownArrowSign(toolbar.DefaultIconSize.Height);
                 moveToolbarButton.ToolTipText = "Move toolbar";
+                moveToolbarButton.Click += MoveToolbarButton_Click;
 
                 navigateBackButton = new ButtonGlyph();
                 navigateBackButton.Path = GetLeftArrowSign(toolbar.DefaultIconSize.Height);
                 navigateBackButton.ToolTipText = "Previous page";
+                navigateBackButton.Click += NavigateBackButton_Click;
 
                 navigateNextButton = new ButtonGlyph();
                 navigateNextButton.Path = GetRightArrowSign(toolbar.DefaultIconSize.Height);
                 navigateNextButton.ToolTipText = "Next page";
+                navigateNextButton.Click += NavigateNextButton_Click;
 
                 addPageButton = new ButtonGlyph();
                 addPageButton.Path = GetPlusSign(toolbar.DefaultIconSize.Height);
                 addPageButton.ToolTipText = "Add a new page";
+                addPageButton.Click += AddPageButton_Click;
 
                 removePageButton = new ButtonGlyph();
                 removePageButton.Path = GetMinusSign(toolbar.DefaultIconSize.Height);
                 removePageButton.ToolTipText = "Remove current page";
+                removePageButton.Click += RemovePageButton_Click;
 
                 currentPageLabel = new LabelGlyph();
                 currentPageLabel.Text = string.Format("Page {0} of {1}", Control.SelectedIndex + 1, Control.Pages.Count);
-
-                moveToolbarButton.Click += MoveToolbarButton_Click;
-                navigateBackButton.Click += NavigateBackButton_Click;
-                navigateNextButton.Click += NavigateNextButton_Click;
-                addPageButton.Click += AddPageButton_Click;
-                removePageButton.Click += RemovePageButton_Click;
 
                 toolbar.AddButton(moveToolbarButton);
                 toolbar.AddButton(new SeparatorGlyph());
@@ -344,22 +322,6 @@ namespace Manina.Windows.Forms
             }
 
             /// <summary>
-            /// Gets the designer of the current page.
-            /// </summary>
-            /// <returns>The designer of the wizard page currently active in the designer.</returns>
-            private Page.PageDesigner GetCurrentPageDesigner()
-            {
-                var page = Control.SelectedPage;
-                if (page != null)
-                {
-                    IDesignerHost host = (IDesignerHost)GetService(typeof(IDesignerHost));
-                    if (host != null)
-                        return (Page.PageDesigner)host.GetDesigner(page);
-                }
-                return null;
-            }
-
-            /// <summary>
             /// Updates the visual states of the toolbar and its glyphs.
             /// </summary>
             public void UpdateGlyphsAndVerbs()
@@ -399,148 +361,6 @@ namespace Manina.Windows.Forms
             private void RemovePageButton_Click(object sender, EventArgs e)
             {
                 RemovePageHandler(this, EventArgs.Empty);
-            }
-            #endregion
-
-            #region Verb Handlers
-            /// <summary>
-            /// Adds a new wizard page.
-            /// </summary>
-            protected void AddPageHandler(object sender, EventArgs e)
-            {
-                IDesignerHost host = (IDesignerHost)GetService(typeof(IDesignerHost));
-
-                if (host != null)
-                {
-                    Page page = (Page)host.CreateComponent(typeof(Page));
-                    page.Text = string.Format("Page {0}", Control.Pages.Count + 1);
-                    Control.Pages.Add(page);
-                    Control.SelectedPage = page;
-
-                    SelectionService.SetSelectedComponents(new Component[] { Control.SelectedPage });
-                }
-            }
-
-            /// <summary>
-            /// Removes the current wizard page.
-            /// </summary>
-            protected void RemovePageHandler(object sender, EventArgs e)
-            {
-                IDesignerHost host = (IDesignerHost)GetService(typeof(IDesignerHost));
-
-                if (host != null)
-                {
-                    if (Control.Pages.Count > 1)
-                    {
-                        Page page = Control.SelectedPage;
-                        if (page != null)
-                        {
-                            int index = Control.SelectedIndex;
-
-                            host.DestroyComponent(page);
-                            if (index == Control.Pages.Count)
-                                index = Control.Pages.Count - 1;
-                            Control.SelectedIndex = index;
-
-                            SelectionService.SetSelectedComponents(new Component[] { Control.SelectedPage });
-                        }
-                    }
-                }
-            }
-
-            /// <summary>
-            /// Navigates to the previous wizard page.
-            /// </summary>
-            protected void NavigateBackHandler(object sender, EventArgs e)
-            {
-                Control.GoBack();
-
-                SelectionService.SetSelectedComponents(new Component[] { Control.SelectedPage });
-            }
-
-            /// <summary>
-            /// Navigates to the next wizard page.
-            /// </summary>
-            protected void NavigateNextHandler(object sender, EventArgs e)
-            {
-                Control.GoNext();
-
-                SelectionService.SetSelectedComponents(new Component[] { Control.SelectedPage });
-            }
-            #endregion
-
-            #region Parent/Child Relation
-            public override bool CanParent(Control control)
-            {
-                return (control is Page);
-            }
-
-            public override bool CanParent(ControlDesigner controlDesigner)
-            {
-                return (controlDesigner != null && controlDesigner.Component is Page);
-            }
-            #endregion
-
-            #region Delegate All Drag Events To The Current Page
-            protected override void OnDragEnter(DragEventArgs de)
-            {
-                var pageDesigner = GetCurrentPageDesigner();
-                if (pageDesigner == null)
-                    base.OnDragEnter(de);
-                else
-                    pageDesigner.OnDragEnter(de);
-            }
-
-            protected override void OnDragOver(DragEventArgs de)
-            {
-                var pageDesigner = GetCurrentPageDesigner();
-                if (pageDesigner == null)
-                    base.OnDragOver(de);
-                else
-                {
-                    Point pt = Control.PointToClient(new Point(de.X, de.Y));
-
-                    if (pageDesigner.Control.DisplayRectangle.Contains(pt))
-                        pageDesigner.OnDragOver(de);
-                    else
-                        de.Effect = DragDropEffects.None;
-                }
-            }
-
-            protected override void OnDragLeave(EventArgs e)
-            {
-                var pageDesigner = GetCurrentPageDesigner();
-                if (pageDesigner == null)
-                    base.OnDragLeave(e);
-                else
-                    pageDesigner.OnDragLeave(e);
-            }
-
-            protected override void OnDragDrop(DragEventArgs de)
-            {
-                var pageDesigner = GetCurrentPageDesigner();
-                if (pageDesigner == null)
-                    base.OnDragDrop(de);
-                else
-                    pageDesigner.OnDragDrop(de);
-            }
-
-            protected override void OnGiveFeedback(GiveFeedbackEventArgs e)
-            {
-                var pageDesigner = GetCurrentPageDesigner();
-                if (pageDesigner == null)
-                    base.OnGiveFeedback(e);
-                else
-                    pageDesigner.OnGiveFeedback(e);
-            }
-
-            protected override void OnDragComplete(DragEventArgs de)
-            {
-                var pageDesigner = GetCurrentPageDesigner();
-                if (pageDesigner == null)
-                    base.OnDragComplete(de);
-                else
-                    pageDesigner.OnDragComplete(de);
             }
             #endregion
         }

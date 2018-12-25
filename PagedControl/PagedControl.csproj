@@ -52,6 +52,9 @@
     <Compile Include="Designer\LabelGlyph.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Designer\PageContainerDesigner.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Designer\SeparatorGlyph.cs">
       <SubType>Component</SubType>
     </Compile>
