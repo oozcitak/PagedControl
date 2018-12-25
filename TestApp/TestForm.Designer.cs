@@ -150,7 +150,7 @@
             // 
             this.page2.Location = new System.Drawing.Point(1, 1);
             this.page2.Name = "page2";
-            this.page2.Size = new System.Drawing.Size(0, 0);
+            this.page2.Size = new System.Drawing.Size(774, 395);
             // 
             // ClearLogButton
             // 

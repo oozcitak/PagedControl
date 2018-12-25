@@ -177,7 +177,8 @@ namespace Manina.Windows.Forms
             {
                 base.InitializeNewComponent(defaultValues);
 
-                // add a default page
+                // add two default pages
+                AddPageHandler(this, EventArgs.Empty);
                 AddPageHandler(this, EventArgs.Empty);
 
                 MemberDescriptor member = TypeDescriptor.GetProperties(Component)["Controls"];
@@ -412,6 +413,7 @@ namespace Manina.Windows.Forms
                 if (host != null)
                 {
                     Page page = (Page)host.CreateComponent(typeof(Page));
+                    page.Text = string.Format("Page {0}", Control.Pages.Count + 1);
                     Control.Pages.Add(page);
                     Control.SelectedPage = page;
 
