@@ -224,14 +224,6 @@ namespace Manina.Windows.Forms
         public virtual PageCollection Pages { get; }
 
         /// <summary>
-        /// Gets or sets the drawing mode for the control.
-        /// </summary>
-        [Category("Behavior"), DefaultValue(false)]
-        [RefreshProperties(RefreshProperties.Repaint)]
-        [Description("Gets or sets the drawing mode for the control.")]
-        public bool OwnerDraw { get; set; }
-
-        /// <summary>
         /// Gets the rectangle that represents the client area of the control.
         /// </summary>
         [Browsable(false)]

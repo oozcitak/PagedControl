@@ -84,14 +84,6 @@ namespace Manina.Windows.Forms
             return new PageControlCollection(this);
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            if (Parent != null && !Parent.OwnerDraw)
-            {
-                base.OnPaintBackground(e);
-            }
-        }
-
         protected override void OnPaint(PaintEventArgs e)
         {
             if (DesignMode && Visible)
@@ -101,10 +93,7 @@ namespace Manina.Windows.Forms
                 ControlPaint.DrawBorder(e.Graphics, rect, Color.Black, ButtonBorderStyle.Dashed);
             }
 
-            if (Parent != null && !Parent.OwnerDraw)
-            {
-                base.OnPaint(e);
-            }
+            base.OnPaint(e);
 
             if (Parent != null)
                 Parent.OnPagePaint(new PagedControl.PagePaintEventArgs(e.Graphics, this));
