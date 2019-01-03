@@ -269,8 +269,9 @@ namespace Manina.Windows.Forms
         public override Rectangle DisplayRectangle => new Rectangle(ClientRectangle.Left, ClientRectangle.Top, ClientRectangle.Width, ClientRectangle.Height);
 
         /// <summary>
-        /// Gets an array of UI controls hosted on the PagedControl.
+        /// Gets an array of UI controls hosted on the control.
         /// </summary>
+        [Browsable(false)]
         public virtual Control[] UIControls => new Control[0];
         #endregion
 

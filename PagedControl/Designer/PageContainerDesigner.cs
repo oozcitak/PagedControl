@@ -42,15 +42,18 @@ namespace Manina.Windows.Forms
             {
                 base.InitializeNewComponent(defaultValues);
 
-                // add two default pages
-                AddPageHandler(this, EventArgs.Empty);
-                AddPageHandler(this, EventArgs.Empty);
+                if (Control.Pages.Count == 0)
+                {
+                    // add two default pages
+                    AddPageHandler(this, EventArgs.Empty);
+                    AddPageHandler(this, EventArgs.Empty);
 
-                MemberDescriptor member = TypeDescriptor.GetProperties(Component)["Controls"];
-                RaiseComponentChanging(member);
-                RaiseComponentChanged(member, null, null);
+                    MemberDescriptor member = TypeDescriptor.GetProperties(Component)["Controls"];
+                    RaiseComponentChanging(member);
+                    RaiseComponentChanged(member, null, null);
 
-                Control.SelectedIndex = 0;
+                    Control.SelectedIndex = 0;
+                }
             }
             #endregion
 
