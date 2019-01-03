@@ -12,6 +12,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>$copyright$</copyright>
-    <tags>winforms controls wizard</tags>
+    <tags>winforms controls container page</tags>
   </metadata>
 </package>
