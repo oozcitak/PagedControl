@@ -23,7 +23,6 @@ Following public properties are available.
 | SelectedPage      | Page                           | Gets or sets the currently selected page. |
 | SelectedIndex     | int                            | Gets or sets the index of the currently selected page. |
 | Pages             | PagedControl.PageCollection    | Gets the collection of pages. |
-| OwnerDraw         | bool                           | Gets or sets whether the pages will be manually drawn by the user. |
 | CanGoBack         | bool                           | Gets whether the control can navigate to the previous page. |
 | CanGoNext         | bool                           | Gets whether the control can navigate to the next page. |
 | DisplayRectangle  | System.Drawing.Rectangle       | Gets the client rectangle where pages are located. Deriving classes can override this property to modify page bounds. [WizardControl](https://github.com/oozcitak/WizardControl), for example, overrides this property to provide space for its navigation buttons. |
@@ -52,5 +51,5 @@ Following events are raised by the control:
 | PageValidated       | PagedControl.PageEventArgs           | Occurs before the selected page changes and after it is successfully validated. The event arguments contains a reference to the currently selected page. |
 | PageHidden          | PagedControl.PageEventArgs           | Occurs before the selected page changes and after the currently selected page is hidden. The event arguments contains a reference to the page. |
 | PageShown           | PagedControl.PageEventArgs           | Occurs before the selected page changes and the page to become selected is shown. The event arguments contains a reference to the page. |
-| PagePaint           | PagedControl.PagePaintEventArgs      | Occurs when a page is needed to be painted. The control paints the background of the pages by default. However, if the `OwnerDraw` property of the control is set to `true`, all page painting should be done manually in this event. |
+| PagePaint           | PagedControl.PagePaintEventArgs      | Occurs when a page is needed to be painted. The control paints the background of the pages by default. |
 | UpdateUIControls    | System.EventArgs                     | Occurs when the visual states of the user interface controls are needed to be updated. If any custom UI controls are added by overriding the `UIControls` property, visual states of those controls should be handled in this event. |
