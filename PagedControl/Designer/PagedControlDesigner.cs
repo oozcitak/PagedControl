@@ -217,7 +217,8 @@ namespace Manina.Windows.Forms
             private void CreateGlyphs()
             {
                 toolbarAdorner = new Adorner();
-                BehaviorService.Adorners.Add(toolbarAdorner);
+                if (BehaviorService != null)
+                    BehaviorService.Adorners.Add(toolbarAdorner);
 
                 toolbar = new GlyphToolBar(BehaviorService, this, toolbarAdorner);
 
