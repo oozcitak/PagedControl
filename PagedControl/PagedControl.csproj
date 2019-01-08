@@ -55,6 +55,9 @@
     <Compile Include="Designer\PageContainerDesigner.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Designer\SelectedPageEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Designer\SeparatorGlyph.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -68,6 +71,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Page.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PagedControlControlCollection.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

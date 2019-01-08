@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -146,14 +145,13 @@ namespace Manina.Windows.Forms
             CreateUIControls?.Invoke(this, e);
 
             creatingUIControls = true;
-
             foreach (Control control in e.Controls)
             {
                 Controls.Add(control);
             }
-            uiControlCount = e.Controls.Length;
-
             creatingUIControls = false;
+
+            uiControlCount = e.Controls.Length;
         }
         protected internal virtual void OnUpdateUIControls(EventArgs e) { UpdateUIControls?.Invoke(this, e); }
 
@@ -236,7 +234,7 @@ namespace Manina.Windows.Forms
         /// <summary>
         /// Gets or sets the current page.
         /// </summary>
-        [Editor(typeof(PagedControlEditor), typeof(System.Drawing.Design.UITypeEditor))]
+        [Editor(typeof(SelectedPageEditor), typeof(System.Drawing.Design.UITypeEditor))]
         [Category("Behavior"), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Description("Gets or sets the current page.")]
         public virtual Page SelectedPage
@@ -345,7 +343,6 @@ namespace Manina.Windows.Forms
                 ControlStyles.UserPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
 
             OnCreateUIControls(new CreateUIControlsEventArgs());
-
             OnUpdateUIControls(new EventArgs());
         }
         #endregion
@@ -477,112 +474,13 @@ namespace Manina.Windows.Forms
             base.OnResize(e);
             UpdatePages();
         }
-        #endregion
 
-        #region ControlCollection
-        internal class PagedControlControlCollection : ControlCollection
+        protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            private readonly PagedControl owner;
+            base.OnInvalidated(e);
 
-            public bool FromPageCollection { get; set; }
-
-            public PagedControlControlCollection(PagedControl ownerControl) : base(ownerControl)
-            {
-                FromPageCollection = false;
-
-                owner = ownerControl;
-            }
-
-            public override void Add(Control value)
-            {
-                if (FromPageCollection)
-                {
-                    base.Add(value);
-                    return;
-                }
-                else if (owner.creatingUIControls)
-                {
-                    base.Add(value);
-                    return;
-                }
-                else
-                {
-                    if (!(value is Page page))
-                    {
-                        throw new ArgumentException(string.Format("Only a Page can be added to a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
-                    }
-
-                    owner.Pages.Add(page);
-
-                    // site the page
-                    ISite site = owner.Site;
-                    if (site != null && page.Site == null)
-                    {
-                        IContainer container = site.Container;
-                        if (container != null)
-                        {
-                            container.Add(page);
-                        }
-                    }
-                }
-            }
-
-            public override void Remove(Control value)
-            {
-                if (FromPageCollection)
-                {
-                    base.Remove(value);
-                    return;
-                }
-                else if (owner.creatingUIControls)
-                {
-                    base.Remove(value);
-                    return;
-                }
-                else
-                {
-                    if (!(value is Page page))
-                    {
-                        throw new ArgumentException(string.Format("Only a Page can be removed from a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
-                    }
-
-                    owner.Pages.Remove(page);
-
-                    // unsite the page
-                    ISite site = owner.Site;
-                    if (site != null && page.Site == null)
-                    {
-                        IContainer container = site.Container;
-                        if (container != null)
-                        {
-                            container.Remove(page);
-                        }
-                    }
-                }
-            }
-
-            public override Control this[int index] => base[index];
-        }
-        #endregion
-
-        #region UITypeEditor
-        internal class PagedControlEditor : ObjectSelectorEditor
-        {
-            protected override void FillTreeWithData(Selector selector, ITypeDescriptorContext context, IServiceProvider provider)
-            {
-                base.FillTreeWithData(selector, context, provider);
-
-                var control = (PagedControl)context.Instance;
-
-                foreach (var page in control.Pages)
-                {
-                    SelectorNode node = new SelectorNode(page.Name, page);
-                    selector.Nodes.Add(node);
-
-                    if (page == control.SelectedPage)
-                        selector.SelectedNode = node;
-                }
-            }
+            if (SelectedPage != null)
+                SelectedPage.Invalidate(e.InvalidRect);
         }
         #endregion
     }
