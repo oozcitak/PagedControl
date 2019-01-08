@@ -104,11 +104,33 @@ namespace Manina.Windows.Forms
             }
         }
 
+        /// <summary>
+        /// Contains event data for the <see cref="CreateUIControls"/> event.
+        /// </summary>
+        public class CreateUIControlsEventArgs : EventArgs
+        {
+            /// <summary>
+            /// Gets the collection of UI controls.
+            /// </summary>
+            public Control[] Controls { get; set; }
+
+            public CreateUIControlsEventArgs(Control[] controls)
+            {
+                Controls = controls;
+            }
+
+            public CreateUIControlsEventArgs() : this(new Control[0])
+            {
+
+            }
+        }
+
         public delegate void PageEventHandler(object sender, PageEventArgs e);
         public delegate void PageChangingEventHandler(object sender, PageChangingEventArgs e);
         public delegate void PageChangedEventHandler(object sender, PageChangedEventArgs e);
         public delegate void PageValidatingEventHandler(object sender, PageValidatingEventArgs e);
         public delegate void PagePaintEventHandler(object sender, PagePaintEventArgs e);
+        public delegate void CreateUIControlsEventHandler(object sender, CreateUIControlsEventArgs e);
 
         protected internal virtual void OnPageAdded(PageEventArgs e) { PageAdded?.Invoke(this, e); }
         protected internal virtual void OnPageRemoved(PageEventArgs e) { PageRemoved?.Invoke(this, e); }
@@ -119,6 +141,20 @@ namespace Manina.Windows.Forms
         protected internal virtual void OnPageHidden(PageEventArgs e) { PageHidden?.Invoke(this, e); }
         protected internal virtual void OnPageShown(PageEventArgs e) { PageShown?.Invoke(this, e); }
         protected internal virtual void OnPagePaint(PagePaintEventArgs e) { PagePaint?.Invoke(this, e); }
+        protected internal virtual void OnCreateUIControls(CreateUIControlsEventArgs e)
+        {
+            CreateUIControls?.Invoke(this, e);
+
+            creatingUIControls = true;
+
+            foreach (Control control in e.Controls)
+            {
+                Controls.Add(control);
+            }
+            uiControlCount = e.Controls.Length;
+
+            creatingUIControls = false;
+        }
         protected internal virtual void OnUpdateUIControls(EventArgs e) { UpdateUIControls?.Invoke(this, e); }
 
         /// <summary>
@@ -166,6 +202,11 @@ namespace Manina.Windows.Forms
         /// </summary>
         [Category("Appearance"), Description("Occurs when a page is painted.")]
         public event PagePaintEventHandler PagePaint;
+        /// <summary>
+        /// Occurs when UI controls need to be created.
+        /// </summary>
+        [Category("Appearance"), Description("Occurs when UI controls need to be created.")]
+        public event CreateUIControlsEventHandler CreateUIControls;
         /// <summary>
         /// Occurs when UI controls need to be updated.
         /// </summary>
@@ -267,12 +308,6 @@ namespace Manina.Windows.Forms
         /// </summary>
         [Browsable(false)]
         public override Rectangle DisplayRectangle => new Rectangle(ClientRectangle.Left, ClientRectangle.Top, ClientRectangle.Width, ClientRectangle.Height);
-
-        /// <summary>
-        /// Gets an array of UI controls hosted on the control.
-        /// </summary>
-        [Browsable(false)]
-        public virtual Control[] UIControls => new Control[0];
         #endregion
 
         #region Unused Methods - Hide From User
@@ -309,7 +344,7 @@ namespace Manina.Windows.Forms
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.UserPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
 
-            CreateChildControls();
+            OnCreateUIControls(new CreateUIControlsEventArgs());
 
             OnUpdateUIControls(new EventArgs());
         }
@@ -336,22 +371,6 @@ namespace Manina.Windows.Forms
         #endregion
 
         #region Helper Methods
-        /// <summary>
-        /// Create the UI controls.
-        /// </summary>
-        private void CreateChildControls()
-        {
-            creatingUIControls = true;
-
-            foreach (Control control in UIControls)
-            {
-                Controls.Add(control);
-            }
-            uiControlCount = UIControls.Length;
-
-            creatingUIControls = false;
-        }
-
         /// <summary>
         /// Updates the display bounds and visibility of pages.
         /// </summary>
