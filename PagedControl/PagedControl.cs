@@ -400,7 +400,7 @@ namespace Manina.Windows.Forms
         #region Overriden Methods
         protected override ControlCollection CreateControlsInstance()
         {
-            return new PagedControlControlCollection(this);
+            return Pages;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -419,82 +419,6 @@ namespace Manina.Windows.Forms
         {
             base.OnResize(e);
             UpdatePages();
-        }
-        #endregion
-
-        #region ControlCollection
-        internal class PagedControlControlCollection : ControlCollection
-        {
-            private readonly PagedControl owner;
-
-            public bool FromPageCollection { get; set; }
-
-            public PagedControlControlCollection(PagedControl ownerControl) : base(ownerControl)
-            {
-                FromPageCollection = false;
-
-                owner = ownerControl;
-            }
-
-            public override void Add(Control value)
-            {
-                if (FromPageCollection)
-                {
-                    base.Add(value);
-                    return;
-                }
-                else
-                {
-                    if (!(value is Page page))
-                    {
-                        throw new ArgumentException(string.Format("Only a Page can be added to a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
-                    }
-
-                    owner.Pages.Add(page);
-
-                    // site the page
-                    ISite site = owner.Site;
-                    if (site != null && page.Site == null)
-                    {
-                        IContainer container = site.Container;
-                        if (container != null)
-                        {
-                            container.Add(page);
-                        }
-                    }
-                }
-            }
-
-            public override void Remove(Control value)
-            {
-                if (FromPageCollection)
-                {
-                    base.Remove(value);
-                    return;
-                }
-                else
-                {
-                    if (!(value is Page page))
-                    {
-                        throw new ArgumentException(string.Format("Only a Page can be removed from a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
-                    }
-
-                    owner.Pages.Remove(page);
-
-                    // unsite the page
-                    ISite site = owner.Site;
-                    if (site != null && page.Site == null)
-                    {
-                        IContainer container = site.Container;
-                        if (container != null)
-                        {
-                            container.Remove(page);
-                        }
-                    }
-                }
-            }
-
-            public override Control this[int index] => base[index];
         }
         #endregion
 

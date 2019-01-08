@@ -2,31 +2,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace Manina.Windows.Forms
 {
     public partial class PagedControl
     {
         [DefaultProperty("Item")]
-        public class PageCollection : IList<Page>
+        public class PageCollection : ControlCollection, IList<Page>
         {
             #region Member Variables
             private PagedControl owner;
-            private PagedControlControlCollection controls;
             private readonly object syncRoot = new object();
             #endregion
 
             #region Properties
-            public Page this[int index]
+            public new Page this[int index]
             {
-                get => (Page)controls[index];
+                get => (Page)base[index];
                 set
                 {
-                    controls.FromPageCollection = true;
-                    controls.RemoveAt(index);
-                    controls.Add(value);
-                    controls.SetChildIndex(value, index);
-                    controls.FromPageCollection = false;
+                    base.RemoveAt(index);
+                    base.Add(value);
+                    base.SetChildIndex(value, index);
 
                     if (owner.SelectedIndex == index) owner.ChangePage(value, false);
 
@@ -34,44 +32,59 @@ namespace Manina.Windows.Forms
                     owner.OnUpdateUIControls(new EventArgs());
                 }
             }
-
-            public int Count => controls.Count;
-            public bool IsReadOnly => false;
             #endregion
 
             #region Constructor
-            public PageCollection(PagedControl control)
+            public PageCollection(PagedControl control) : base(control)
             {
                 owner = control;
-                controls = (PagedControlControlCollection)control.Controls;
             }
             #endregion
 
             #region Public Methods
-            public void Add(Page item)
+            public override void Add(Control item)
             {
-                controls.FromPageCollection = true;
-                controls.Add(item);
-                controls.FromPageCollection = false;
+                if (!(item is Page page))
+                {
+                    throw new ArgumentException(string.Format("Only a Page can be added to a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, item.GetType().AssemblyQualifiedName));
+                }
 
-                owner.OnPageAdded(new PageEventArgs(item));
+                Add(page);
+            }
+
+            public void Add(Page page)
+            {
+                base.Add(page);
+
+                // site the page
+                ISite site = owner.Site;
+                if (site != null && page.Site == null)
+                {
+                    IContainer container = site.Container;
+                    if (container != null)
+                    {
+                        container.Add(page);
+                    }
+                }
+
+                owner.OnPageAdded(new PageEventArgs(page));
 
                 if (Count == 1)
                 {
                     // Just added a page to an empty control
                     // Set this page as the selected page; this event cannot be cancelled
-                    owner.OnCurrentPageChanging(new PageChangingEventArgs(null, item));
-                    owner.selectedPage = item;
+                    owner.OnCurrentPageChanging(new PageChangingEventArgs(null, page));
+                    owner.selectedPage = page;
                     owner.selectedIndex = 0;
-                    owner.OnPageShown(new PageEventArgs(item));
-                    owner.OnCurrentPageChanged(new PageChangedEventArgs(null, item));
+                    owner.OnPageShown(new PageEventArgs(page));
+                    owner.OnCurrentPageChanged(new PageChangedEventArgs(null, page));
                 }
 
                 owner.UpdatePages();
                 owner.OnUpdateUIControls(new EventArgs());
             }
 
-            public void Clear()
+            public override void Clear()
             {
                 if (Count == 0)
                     return;
@@ -88,15 +101,13 @@ namespace Manina.Windows.Forms
                 owner.selectedIndex = -1;
                 owner.OnCurrentPageChanged(new PageChangedEventArgs(lastSelectedPage, null));
 
-                controls.FromPageCollection = true;
                 foreach (var page in toRemove)
                 {
-                    controls.Remove(page);
+                    base.Remove(page);
                     if (page.Visible)
                         owner.OnPageHidden(new PageEventArgs(page));
                     owner.OnPageRemoved(new PageEventArgs(page));
                 }
-                controls.FromPageCollection = false;
 
                 owner.UpdatePages();
                 owner.OnUpdateUIControls(new EventArgs());
@@ -104,41 +115,39 @@ namespace Manina.Windows.Forms
 
             public bool Contains(Page item)
             {
-                return controls.Contains(item);
+                return base.Contains(item);
             }
 
             public void CopyTo(Page[] array, int arrayIndex)
             {
                 for (int i = arrayIndex; i < array.Length; i++)
-                    array[i] = (Page)controls[i - arrayIndex];
+                    array[i] = (Page)base[i - arrayIndex];
             }
 
-            public IEnumerator<Page> GetEnumerator()
+            public new IEnumerator<Page> GetEnumerator()
             {
-                for (int i = 0; i < +controls.Count; i++)
-                    yield return (Page)controls[i];
+                for (int i = 0; i < base.Count; i++)
+                    yield return (Page)base[i];
             }
 
-            public int IndexOf(Page item)
+            public int IndexOf(Page page)
             {
-                return controls.IndexOf(item);
+                return base.IndexOf(page);
             }
 
-            public void Insert(int index, Page item)
+            public void Insert(int index, Page page)
             {
-                if (controls.Count == 0)
+                if (Count == 0)
                 {
-                    Add(item);
+                    Add(page);
                     return;
                 }
                 else
                 {
                     bool insertBeforeSelected = (index <= owner.SelectedIndex);
 
-                    controls.FromPageCollection = true;
-                    controls.Add(item);
-                    controls.SetChildIndex(item, index);
-                    controls.FromPageCollection = false;
+                    base.Add(page);
+                    base.SetChildIndex(page, index);
 
                     if (insertBeforeSelected)
                         owner.selectedIndex = owner.selectedIndex + 1;
@@ -146,63 +155,61 @@ namespace Manina.Windows.Forms
                     owner.UpdatePages();
                     owner.OnUpdateUIControls(new EventArgs());
 
-                    owner.OnPageAdded(new PageEventArgs(item));
+                    owner.OnPageAdded(new PageEventArgs(page));
                 }
             }
 
-            public bool Remove(Page item)
+            public bool Remove(Page page)
             {
-                int index = owner.Pages.IndexOf(item);
+                int index = owner.Pages.IndexOf(page);
                 bool exists = (index != -1);
                 if (!exists)
                 {
                     throw new ArgumentException("Page not found in collection.");
                 }
 
-                controls.FromPageCollection = true;
-                controls.Remove(item);
-                controls.FromPageCollection = false;
+                base.Remove(page);
+
+                // unsite the page
+                ISite site = owner.Site;
+                if (site != null && page.Site == null)
+                {
+                    IContainer container = site.Container;
+                    if (container != null)
+                    {
+                        container.Remove(page);
+                    }
+                }
 
                 if (Count == 0)
                 {
                     // Just removed the last page from the collection
                     // Set the selected page to null; this event cannot be cancelled
-                    owner.OnCurrentPageChanging(new PageChangingEventArgs(item, null));
+                    owner.OnCurrentPageChanging(new PageChangingEventArgs(page, null));
                     owner.selectedPage = null;
                     owner.selectedIndex = -1;
-                    owner.OnCurrentPageChanged(new PageChangedEventArgs(item, null));
+                    owner.OnCurrentPageChanged(new PageChangedEventArgs(page, null));
                 }
-                else if (ReferenceEquals(owner.selectedPage, item))
+                else if (ReferenceEquals(owner.selectedPage, page))
                 {
                     // Just removed the selected page from the collection
                     // Set the selected page to the page before it; this event cannot be cancelled
                     int newSelectedIndex = (owner.selectedIndex == Count ? Count - 1 : owner.selectedIndex);
                     var newSelectedPage = this[newSelectedIndex];
 
-                    owner.OnCurrentPageChanging(new PageChangingEventArgs(item, newSelectedPage));
+                    owner.OnCurrentPageChanging(new PageChangingEventArgs(page, newSelectedPage));
                     owner.selectedPage = newSelectedPage;
                     owner.selectedIndex = newSelectedIndex;
-                    owner.OnCurrentPageChanged(new PageChangedEventArgs(item, newSelectedPage));
+                    owner.OnCurrentPageChanged(new PageChangedEventArgs(page, newSelectedPage));
                 }
 
-                owner.OnPageHidden(new PageEventArgs(item));
-                owner.OnPageRemoved(new PageEventArgs(item));
+                owner.OnPageHidden(new PageEventArgs(page));
+                owner.OnPageRemoved(new PageEventArgs(page));
 
                 owner.UpdatePages();
                 owner.OnUpdateUIControls(new EventArgs());
 
                 return exists;
-            }
-
-            public void RemoveAt(int index)
-            {
-                Remove(this[index]);
-            }
-
-            public void CopyTo(Array array, int index)
-            {
-                for (int i = index; i < array.Length; i++)
-                    array.SetValue(this[i - index], i);
             }
 
             IEnumerator IEnumerable.GetEnumerator()
