@@ -178,20 +178,9 @@ namespace Manina.Windows.Forms
         private Page lastSelectedPage;
         private Page selectedPage;
         private BorderStyle borderStyle;
-        private bool creatingUIControls;
-        private int uiControlCount;
         #endregion
 
         #region Properties
-        /// <summary>
-        /// Gets the index of the first page in the controls collection.
-        /// </summary>
-        internal int FirstPageIndex => uiControlCount;
-        /// <summary>
-        /// Gets the number of pages.
-        /// </summary>
-        internal int PageCount => Controls.Count - uiControlCount;
-
         /// <summary>
         /// Gets or sets the current page.
         /// </summary>
@@ -267,12 +256,6 @@ namespace Manina.Windows.Forms
         /// </summary>
         [Browsable(false)]
         public override Rectangle DisplayRectangle => new Rectangle(ClientRectangle.Left, ClientRectangle.Top, ClientRectangle.Width, ClientRectangle.Height);
-
-        /// <summary>
-        /// Gets an array of UI controls hosted on the control.
-        /// </summary>
-        [Browsable(false)]
-        public virtual Control[] UIControls => new Control[0];
         #endregion
 
         #region Unused Methods - Hide From User
@@ -294,9 +277,6 @@ namespace Manina.Windows.Forms
         /// </summary>
         public PagedControl()
         {
-            creatingUIControls = false;
-            uiControlCount = 0;
-
             Pages = new PageCollection(this);
 
             selectedIndex = -1;
@@ -308,8 +288,6 @@ namespace Manina.Windows.Forms
             DoubleBuffered = true;
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.UserPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
-
-            CreateChildControls();
 
             OnUpdateUIControls(new EventArgs());
         }
@@ -336,22 +314,6 @@ namespace Manina.Windows.Forms
         #endregion
 
         #region Helper Methods
-        /// <summary>
-        /// Create the UI controls.
-        /// </summary>
-        private void CreateChildControls()
-        {
-            creatingUIControls = true;
-
-            foreach (Control control in UIControls)
-            {
-                Controls.Add(control);
-            }
-            uiControlCount = UIControls.Length;
-
-            creatingUIControls = false;
-        }
-
         /// <summary>
         /// Updates the display bounds and visibility of pages.
         /// </summary>
@@ -481,11 +443,6 @@ namespace Manina.Windows.Forms
                     base.Add(value);
                     return;
                 }
-                else if (owner.creatingUIControls)
-                {
-                    base.Add(value);
-                    return;
-                }
                 else
                 {
                     if (!(value is Page page))
@@ -511,11 +468,6 @@ namespace Manina.Windows.Forms
             public override void Remove(Control value)
             {
                 if (FromPageCollection)
-                {
-                    base.Remove(value);
-                    return;
-                }
-                else if (owner.creatingUIControls)
                 {
                     base.Remove(value);
                     return;

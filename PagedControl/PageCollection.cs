@@ -19,13 +19,13 @@ namespace Manina.Windows.Forms
             #region Properties
             public Page this[int index]
             {
-                get => (Page)controls[index + owner.FirstPageIndex];
+                get => (Page)controls[index];
                 set
                 {
                     controls.FromPageCollection = true;
-                    controls.RemoveAt(index + owner.FirstPageIndex);
+                    controls.RemoveAt(index);
                     controls.Add(value);
-                    controls.SetChildIndex(value, index + owner.FirstPageIndex);
+                    controls.SetChildIndex(value, index);
                     controls.FromPageCollection = false;
 
                     if (owner.SelectedIndex == index) owner.ChangePage(value, false);
@@ -35,7 +35,7 @@ namespace Manina.Windows.Forms
                 }
             }
 
-            public int Count => owner.PageCount;
+            public int Count => controls.Count;
             public bool IsReadOnly => false;
             #endregion
 
@@ -110,23 +110,23 @@ namespace Manina.Windows.Forms
             public void CopyTo(Page[] array, int arrayIndex)
             {
                 for (int i = arrayIndex; i < array.Length; i++)
-                    array[i] = (Page)controls[i - arrayIndex + owner.FirstPageIndex];
+                    array[i] = (Page)controls[i - arrayIndex];
             }
 
             public IEnumerator<Page> GetEnumerator()
             {
-                for (int i = owner.FirstPageIndex; i < owner.FirstPageIndex + owner.PageCount; i++)
+                for (int i = 0; i < +controls.Count; i++)
                     yield return (Page)controls[i];
             }
 
             public int IndexOf(Page item)
             {
-                return controls.IndexOf(item) - owner.FirstPageIndex;
+                return controls.IndexOf(item);
             }
 
             public void Insert(int index, Page item)
             {
-                if (owner.PageCount == 0)
+                if (controls.Count == 0)
                 {
                     Add(item);
                     return;
@@ -137,7 +137,7 @@ namespace Manina.Windows.Forms
 
                     controls.FromPageCollection = true;
                     controls.Add(item);
-                    controls.SetChildIndex(item, index + owner.FirstPageIndex);
+                    controls.SetChildIndex(item, index);
                     controls.FromPageCollection = false;
 
                     if (insertBeforeSelected)
