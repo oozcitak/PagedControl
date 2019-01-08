@@ -159,6 +159,16 @@ namespace Manina.Windows.Forms
                 }
             }
 
+            public override void Remove(Control value)
+            {
+                if (!(value is Page page))
+                {
+                    throw new ArgumentException(string.Format("Only a Page can be removed from a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
+                }
+
+                Remove(page);
+            }
+
             public bool Remove(Page page)
             {
                 int index = owner.Pages.IndexOf(page);
