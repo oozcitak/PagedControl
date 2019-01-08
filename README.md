@@ -2,7 +2,7 @@
 [![Nuget](https://img.shields.io/nuget/v/PagedControl.svg?style=flat-square)](https://www.nuget.org/packages/PagedControl)
 [![Build status](https://ci.appveyor.com/api/projects/status/u00t9bmcisqit8q7?svg=true)](https://ci.appveyor.com/project/oozcitak/pagedcontrol)
 
-PagedControl is a .NET control with multiple pages for hosting child controls. The control is devoid of any decorations except an optional border. It can be used as a paged panel control. Or, the control can be extended for a specific purpose, like a tab control or a [wizard control](https://github.com/oozcitak/WizardControl).
+PagedControl is a .NET control with multiple pages for hosting child controls. The control is devoid of any decorations except an optional border. It can be used as a paged panel control. Or, the control can be extended for a specific purpose, like a [tab control](https://github.com/oozcitak/TabControl) or a [wizard control](https://github.com/oozcitak/WizardControl).
 
 ![PagedControl in Designer](https://raw.githubusercontent.com/wiki/oozcitak/PagedControl/PagedControl.designer.png)
 
