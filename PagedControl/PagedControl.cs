@@ -341,9 +341,6 @@ namespace Manina.Windows.Forms
             DoubleBuffered = true;
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.UserPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
-
-            OnCreateUIControls(new CreateUIControlsEventArgs());
-            OnUpdateUIControls(new EventArgs());
         }
         #endregion
 
@@ -452,6 +449,14 @@ namespace Manina.Windows.Forms
         #endregion
 
         #region Overriden Methods
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+
+            OnCreateUIControls(new CreateUIControlsEventArgs());
+            OnUpdateUIControls(new EventArgs());
+        }
+
         protected override ControlCollection CreateControlsInstance()
         {
             return new PagedControlControlCollection(this);
