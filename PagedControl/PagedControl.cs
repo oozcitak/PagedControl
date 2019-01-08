@@ -104,11 +104,33 @@ namespace Manina.Windows.Forms
             }
         }
 
+        /// <summary>
+        /// Contains event data for the <see cref="CreateUIControls"/> event.
+        /// </summary>
+        public class CreateUIControlsEventArgs : EventArgs
+        {
+            /// <summary>
+            /// Gets the collection of UI controls.
+            /// </summary>
+            public Control[] Controls { get; set; }
+
+            public CreateUIControlsEventArgs(Control[] controls)
+            {
+                Controls = controls;
+            }
+
+            public CreateUIControlsEventArgs() : this(new Control[0])
+            {
+
+            }
+        }
+
         public delegate void PageEventHandler(object sender, PageEventArgs e);
         public delegate void PageChangingEventHandler(object sender, PageChangingEventArgs e);
         public delegate void PageChangedEventHandler(object sender, PageChangedEventArgs e);
         public delegate void PageValidatingEventHandler(object sender, PageValidatingEventArgs e);
         public delegate void PagePaintEventHandler(object sender, PagePaintEventArgs e);
+        public delegate void CreateUIControlsEventHandler(object sender, CreateUIControlsEventArgs e);
 
         protected internal virtual void OnPageAdded(PageEventArgs e) { PageAdded?.Invoke(this, e); }
         protected internal virtual void OnPageRemoved(PageEventArgs e) { PageRemoved?.Invoke(this, e); }
@@ -119,6 +141,20 @@ namespace Manina.Windows.Forms
         protected internal virtual void OnPageHidden(PageEventArgs e) { PageHidden?.Invoke(this, e); }
         protected internal virtual void OnPageShown(PageEventArgs e) { PageShown?.Invoke(this, e); }
         protected internal virtual void OnPagePaint(PagePaintEventArgs e) { PagePaint?.Invoke(this, e); }
+        protected internal virtual void OnCreateUIControls(CreateUIControlsEventArgs e)
+        {
+            CreateUIControls?.Invoke(this, e);
+
+            creatingUIControls = true;
+
+            foreach (Control control in e.Controls)
+            {
+                Controls.Add(control);
+            }
+            uiControlCount = e.Controls.Length;
+
+            creatingUIControls = false;
+        }
         protected internal virtual void OnUpdateUIControls(EventArgs e) { UpdateUIControls?.Invoke(this, e); }
 
         /// <summary>
@@ -167,6 +203,11 @@ namespace Manina.Windows.Forms
         [Category("Appearance"), Description("Occurs when a page is painted.")]
         public event PagePaintEventHandler PagePaint;
         /// <summary>
+        /// Occurs when UI controls need to be created.
+        /// </summary>
+        [Category("Appearance"), Description("Occurs when UI controls need to be created.")]
+        public event CreateUIControlsEventHandler CreateUIControls;
+        /// <summary>
         /// Occurs when UI controls need to be updated.
         /// </summary>
         [Category("Appearance"), Description("Occurs when UI controls need to be updated.")]
@@ -178,9 +219,20 @@ namespace Manina.Windows.Forms
         private Page lastSelectedPage;
         private Page selectedPage;
         private BorderStyle borderStyle;
+        private bool creatingUIControls;
+        private int uiControlCount;
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Gets the index of the first page in the controls collection.
+        /// </summary>
+        internal int FirstPageIndex => uiControlCount;
+        /// <summary>
+        /// Gets the number of pages.
+        /// </summary>
+        internal int PageCount => Controls.Count - uiControlCount;
+
         /// <summary>
         /// Gets or sets the current page.
         /// </summary>
@@ -277,6 +329,9 @@ namespace Manina.Windows.Forms
         /// </summary>
         public PagedControl()
         {
+            creatingUIControls = false;
+            uiControlCount = 0;
+
             Pages = new PageCollection(this);
 
             selectedIndex = -1;
@@ -288,6 +343,8 @@ namespace Manina.Windows.Forms
             DoubleBuffered = true;
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.UserPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
+
+            OnCreateUIControls(new CreateUIControlsEventArgs());
 
             OnUpdateUIControls(new EventArgs());
         }
@@ -400,7 +457,7 @@ namespace Manina.Windows.Forms
         #region Overriden Methods
         protected override ControlCollection CreateControlsInstance()
         {
-            return Pages;
+            return new PagedControlControlCollection(this);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -419,6 +476,92 @@ namespace Manina.Windows.Forms
         {
             base.OnResize(e);
             UpdatePages();
+        }
+        #endregion
+
+        #region ControlCollection
+        internal class PagedControlControlCollection : ControlCollection
+        {
+            private readonly PagedControl owner;
+
+            public bool FromPageCollection { get; set; }
+
+            public PagedControlControlCollection(PagedControl ownerControl) : base(ownerControl)
+            {
+                FromPageCollection = false;
+
+                owner = ownerControl;
+            }
+
+            public override void Add(Control value)
+            {
+                if (FromPageCollection)
+                {
+                    base.Add(value);
+                    return;
+                }
+                else if (owner.creatingUIControls)
+                {
+                    base.Add(value);
+                    return;
+                }
+                else
+                {
+                    if (!(value is Page page))
+                    {
+                        throw new ArgumentException(string.Format("Only a Page can be added to a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
+                    }
+
+                    owner.Pages.Add(page);
+
+                    // site the page
+                    ISite site = owner.Site;
+                    if (site != null && page.Site == null)
+                    {
+                        IContainer container = site.Container;
+                        if (container != null)
+                        {
+                            container.Add(page);
+                        }
+                    }
+                }
+            }
+
+            public override void Remove(Control value)
+            {
+                if (FromPageCollection)
+                {
+                    base.Remove(value);
+                    return;
+                }
+                else if (owner.creatingUIControls)
+                {
+                    base.Remove(value);
+                    return;
+                }
+                else
+                {
+                    if (!(value is Page page))
+                    {
+                        throw new ArgumentException(string.Format("Only a Page can be removed from a PagedControl. Expected type {0}, supplied type {1}.", typeof(Page).AssemblyQualifiedName, value.GetType().AssemblyQualifiedName));
+                    }
+
+                    owner.Pages.Remove(page);
+
+                    // unsite the page
+                    ISite site = owner.Site;
+                    if (site != null && page.Site == null)
+                    {
+                        IContainer container = site.Container;
+                        if (container != null)
+                        {
+                            container.Remove(page);
+                        }
+                    }
+                }
+            }
+
+            public override Control this[int index] => base[index];
         }
         #endregion
 
