@@ -37,10 +37,6 @@ namespace Manina.Windows.Forms
             #endregion
 
             #region Member Variables
-            private readonly BehaviorService behaviorService;
-            private readonly ControlDesigner designer;
-            private readonly Adorner adorner;
-
             private readonly GlyphIndexer glyphIndexer;
             private readonly List<BaseGlyph> buttons = new List<BaseGlyph>();
 
@@ -52,6 +48,21 @@ namespace Manina.Windows.Forms
             #endregion
 
             #region Properties
+            /// <summary>
+            /// Gets the control designer.
+            /// </summary>
+            public ControlDesigner Designer { get; private set; }
+
+            /// <summary>
+            /// Gets the behaviour service.
+            /// </summary>
+            public BehaviorService BehaviorService { get; private set; }
+
+            /// <summary>
+            /// Gets the associated adorner.
+            /// </summary>
+            public Adorner Adorner { get; private set; }
+
             /// <summary>
             /// Gets the designed control.
             /// </summary>
@@ -150,10 +161,10 @@ namespace Manina.Windows.Forms
             public GlyphToolBar(BehaviorService behaviorService, ControlDesigner designer, Adorner adorner)
                 : base(new GlyphToolBarBehavior())
             {
-                this.behaviorService = behaviorService;
-                this.designer = designer;
-                this.Control = (Control)designer.Component;
-                this.adorner = adorner;
+                BehaviorService = behaviorService;
+                Designer = designer;
+                Adorner = adorner;
+                Control = (Control)designer.Component;
 
                 glyphIndexer = new GlyphIndexer(this);
 
@@ -216,7 +227,10 @@ namespace Manina.Windows.Forms
             /// </summary>
             public void UpdateLayout()
             {
-                Point pt = behaviorService.ControlToAdornerWindow(Control);
+                if (BehaviorService == null)
+                    return;
+
+                Point pt = BehaviorService.ControlToAdornerWindow(Control);
 
                 // calculate toolbar size
                 int width = 0;
@@ -251,8 +265,8 @@ namespace Manina.Windows.Forms
             /// </summary>
             public void Refresh()
             {
-                if (Visible)
-                    adorner.Invalidate();
+                if (Visible && Adorner != null)
+                    Adorner.Invalidate();
             }
             #endregion
 
