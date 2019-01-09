@@ -96,7 +96,7 @@ namespace Manina.Windows.Forms
             base.OnPaint(e);
 
             if (Parent != null)
-                Parent.OnPagePaint(new PagedControl.PagePaintEventArgs(e.Graphics, this));
+                Parent.OnPagePaint(new PagePaintEventArgs(e.Graphics, this));
         }
         #endregion
 

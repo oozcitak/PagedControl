@@ -12,199 +12,130 @@ namespace Manina.Windows.Forms
     [DefaultProperty("SelectedPage")]
     public partial class PagedControl : Control
     {
-        #region Events
+        #region Virtual Functions for Events
         /// <summary>
-        /// Contains event data for events related to a single page.
+        /// Raises the <see cref="PageAdded"/> event.
         /// </summary>
-        public class PageEventArgs : EventArgs
-        {
-            /// <summary>
-            /// The page causing the event.
-            /// </summary>
-            public Page Page { get; private set; }
-
-            public PageEventArgs(Page page)
-            {
-                Page = page;
-            }
-        }
-
-        /// <summary>
-        /// Contains event data for the <see cref="PageChanging"/> event.
-        /// </summary>
-        public class PageChangingEventArgs : CancelEventArgs
-        {
-            /// <summary>
-            /// Current page.
-            /// </summary>
-            public Page CurrentPage { get; private set; }
-            /// <summary>
-            /// The page that will become the current page after the event.
-            /// </summary>
-            public Page NewPage { get; set; }
-
-            public PageChangingEventArgs(Page currentPage, Page newPage) : base(false)
-            {
-                CurrentPage = currentPage;
-                NewPage = newPage;
-            }
-        }
-
-        /// <summary>
-        /// Contains event data for the <see cref="PageChanged"/> event.
-        /// </summary>
-        public class PageChangedEventArgs : EventArgs
-        {
-            /// <summary>
-            /// The page that was the current page before the event.
-            /// </summary>
-            public Page OldPage { get; private set; }
-            /// <summary>
-            /// Current page.
-            /// </summary>
-            public Page CurrentPage { get; private set; }
-
-            public PageChangedEventArgs(Page oldPage, Page currentPage)
-            {
-                OldPage = oldPage;
-                CurrentPage = currentPage;
-            }
-        }
-
-        /// <summary>
-        /// Contains event data for the <see cref="PageValidating"/> event.
-        /// </summary>
-        public class PageValidatingEventArgs : CancelEventArgs
-        {
-            /// <summary>
-            /// The page causing the event.
-            /// </summary>
-            public Page Page { get; private set; }
-
-            public PageValidatingEventArgs(Page page)
-            {
-                Page = page;
-            }
-        }
-
-        /// <summary>
-        /// Contains event data for the <see cref="PagePaint"/> event.
-        /// </summary>
-        public class PagePaintEventArgs : PageEventArgs
-        {
-            /// <summary>
-            /// Gets the graphics used to paint.
-            /// </summary>
-            public Graphics Graphics { get; private set; }
-
-            public PagePaintEventArgs(Graphics graphics, Page page) : base(page)
-            {
-                Graphics = graphics;
-            }
-        }
-
-        /// <summary>
-        /// Contains event data for the <see cref="CreateUIControls"/> event.
-        /// </summary>
-        public class CreateUIControlsEventArgs : EventArgs
-        {
-            /// <summary>
-            /// Gets the collection of UI controls.
-            /// </summary>
-            public Control[] Controls { get; set; }
-
-            public CreateUIControlsEventArgs(Control[] controls)
-            {
-                Controls = controls;
-            }
-
-            public CreateUIControlsEventArgs() : this(new Control[0])
-            {
-
-            }
-        }
-
-        public delegate void PageEventHandler(object sender, PageEventArgs e);
-        public delegate void PageChangingEventHandler(object sender, PageChangingEventArgs e);
-        public delegate void PageChangedEventHandler(object sender, PageChangedEventArgs e);
-        public delegate void PageValidatingEventHandler(object sender, PageValidatingEventArgs e);
-        public delegate void PagePaintEventHandler(object sender, PagePaintEventArgs e);
-        public delegate void CreateUIControlsEventHandler(object sender, CreateUIControlsEventArgs e);
-
+        /// <param name="e">A <see cref="PageEventArgs"/> that contains event data.</param>
         protected internal virtual void OnPageAdded(PageEventArgs e) { PageAdded?.Invoke(this, e); }
+        /// <summary>
+        /// Raises the <see cref="PageRemoved"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="PageEventArgs"/> that contains event data.</param>
         protected internal virtual void OnPageRemoved(PageEventArgs e) { PageRemoved?.Invoke(this, e); }
-        protected internal virtual void OnCurrentPageChanging(PageChangingEventArgs e) { PageChanging?.Invoke(this, e); }
-        protected internal virtual void OnCurrentPageChanged(PageChangedEventArgs e) { PageChanged?.Invoke(this, e); }
+        /// <summary>
+        /// Raises the <see cref="PageChanging"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="PageChangingEventArgs"/> that contains event data.</param>
+        protected internal virtual void OnPageChanging(PageChangingEventArgs e) { PageChanging?.Invoke(this, e); }
+        /// <summary>
+        /// Raises the <see cref="PageChanged"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="PageChangedEventArgs"/> that contains event data.</param>
+        protected internal virtual void OnPageChanged(PageChangedEventArgs e) { PageChanged?.Invoke(this, e); }
+        /// <summary>
+        /// Raises the <see cref="PageValidating"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="PageValidatingEventArgs"/> that contains event data.</param>
         protected internal virtual void OnPageValidating(PageValidatingEventArgs e) { PageValidating?.Invoke(this, e); }
+        /// <summary>
+        /// Raises the <see cref="PageValidated"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="PageEventArgs"/> that contains event data.</param>
         protected internal virtual void OnPageValidated(PageEventArgs e) { PageValidated?.Invoke(this, e); }
+        /// <summary>
+        /// Raises the <see cref="PageHidden"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="PageEventArgs"/> that contains event data.</param>
         protected internal virtual void OnPageHidden(PageEventArgs e) { PageHidden?.Invoke(this, e); }
+        /// <summary>
+        /// Raises the <see cref="PageShown"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="PageEventArgs"/> that contains event data.</param>
         protected internal virtual void OnPageShown(PageEventArgs e) { PageShown?.Invoke(this, e); }
+        /// <summary>
+        /// Raises the <see cref="PagePaint"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="PagePaintEventArgs"/> that contains event data.</param>
         protected internal virtual void OnPagePaint(PagePaintEventArgs e) { PagePaint?.Invoke(this, e); }
+        /// <summary>
+        /// Raises the <see cref="CreateUIControls"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="CreateUIControlsEventArgs"/> that contains event data.</param>
         protected internal virtual void OnCreateUIControls(CreateUIControlsEventArgs e)
         {
             CreateUIControls?.Invoke(this, e);
 
             creatingUIControls = true;
+            int i = 0;
             foreach (Control control in e.Controls)
             {
                 Controls.Add(control);
+                Controls.SetChildIndex(control, i);
+                i++;
             }
             creatingUIControls = false;
 
             uiControlCount = e.Controls.Length;
         }
+        /// <summary>
+        /// Raises the <see cref="UpdateUIControls"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="EventArgs"/> that contains event data.</param>
         protected internal virtual void OnUpdateUIControls(EventArgs e) { UpdateUIControls?.Invoke(this, e); }
+        #endregion
 
+        #region Events
         /// <summary>
         /// Occurs when a new page is added.
         /// </summary>
         [Category("Behavior"), Description("Occurs when a new page is added.")]
-        public event PageEventHandler PageAdded;
+        public event EventHandler<PageEventArgs> PageAdded;
         /// <summary>
         /// Occurs when a page is removed.
         /// </summary>
         [Category("Behavior"), Description("Occurs when a page is removed.")]
-        public event PageEventHandler PageRemoved;
+        public event EventHandler<PageEventArgs> PageRemoved;
         /// <summary>
         /// Occurs before the current page is changed.
         /// </summary>
         [Category("Behavior"), Description("Occurs before the current page is changed.")]
-        public event PageChangingEventHandler PageChanging;
+        public event EventHandler<PageChangingEventArgs> PageChanging;
         /// <summary>
         /// Occurs after the current page is changed.
         /// </summary>
         [Category("Behavior"), Description("Occurs after the current page is changed.")]
-        public event PageChangedEventHandler PageChanged;
+        public event EventHandler<PageChangedEventArgs> PageChanged;
         /// <summary>
         /// Occurs when the current page is validating.
         /// </summary>
         [Category("Behavior"), Description("Occurs when the current page is validating.")]
-        public event PageValidatingEventHandler PageValidating;
+        public event EventHandler<PageValidatingEventArgs> PageValidating;
         /// <summary>
         /// Occurs after the current page is successfully validated.
         /// </summary>
         [Category("Behavior"), Description("Occurs after the current page is successfully validated.")]
-        public event PageEventHandler PageValidated;
+        public event EventHandler<PageEventArgs> PageValidated;
         /// <summary>
         /// Occurs while the current page is changing and the previous current page is hidden.
         /// </summary>
         [Category("Behavior"), Description("Occurs when the current page is changing and the previous current page is hidden.")]
-        public event PageEventHandler PageHidden;
+        public event EventHandler<PageEventArgs> PageHidden;
         /// <summary>
         /// Occurs while the current page is changing and the new current page is shown.
         /// </summary>
         [Category("Behavior"), Description("Occurs while the current page is changing and the new current page is shown.")]
-        public event PageEventHandler PageShown;
+        public event EventHandler<PageEventArgs> PageShown;
         /// <summary>
         /// Occurs when a page is painted.
         /// </summary>
         [Category("Appearance"), Description("Occurs when a page is painted.")]
-        public event PagePaintEventHandler PagePaint;
+        public event EventHandler<PagePaintEventArgs> PagePaint;
         /// <summary>
         /// Occurs when UI controls need to be created.
         /// </summary>
         [Category("Appearance"), Description("Occurs when UI controls need to be created.")]
-        public event CreateUIControlsEventHandler CreateUIControls;
+        public event EventHandler<CreateUIControlsEventArgs> CreateUIControls;
         /// <summary>
         /// Occurs when UI controls need to be updated.
         /// </summary>
@@ -415,7 +346,7 @@ namespace Manina.Windows.Forms
             }
 
             PageChangingEventArgs pce = new PageChangingEventArgs(selectedPage, page);
-            OnCurrentPageChanging(pce);
+            OnPageChanging(pce);
             // Check if the page change is cancelled by user
             if (allowModify && pce.Cancel) return;
 
@@ -444,7 +375,7 @@ namespace Manina.Windows.Forms
             if (selectedPage != null)
                 OnPageShown(new PageEventArgs(selectedPage));
 
-            OnCurrentPageChanged(new PageChangedEventArgs(lastSelectedPage, selectedPage));
+            OnPageChanged(new PageChangedEventArgs(lastSelectedPage, selectedPage));
         }
         #endregion
 
@@ -455,6 +386,7 @@ namespace Manina.Windows.Forms
 
             OnCreateUIControls(new CreateUIControlsEventArgs());
             OnUpdateUIControls(new EventArgs());
+            UpdatePages();
         }
 
         protected override ControlCollection CreateControlsInstance()
@@ -478,6 +410,7 @@ namespace Manina.Windows.Forms
         {
             base.OnResize(e);
             UpdatePages();
+            OnUpdateUIControls(new EventArgs());
         }
 
         protected override void OnInvalidated(InvalidateEventArgs e)

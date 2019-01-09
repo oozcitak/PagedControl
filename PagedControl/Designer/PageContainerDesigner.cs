@@ -3,6 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing;
+using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
@@ -10,6 +11,7 @@ namespace Manina.Windows.Forms
 {
     public partial class PagedControl
     {
+        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected internal class PageContainerDesigner : ParentControlDesigner
         {
             #region Properties

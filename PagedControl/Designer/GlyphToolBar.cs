@@ -13,7 +13,7 @@ namespace Manina.Windows.Forms
         /// <summary>
         /// Represent a toolbar on the designer.
         /// </summary>
-        protected internal class GlyphToolBar : Glyph
+        protected internal class GlyphToolBar : Glyph, IDisposable
         {
             #region GlyphIndexer
             /// <summary>
@@ -171,14 +171,6 @@ namespace Manina.Windows.Forms
                 tooltipTimer.Interval = tooltipDelay;
                 tooltipTimer.Tick += TooltipTimer_Tick;
             }
-
-            private void TooltipTimer_Tick(object sender, EventArgs e)
-            {
-                tooltipTimer.Stop();
-                if (lastHotButton != null)
-                    lastHotButton.ShowToolTip = true;
-                Refresh();
-            }
             #endregion
 
             #region Behavior
@@ -208,6 +200,16 @@ namespace Manina.Windows.Forms
 
                     return false;
                 }
+            }
+            #endregion
+
+            #region Event Handlers
+            private void TooltipTimer_Tick(object sender, EventArgs e)
+            {
+                tooltipTimer.Stop();
+                if (lastHotButton != null)
+                    lastHotButton.ShowToolTip = true;
+                Refresh();
             }
             #endregion
 
@@ -379,6 +381,22 @@ namespace Manina.Windows.Forms
                             TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.SingleLine);
                     }
                 }
+            }
+            #endregion
+
+            #region IDisposable
+            protected virtual void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    tooltipTimer.Dispose();
+                }
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
             }
             #endregion
         }

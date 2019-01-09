@@ -3,12 +3,14 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing;
+using System.Security.Permissions;
 using System.Windows.Forms.Design.Behavior;
 
 namespace Manina.Windows.Forms
 {
     public partial class PagedControl
     {
+        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected internal class PagedControlDesigner : PageContainerDesigner
         {
             #region Member Variables
@@ -189,6 +191,8 @@ namespace Manina.Windows.Forms
 
                     if (SelectionService != null)
                         SelectionService.SelectionChanged -= SelectionService_SelectionChanged;
+
+                    toolbar.Dispose();
                 }
                 base.Dispose(disposing);
             }
@@ -325,7 +329,7 @@ namespace Manina.Windows.Forms
             /// <summary>
             /// Updates the visual states of the toolbar and its glyphs.
             /// </summary>
-            public void UpdateGlyphsAndVerbs()
+            private void UpdateGlyphsAndVerbs()
             {
                 removePageVerb.Enabled = removePageButton.Enabled = (Control.Pages.Count > 1);
                 navigateBackVerb.Enabled = navigateBackButton.Enabled = (Control.SelectedIndex > 0);

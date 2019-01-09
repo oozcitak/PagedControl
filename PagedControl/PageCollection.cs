@@ -60,11 +60,11 @@ namespace Manina.Windows.Forms
                 {
                     // Just added a page to an empty control
                     // Set this page as the selected page; this event cannot be cancelled
-                    owner.OnCurrentPageChanging(new PageChangingEventArgs(null, item));
+                    owner.OnPageChanging(new PageChangingEventArgs(null, item));
                     owner.selectedPage = item;
                     owner.selectedIndex = 0;
                     owner.OnPageShown(new PageEventArgs(item));
-                    owner.OnCurrentPageChanged(new PageChangedEventArgs(null, item));
+                    owner.OnPageChanged(new PageChangedEventArgs(null, item));
                 }
 
                 owner.UpdatePages();
@@ -83,10 +83,10 @@ namespace Manina.Windows.Forms
                 var lastSelectedPage = owner.selectedPage;
 
                 // Set the selected page to null; this event cannot be cancelled
-                owner.OnCurrentPageChanging(new PageChangingEventArgs(lastSelectedPage, null));
+                owner.OnPageChanging(new PageChangingEventArgs(lastSelectedPage, null));
                 owner.selectedPage = null;
                 owner.selectedIndex = -1;
-                owner.OnCurrentPageChanged(new PageChangedEventArgs(lastSelectedPage, null));
+                owner.OnPageChanged(new PageChangedEventArgs(lastSelectedPage, null));
 
                 controls.FromPageCollection = true;
                 foreach (var page in toRemove)
@@ -167,10 +167,10 @@ namespace Manina.Windows.Forms
                 {
                     // Just removed the last page from the collection
                     // Set the selected page to null; this event cannot be cancelled
-                    owner.OnCurrentPageChanging(new PageChangingEventArgs(item, null));
+                    owner.OnPageChanging(new PageChangingEventArgs(item, null));
                     owner.selectedPage = null;
                     owner.selectedIndex = -1;
-                    owner.OnCurrentPageChanged(new PageChangedEventArgs(item, null));
+                    owner.OnPageChanged(new PageChangedEventArgs(item, null));
                 }
                 else if (ReferenceEquals(owner.selectedPage, item))
                 {
@@ -179,10 +179,10 @@ namespace Manina.Windows.Forms
                     int newSelectedIndex = (owner.selectedIndex == Count ? Count - 1 : owner.selectedIndex);
                     var newSelectedPage = this[newSelectedIndex];
 
-                    owner.OnCurrentPageChanging(new PageChangingEventArgs(item, newSelectedPage));
+                    owner.OnPageChanging(new PageChangingEventArgs(item, newSelectedPage));
                     owner.selectedPage = newSelectedPage;
                     owner.selectedIndex = newSelectedIndex;
-                    owner.OnCurrentPageChanged(new PageChangedEventArgs(item, newSelectedPage));
+                    owner.OnPageChanged(new PageChangedEventArgs(item, newSelectedPage));
                 }
 
                 owner.OnPageHidden(new PageEventArgs(item));

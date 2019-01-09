@@ -61,6 +61,7 @@
     <Compile Include="Designer\SeparatorGlyph.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="EventArgs.cs" />
     <Compile Include="PagedControl.cs">
       <SubType>Component</SubType>
     </Compile>
