@@ -26,7 +26,6 @@ Following public properties are available.
 | CanGoBack         | bool                           | Gets whether the control can navigate to the previous page. |
 | CanGoNext         | bool                           | Gets whether the control can navigate to the next page. |
 | DisplayRectangle  | System.Drawing.Rectangle       | Gets the client rectangle where pages are located. Deriving classes can override this property to modify page bounds. [WizardControl](https://github.com/oozcitak/WizardControl), for example, overrides this property to provide space for its navigation buttons. |
-| UIControls        | System.Windows.Forms.Control[] | Gets the collection of user interface controls. The control creates no UI controls by default but deriving classes can override this method to provide additional UI controls. [WizardControl](https://github.com/oozcitak/WizardControl), for example, overrides this property to supply its navigation buttons. |
 
 # Methods #
 
@@ -43,8 +42,8 @@ Following events are raised by the control:
 
 | Name | Event Argument | Description |
 |------|----------------|-------------|
-| CurrentPageChanging | PagedControl.PageChangingEventArgs   | Occurs before the selected page changes. The event arguments contains references to the currently selected page and the page to become selected. It is possible to make the control navigate to a different page by setting the `NewPage` property of the event arguments, or to cancel navigation entirely by setting `Cancel = true` while handling the event. |
-| CurrentPageChanged  | PagedControl.PageChangedEventArgs    | Occurs after the selected page changes. The event arguments contains references to the currently selected page and the previous selected page. |
+| PageChanging | PagedControl.PageChangingEventArgs   | Occurs before the selected page changes. The event arguments contains references to the currently selected page and the page to become selected. It is possible to make the control navigate to a different page by setting the `NewPage` property of the event arguments, or to cancel navigation entirely by setting `Cancel = true` while handling the event. |
+| PageChanged  | PagedControl.PageChangedEventArgs    | Occurs after the selected page changes. The event arguments contains references to the currently selected page and the previous selected page. |
 | PageAdded           | PagedControl.PageEventArgs           | Occurs after a new page is added to the page collection. The event arguments contains a reference to the new page. |
 | PageRemoved         | PagedControl.PageEventArgs           | Occurs after an existing page is removed from the page collection. The event arguments contains a reference to the removed page. |
 | PageValidating      | PagedControl.PageValidatingEventArgs | Occurs before the selected page changes and it needs to be validated. The event arguments contains a reference to the currently selected page. By setting `Cancel = true` while handling the event, the validation stops and the selected page is not changed. |
@@ -52,4 +51,5 @@ Following events are raised by the control:
 | PageHidden          | PagedControl.PageEventArgs           | Occurs before the selected page changes and after the currently selected page is hidden. The event arguments contains a reference to the page. |
 | PageShown           | PagedControl.PageEventArgs           | Occurs before the selected page changes and the page to become selected is shown. The event arguments contains a reference to the page. |
 | PagePaint           | PagedControl.PagePaintEventArgs      | Occurs when a page is needed to be painted. The control paints the background of the pages by default. |
-| UpdateUIControls    | System.EventArgs                     | Occurs when the visual states of the user interface controls are needed to be updated. If any custom UI controls are added by overriding the `UIControls` property, visual states of those controls should be handled in this event. |
+| CreateUIControls    | PagedControl.CreateUIControlsEventArgs | Gets the collection of user interface controls. The control creates no UI controls by default but deriving classes can handle this event to provide additional UI controls. [WizardControl](https://github.com/oozcitak/WizardControl), for example, uses this event to supply its navigation buttons. |
+| UpdateUIControls    | System.EventArgs                     | Occurs when the visual states of the user interface controls are needed to be updated. If any custom UI controls are created with the `CreateUIControls` event, visual states of those controls should be handled in this event. |
