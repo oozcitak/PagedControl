@@ -22,7 +22,7 @@ namespace Manina.Windows.Forms
     }
 
     /// <summary>
-    /// Contains event data for the <see cref="PageChanging"/> event.
+    /// Contains event data for the <see cref="PagedControl.PageChanging"/> event.
     /// </summary>
     public class PageChangingEventArgs : CancelEventArgs
     {
@@ -43,7 +43,7 @@ namespace Manina.Windows.Forms
     }
 
     /// <summary>
-    /// Contains event data for the <see cref="PageChanged"/> event.
+    /// Contains event data for the <see cref="PagedControl.PageChanged"/> event.
     /// </summary>
     public class PageChangedEventArgs : EventArgs
     {
@@ -64,7 +64,7 @@ namespace Manina.Windows.Forms
     }
 
     /// <summary>
-    /// Contains event data for the <see cref="PageValidating"/> event.
+    /// Contains event data for the <see cref="PagedControl.PageValidating"/> event.
     /// </summary>
     public class PageValidatingEventArgs : CancelEventArgs
     {
@@ -80,7 +80,7 @@ namespace Manina.Windows.Forms
     }
 
     /// <summary>
-    /// Contains event data for the <see cref="PagePaint"/> event.
+    /// Contains event data for the <see cref="PagedControl.PagePaint"/> event.
     /// </summary>
     public class PagePaintEventArgs : PageEventArgs
     {
@@ -96,7 +96,7 @@ namespace Manina.Windows.Forms
     }
 
     /// <summary>
-    /// Contains event data for the <see cref="CreateUIControls"/> event.
+    /// Contains event data for the <see cref="PagedControl.CreateUIControls"/> event.
     /// </summary>
     public class CreateUIControlsEventArgs : EventArgs
     {
