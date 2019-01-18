@@ -1,0 +1,6 @@
+- name: Api
+  href: api/
+- name: Download
+  href: https://www.nuget.org/packages/PagedControl
+- name: Source Code
+  href: https://github.com/oozcitak/PagedControl
