@@ -1,0 +1,998 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PagedControl.PageContainerDesigner
+   | PagedControl </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PagedControl.PageContainerDesigner
+   | PagedControl ">
+    <meta name="generator" content="docfx 2.40.4.0">
+    
+    <link rel="shortcut icon" href="../../resources/icons/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../resources/icons/logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-12">
+            <article class="content wrap" id="_content" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner">
+  
+  
+  <h1 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner" class="text-break">Class PagedControl.PageContainerDesigner
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">System.ComponentModel.Design.ComponentDesigner</span></div>
+    <div class="level2"><span class="xref">System.Windows.Forms.Design.ControlDesigner</span></div>
+    <div class="level3"><span class="xref">System.Windows.Forms.Design.ParentControlDesigner</span></div>
+    <div class="level4"><span class="xref">PagedControl.PageContainerDesigner</span></div>
+      <div class="level5"><a class="xref" href="Manina.Windows.Forms.PagedControl.PagedControlDesigner.html">PagedControl.PagedControlDesigner</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.ComponentModel.Design.ITreeDesigner</span></div>
+    <div><span class="xref">System.ComponentModel.Design.IDesigner</span></div>
+    <div><span class="xref">System.IDisposable</span></div>
+    <div><span class="xref">System.ComponentModel.Design.IDesignerFilter</span></div>
+    <div><span class="xref">System.ComponentModel.Design.IComponentInitializer</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.GetParentForComponent(System.ComponentModel.IComponent)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.AddPaddingSnapLines(System.Collections.ArrayList)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.Dispose(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.InvokeCreateTool(System.Windows.Forms.Design.ParentControlDesigner, System.Drawing.Design.ToolboxItem)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.CreateTool(System.Drawing.Design.ToolboxItem)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.CreateTool(System.Drawing.Design.ToolboxItem, System.Drawing.Point)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.CreateTool(System.Drawing.Design.ToolboxItem, System.Drawing.Rectangle)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.CreateToolCore(System.Drawing.Design.ToolboxItem, System.Int32, System.Int32, System.Int32, System.Int32, System.Boolean, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.GetControl(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.GetControlGlyph(System.Windows.Forms.Design.Behavior.GlyphSelectionType)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.GetGlyphs(System.Windows.Forms.Design.Behavior.GlyphSelectionType)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.GetUpdatedRect(System.Drawing.Rectangle, System.Drawing.Rectangle, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.OnMouseDragBegin(System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.OnMouseDragEnd(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.OnMouseDragMove(System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.OnPaintAdornments(System.Windows.Forms.PaintEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.OnSetCursor()</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.PreFilterProperties(System.Collections.IDictionary)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.AllowControlLasso</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.AllowGenericDragBox</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.AllowSetChildIndexOnDrop</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.DefaultControlLocation</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.DrawGrid</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.EnableDragRect</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.GridSize</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.MouseDragTool</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ParentControlDesigner.SnapLines</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.InvalidPoint</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.accessibilityObj</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.NumberOfInternalControlDesigners()</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.InternalControlDesigner(System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.BaseWndProc(System.Windows.Forms.Message)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.CanBeParentedTo(System.ComponentModel.Design.IDesigner)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.DefWndProc(System.Windows.Forms.Message)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.DisplayError(System.Exception)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.EnableDesignMode(System.Windows.Forms.Control, System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.EnableDragDrop(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.GetHitTest(System.Drawing.Point)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.HookChildControls(System.Windows.Forms.Control)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.InitializeExistingComponent(System.Collections.IDictionary)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.OnSetComponentDefaults()</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.OnContextMenu(System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.OnCreateHandle()</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.OnMouseEnter()</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.OnMouseHover()</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.OnMouseLeave()</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.UnhookChildControls(System.Windows.Forms.Control)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.WndProc(System.Windows.Forms.Message)</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.BehaviorService</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.AssociatedComponents</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.AccessibilityObject</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.ParentComponent</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.ParticipatesWithSnapLines</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.AutoResizeHandles</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.SelectionRules</span>
+    </div>
+    <div>
+      <span class="xref">System.Windows.Forms.Design.ControlDesigner.InheritanceAttribute</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.InvokeGetInheritanceAttribute(System.ComponentModel.Design.ComponentDesigner)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.DoDefaultAction()</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.InitializeNonDefault()</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.GetService(System.Type)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.PostFilterAttributes(System.Collections.IDictionary)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.PostFilterEvents(System.Collections.IDictionary)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.PostFilterProperties(System.Collections.IDictionary)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.PreFilterAttributes(System.Collections.IDictionary)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.PreFilterEvents(System.Collections.IDictionary)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.RaiseComponentChanged(System.ComponentModel.MemberDescriptor, System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.RaiseComponentChanging(System.ComponentModel.MemberDescriptor)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.System.ComponentModel.Design.IDesignerFilter.PostFilterAttributes(System.Collections.IDictionary)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.System.ComponentModel.Design.IDesignerFilter.PostFilterEvents(System.Collections.IDictionary)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.System.ComponentModel.Design.IDesignerFilter.PostFilterProperties(System.Collections.IDictionary)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.System.ComponentModel.Design.IDesignerFilter.PreFilterAttributes(System.Collections.IDictionary)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.System.ComponentModel.Design.IDesignerFilter.PreFilterEvents(System.Collections.IDictionary)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.System.ComponentModel.Design.IDesignerFilter.PreFilterProperties(System.Collections.IDictionary)</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.ActionLists</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.Component</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.Inherited</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.ShadowProperties</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.Verbs</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.System.ComponentModel.Design.ITreeDesigner.Children</span>
+    </div>
+    <div>
+      <span class="xref">System.ComponentModel.Design.ComponentDesigner.System.ComponentModel.Design.ITreeDesigner.Parent</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Manina.Windows.Forms.html">Manina.Windows.Forms</a></h6>
+  <h6><strong>Assembly</strong>: PagedControl.dll</h6>
+  <h5 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PermissionSet(SecurityAction.Demand, Name = &quot;FullTrust&quot;)]
+protected class PageContainerDesigner : ParentControlDesigner, ITreeDesigner, IDesigner, IDisposable, IDesignerFilter, IComponentInitializer, IOleDragClient</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_Control.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.Control%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L31">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_Control_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.Control*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_Control" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.Control">Control</h4>
+  <div class="markdown level1 summary"><p>Gets the parent control.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PagedControl Control { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Manina.Windows.Forms.PagedControl.html">PagedControl</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_DesignerHost.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.DesignerHost%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L21">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_DesignerHost_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.DesignerHost*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_DesignerHost" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.DesignerHost">DesignerHost</h4>
+  <div class="markdown level1 summary"><p>Gets the designer host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDesignerHost DesignerHost { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ComponentModel.Design.IDesignerHost</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_SelectionService.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.SelectionService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L26">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_SelectionService_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.SelectionService*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_SelectionService" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.SelectionService">SelectionService</h4>
+  <div class="markdown level1 summary"><p>Gets the selection service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ISelectionService SelectionService { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ComponentModel.Design.ISelectionService</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_AddPageHandler_System_Object_System_EventArgs_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.AddPageHandler(System.Object%2CSystem.EventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L86">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_AddPageHandler_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.AddPageHandler*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_AddPageHandler_System_Object_System_EventArgs_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.AddPageHandler(System.Object,System.EventArgs)">AddPageHandler(Object, EventArgs)</h4>
+  <div class="markdown level1 summary"><p>Adds a new page.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void AddPageHandler(object sender, EventArgs e)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">sender</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.EventArgs</span></td>
+        <td><span class="parametername">e</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_CanParent_System_Windows_Forms_Control_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.CanParent(System.Windows.Forms.Control)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L148">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_CanParent_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.CanParent*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_CanParent_System_Windows_Forms_Control_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.CanParent(System.Windows.Forms.Control)">CanParent(Control)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool CanParent(Control control)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Forms.Control</span></td>
+        <td><span class="parametername">control</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Forms.Design.ParentControlDesigner.CanParent(System.Windows.Forms.Control)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_CanParent_System_Windows_Forms_Design_ControlDesigner_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.CanParent(System.Windows.Forms.Design.ControlDesigner)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L153">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_CanParent_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.CanParent*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_CanParent_System_Windows_Forms_Design_ControlDesigner_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.CanParent(System.Windows.Forms.Design.ControlDesigner)">CanParent(ControlDesigner)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool CanParent(ControlDesigner controlDesigner)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Forms.Design.ControlDesigner</span></td>
+        <td><span class="parametername">controlDesigner</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Forms.Design.ParentControlDesigner.CanParent(System.Windows.Forms.Design.ControlDesigner)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_Initialize_System_ComponentModel_IComponent_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.Initialize(System.ComponentModel.IComponent)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L35">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_Initialize_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.Initialize*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_Initialize_System_ComponentModel_IComponent_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.Initialize(System.ComponentModel.IComponent)">Initialize(IComponent)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Initialize(IComponent component)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ComponentModel.IComponent</span></td>
+        <td><span class="parametername">component</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Forms.Design.ParentControlDesigner.Initialize(System.ComponentModel.IComponent)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_InitializeNewComponent_System_Collections_IDictionary_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.InitializeNewComponent(System.Collections.IDictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L43">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_InitializeNewComponent_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.InitializeNewComponent*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_InitializeNewComponent_System_Collections_IDictionary_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.InitializeNewComponent(System.Collections.IDictionary)">InitializeNewComponent(IDictionary)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void InitializeNewComponent(IDictionary defaultValues)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.IDictionary</span></td>
+        <td><span class="parametername">defaultValues</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Forms.Design.ParentControlDesigner.InitializeNewComponent(System.Collections.IDictionary)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_NavigateBackHandler_System_Object_System_EventArgs_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.NavigateBackHandler(System.Object%2CSystem.EventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L129">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_NavigateBackHandler_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.NavigateBackHandler*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_NavigateBackHandler_System_Object_System_EventArgs_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.NavigateBackHandler(System.Object,System.EventArgs)">NavigateBackHandler(Object, EventArgs)</h4>
+  <div class="markdown level1 summary"><p>Navigates to the previous page.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void NavigateBackHandler(object sender, EventArgs e)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">sender</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.EventArgs</span></td>
+        <td><span class="parametername">e</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_NavigateNextHandler_System_Object_System_EventArgs_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.NavigateNextHandler(System.Object%2CSystem.EventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L139">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_NavigateNextHandler_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.NavigateNextHandler*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_NavigateNextHandler_System_Object_System_EventArgs_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.NavigateNextHandler(System.Object,System.EventArgs)">NavigateNextHandler(Object, EventArgs)</h4>
+  <div class="markdown level1 summary"><p>Navigates to the next page.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void NavigateNextHandler(object sender, EventArgs e)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">sender</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.EventArgs</span></td>
+        <td><span class="parametername">e</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragComplete_System_Windows_Forms_DragEventArgs_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragComplete(System.Windows.Forms.DragEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L212">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragComplete_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragComplete*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragComplete_System_Windows_Forms_DragEventArgs_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragComplete(System.Windows.Forms.DragEventArgs)">OnDragComplete(DragEventArgs)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDragComplete(DragEventArgs de)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Forms.DragEventArgs</span></td>
+        <td><span class="parametername">de</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Forms.Design.ParentControlDesigner.OnDragComplete(System.Windows.Forms.DragEventArgs)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragDrop_System_Windows_Forms_DragEventArgs_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragDrop(System.Windows.Forms.DragEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L194">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragDrop_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragDrop*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragDrop_System_Windows_Forms_DragEventArgs_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragDrop(System.Windows.Forms.DragEventArgs)">OnDragDrop(DragEventArgs)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDragDrop(DragEventArgs de)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Forms.DragEventArgs</span></td>
+        <td><span class="parametername">de</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Forms.Design.ParentControlDesigner.OnDragDrop(System.Windows.Forms.DragEventArgs)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragEnter_System_Windows_Forms_DragEventArgs_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragEnter(System.Windows.Forms.DragEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L160">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragEnter_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragEnter*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragEnter_System_Windows_Forms_DragEventArgs_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragEnter(System.Windows.Forms.DragEventArgs)">OnDragEnter(DragEventArgs)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDragEnter(DragEventArgs de)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Forms.DragEventArgs</span></td>
+        <td><span class="parametername">de</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Forms.Design.ParentControlDesigner.OnDragEnter(System.Windows.Forms.DragEventArgs)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragLeave_System_EventArgs_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragLeave(System.EventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L185">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragLeave_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragLeave*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragLeave_System_EventArgs_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragLeave(System.EventArgs)">OnDragLeave(EventArgs)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDragLeave(EventArgs e)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.EventArgs</span></td>
+        <td><span class="parametername">e</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Forms.Design.ParentControlDesigner.OnDragLeave(System.EventArgs)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragOver_System_Windows_Forms_DragEventArgs_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragOver(System.Windows.Forms.DragEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L169">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragOver_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragOver*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnDragOver_System_Windows_Forms_DragEventArgs_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnDragOver(System.Windows.Forms.DragEventArgs)">OnDragOver(DragEventArgs)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDragOver(DragEventArgs de)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Forms.DragEventArgs</span></td>
+        <td><span class="parametername">de</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Forms.Design.ParentControlDesigner.OnDragOver(System.Windows.Forms.DragEventArgs)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnGiveFeedback_System_Windows_Forms_GiveFeedbackEventArgs_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L203">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnGiveFeedback_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnGiveFeedback*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_OnGiveFeedback_System_Windows_Forms_GiveFeedbackEventArgs_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs)">OnGiveFeedback(GiveFeedbackEventArgs)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnGiveFeedback(GiveFeedbackEventArgs e)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Windows.Forms.GiveFeedbackEventArgs</span></td>
+        <td><span class="parametername">e</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Windows.Forms.Design.ControlDesigner.OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/oozcitak/PagedControl/new/master/apiSpec/new?filename=Manina_Windows_Forms_PagedControl_PageContainerDesigner_RemovePageHandler_System_Object_System_EventArgs_.md&amp;value=---%0Auid%3A%20Manina.Windows.Forms.PagedControl.PageContainerDesigner.RemovePageHandler(System.Object%2CSystem.EventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/oozcitak/PagedControl/blob/master/PagedControl/Designer/PageContainerDesigner.cs/#L103">View Source</a>
+  </span>
+  <a id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_RemovePageHandler_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.RemovePageHandler*"></a>
+  <h4 id="Manina_Windows_Forms_PagedControl_PageContainerDesigner_RemovePageHandler_System_Object_System_EventArgs_" data-uid="Manina.Windows.Forms.PagedControl.PageContainerDesigner.RemovePageHandler(System.Object,System.EventArgs)">RemovePageHandler(Object, EventArgs)</h4>
+  <div class="markdown level1 summary"><p>Removes the current page.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RemovePageHandler(object sender, EventArgs e)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">sender</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.EventArgs</span></td>
+        <td><span class="parametername">e</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.ComponentModel.Design.ITreeDesigner</span>
+  </div>
+  <div>
+      <span class="xref">System.ComponentModel.Design.IDesigner</span>
+  </div>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
+  <div>
+      <span class="xref">System.ComponentModel.Design.IDesignerFilter</span>
+  </div>
+  <div>
+      <span class="xref">System.ComponentModel.Design.IComponentInitializer</span>
+  </div>
+</article>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018 Özgür Özçıtak
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

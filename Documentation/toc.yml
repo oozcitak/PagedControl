@@ -1,6 +1,0 @@
-- name: Api
-  topicUid: Manina.Windows.Forms.PagedControl
-- name: Download
-  href: https://www.nuget.org/packages/PagedControl
-- name: Source Code
-  href: https://github.com/oozcitak/PagedControl
