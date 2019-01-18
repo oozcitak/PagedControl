@@ -1,27 +1,17 @@
 ---
 uid: Home
 title: Home
-documentType: index
 ---
-<div id="hero">
-  <div class="header">
-    <div class="title">
-      <strong>PagedControl</strong>
-    </div>
-    <div class="info">a winforms pager control for housing child controls</div>
-    <div class="buttons">
-      [![npm](https://img.shields.io/npm/v/npm.svg?logo=npm&style=for-the-badge&colorA=7c7&colorB=4a4)](https://www.nuget.org/packages/PagedControl)
-      &nbsp;&nbsp;&nbsp;
-      [![GitHub](https://img.shields.io/badge/GitHub-Source%20Code-green.svg?logo=github&style=for-the-badge&colorA=7c7&colorB=4a4)](https://github.com/oozcitak/PagedControl)
-    </div>
-    <div class="doclinks">
-	  @Api.Home
-    </div>
-  </div>
-  <div class="content">
-    <div class="demo-images">
-      <div>![PagedControl in designer](./resources/images/PagedControl.designer.png)</div>
-    </div>
-    <div class="demo-images-caption">PagedControl in form designer</div>
-  </div>
-</div>
+# PagedControl #
+
+The @Manina.Windows.Forms.PagedControl winforms control houses a number of pages for grouping child controls. Only one page can be visible at a time. 
+
+Pages can be added at design time, or at run-time through the @Manina.Windows.Forms.PagedControl.Pages property of the control. 
+
+The user can navigate between pages by setting the @Manina.Windows.Forms.PagedControl.SelectedPage and @Manina.Windows.Forms.PagedControl.SelectedIndex properties. Or calling the @Manina.Windows.Forms.PagedControl.GoBack and @Manina.Windows.Forms.PagedControl.GoNext methods for sequental navigation.
+
+When a page is switched, a number of events are fired by the control. Most important of these are the @Manina.Windows.Forms.PagedControl.PageValidating and the @Manina.Windows.Forms.PagedControl.PageChanging event. The latter allows the user to change the target page or to cancel the page change entirely.
+
+The control also raises the @Manina.Windows.Forms.PagedControl.CreateUIControls and @Manina.Windows.Forms.PagedControl.UpdateUIControls events which allows the addition of user controls on it. Those controls could be used to create a paged wizard control, for example.
+
+<div>![PagedControl in designer](./resources/images/PagedControl.designer.png)</div>

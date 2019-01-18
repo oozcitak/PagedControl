@@ -2,3 +2,15 @@
 - exclude:
       uidRegex: ^System\.Object
       type: Type
+- exclude:
+      uidRegex: ^System\..*$
+      type: Type
+- exclude:
+      uidRegex: Editor
+      type: Type
+- exclude:
+      uidRegex: Glyph
+      type: Type
+- exclude:
+      uidRegex: Designer
+      type: Type

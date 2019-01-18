@@ -12,7 +12,7 @@
     }
   ],
   "build": {
-    "content": [ "index.md", "toc.yml", "api/**.md", "obj/api/**.yml" ],
+    "content": [ "index.md", "toc.yml", "obj/api/**.yml" ],
     "resource": [ "resources/images/**", "resources/icons/**" ],
     "overwrite": [ "overwrites/**.md" ],
     "globalMetadata": {
@@ -24,6 +24,6 @@
       "_disableAffix": true
     },
     "dest": "_site",
-    "template": [ "default", "templates/hero" ]
+    "template": [ "default" ]
   }
 }

@@ -46,9 +46,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="api\index.md" />
     <None Include="filterConfig.yml" />
-    <None Include="templates\hero\index.html.tmpl" />
     <None Include="index.md" />
     <None Include="docfx.json" />
     <None Include="overwrites\Manina.Windows.Forms.md" />
@@ -59,7 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\images\PagedControl.designer.png" />
-    <Content Include="templates\hero\styles\main.css" />
     <Content Include="resources\icons\favicon.ico" />
     <Content Include="resources\icons\logo.png" />
     <Content Include="resources\materialize\materialize.min.css" />
